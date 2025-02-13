@@ -29,7 +29,8 @@ public class AbilitySystem : ModuleRules
 				"CommonUI",
 				"ModelViewViewModel",
 				"DidItHit",
-				"MotionWarping"
+				"MotionWarping",
+				"Niagara"
 			}
 		);
 	}

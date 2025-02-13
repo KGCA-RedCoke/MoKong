@@ -197,7 +197,6 @@ void UDamageGameplayEffectExecutionCalculation::CalculateDamageAndApply(const UM
 		return;
 	}
 
-	// Output the final damage to our player.
 	OutExecutionOutput.AddOutputModifier(
 										 FGameplayModifierEvaluatedData(
 																		OutputProperty,

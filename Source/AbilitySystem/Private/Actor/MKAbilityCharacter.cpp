@@ -3,8 +3,11 @@
 
 #include "Actor/MKAbilityCharacter.h"
 #include "MotionWarpingComponent.h"
+#include "NiagaraComponent.h"
 #include "Ability/MKAbilitySystemComponent.h"
+#include "AttributeSets/AttributeSet_Health.h"
 #include "CombatSystem/Components/CombatSystemComp.h"
+#include "Components/CapsuleComponent.h"
 
 
 // Sets default values
@@ -12,6 +15,8 @@ AMKAbilityCharacter::AMKAbilityCharacter()
 {
 	MotionWarpingComponent = CreateDefaultSubobject<UMotionWarpingComponent>(TEXT("MotionWarpingComponent"));
 	CombatComponent        = CreateDefaultSubobject<UCombatSystem>(TEXT("CombatComponent"));
+
+	DeathVfx = CreateDefaultSubobject<UNiagaraComponent>(TEXT("VFX_Death"));
 
 	AvatarMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("AvatarMesh"));
 	AvatarMesh->SetupAttachment(GetMesh());
@@ -131,6 +136,13 @@ void AMKAbilityCharacter::PostAttack_Implementation()
 	CombatComponent->PostAttack_Implementation();
 }
 
+bool AMKAbilityCharacter::IsAlive() const
+{
+	float CurrentHealth = AbilitySystemComponent->GetNumericAttribute(UAttributeSet_Health::GetCurrentHealthAttribute());
+	UE_LOG(LogTemp, Warning, TEXT("Current Health: %f"), CurrentHealth);
+	return CurrentHealth > 1;
+}
+
 
 void AMKAbilityCharacter::UpdateMotionWarpingTargetLocation(FName WarpName, const FVector& TargetLocation)
 {
@@ -149,5 +161,16 @@ void AMKAbilityCharacter::UpdateMotionWarpingTargetLocationAndRotation(
 
 void AMKAbilityCharacter::PlayHitReact_Implementation(EHitReactDirection Direction)
 {
-	OnCharacterBaseHitReact.Broadcast(Direction);
+	if (IsAlive())
+	{
+		OnCharacterBaseHitReact.Broadcast(Direction);
+	}
+	else
+	{
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+		OnAbilityCharacterDie.Broadcast();
+	}
+
 }

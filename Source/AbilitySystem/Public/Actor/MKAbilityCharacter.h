@@ -9,11 +9,15 @@
 #include "GameFramework/Character.h"
 #include "MKAbilityCharacter.generated.h"
 
+class UNiagaraComponent;
 class UMotionWarpingComponent;
 class UMKAbilitySystemComponent;
 
+/** Hit될 때 이 델리게이트를 호출 */
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCharacterBaseHitReactDelegate, EHitReactDirection, Direction);
 
+/** 죽을 때 이 델리게이트를 호출 */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAbilityCharacterDieDelegate);
 
 /**
  * 어빌리티 시스템 컴포넌트를 가지고 있는 캐릭터
@@ -69,6 +73,9 @@ public:
 	//~~ ICombatInterface End
 
 public:
+	UFUNCTION(BlueprintCallable)
+	bool IsAlive() const;
+
 	UFUNCTION(BlueprintNativeEvent)
 	void PlayHitReact(EHitReactDirection Direction);
 
@@ -81,6 +88,8 @@ public:
 public:
 	UPROPERTY(BlueprintAssignable)
 	FCharacterBaseHitReactDelegate OnCharacterBaseHitReact;
+	UPROPERTY(BlueprintAssignable)
+	FOnAbilityCharacterDieDelegate OnAbilityCharacterDie;
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AbilitySystem", Meta = (ShowOnlyInnerProperties))
@@ -90,7 +99,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AbilitySystem|Input")
 	UMKAbilitySet* AbilitySet;
 
-	UPROPERTY(meta=(AllowPrivateAccess = "true"))
+	UPROPERTY(BlueprintReadWrite, meta=(AllowPrivateAccess = "true"))
 	UMotionWarpingComponent* MotionWarpingComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Modular")
@@ -108,6 +117,9 @@ protected:
 	TObjectPtr<USkeletalMeshComponent> Gloves;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Modular|Parts")
 	TObjectPtr<USkeletalMeshComponent> Head;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "VFX")
+	TObjectPtr<UNiagaraComponent> DeathVfx;
 
 	UPROPERTY(BlueprintReadWrite,
 		EditAnywhere,
