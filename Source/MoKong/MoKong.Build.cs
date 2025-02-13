@@ -30,7 +30,7 @@ public class MoKong : ModuleRules
 			"SlateCore",
 			"UMG",
 			"MotionWarping",
-			"AdvancedThirdPersonCamera"
+			"AdvancedThirdPersonCamera" 
 		});
 
 		// Uncomment if you are using Slate UI
