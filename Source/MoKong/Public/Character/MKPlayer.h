@@ -1,0 +1,61 @@
+﻿// CopyRight KGCA - Team RedCoke
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "MoKongTypes.h"
+#include "AbilitySystem/Public/Actor/MKAbilityPlayer.h"
+#include "CombatSystem/Interface/CombatInterface.h"
+#include "MKPlayer.generated.h"
+
+class UATPCCameraComponent;
+class UMotionWarpingComponent;
+class UParkourComponent;
+class ULocomotionComponent;
+class UFootStepSFXComponent;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerStateChanged, EPlayerState, NewState);
+
+UCLASS(Blueprintable)
+class MOKONG_API AMKPlayer : public AMKAbilityPlayer
+{
+	GENERATED_BODY()
+
+public:
+	AMKPlayer();
+
+protected:
+	virtual void BeginPlay() override;
+
+public:
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+private:
+	UFUNCTION()
+	void PlayerStateChaneDelegate(EPlayerState NewState);
+
+public:
+	UPROPERTY(BlueprintAssignable)
+	FOnPlayerStateChanged OnPlayerStateChanged;
+
+private:
+	UPROPERTY(BlueprintReadWrite,
+		EditAnywhere,
+		Category = "FootStep",
+		DisplayName="착지 SFX",
+		meta=(AllowprivateAccess = "true", DisplayPriority = "1"))
+	TObjectPtr<UFootStepSFXComponent> FootstepComponent;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Locomotion|Base", meta=(AllowprivateAccess = "true"))
+	TObjectPtr<ULocomotionComponent> LocomotionComponent;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Locomotion|Parkour", meta=(AllowprivateAccess = "true"))
+	TObjectPtr<UParkourComponent> ParkourComponent;
+
+	UPROPERTY(BlueprintReadOnly, Transient, Category = "Player|State", meta=(AllowprivateAccess = "true"))
+	EPlayerState CurrentPlayerState;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(AllowprivateAccess = "true"), DisplayName= "호리병")
+	TObjectPtr<UStaticMeshComponent> GourdMeshComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowprivateAccess = "true"), DisplayName = "카메라")
+	TObjectPtr<UATPCCameraComponent> PlayerCameraComponent;
+};
