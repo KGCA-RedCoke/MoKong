@@ -3,12 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ATPCCameraLockOnTargetObject.h"
 #include "GenericTeamAgentInterface.h"
 #include "MoKongTypes.h"
 #include "AbilitySystem/Public/Actor/MKAbilityPlayer.h"
 #include "AI/Interface/EnemyAIInterface.h"
 #include "MKPlayer.generated.h"
 
+class AMokongEnemy;
 class UATPCCameraComponent;
 class UMotionWarpingComponent;
 class UParkourComponent;
@@ -34,6 +36,8 @@ public:
 private:
 	UFUNCTION()
 	void PlayerStateChaneDelegate(EPlayerState NewState);
+	UFUNCTION()
+	void OnLockOnTargetChange(AActor* NewTarget, EATPCChangeTargetReason ChangeTargetReason);
 
 public:
 	//~~ IGenericTeamAgentInterface Begin ~~//
@@ -65,6 +69,13 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowprivateAccess = "true"), DisplayName = "카메라")
 	TObjectPtr<UATPCCameraComponent> PlayerCameraComponent;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player|Setup", DisplayName = "팀", meta = (AllowprivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly,
+		BlueprintReadOnly,
+		Category = "Player|Setup",
+		DisplayName = "팀",
+		meta = (AllowprivateAccess = "true"))
 	ETeamType TeamID;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Player|Target", meta=(AllowprivateAccess = "true"))
+	TObjectPtr<AMokongEnemy> TargetEnemy;
 };

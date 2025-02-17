@@ -20,21 +20,30 @@ void UCombatSystem::InitializeCombatSystem(USkeletalMeshComponent* InAvatarMeshC
 	AbilitySystemComponent = UMKAbilitySystemComponent::GetAbilitySystemComponentFromActor(GetOwner());
 	check(AbilitySystemComponent);
 
-	// Weapon의 초기 설정 변수를 설정 후에 FinishSpawning을 호출해 블루프린트의 Construction(데이터 대입)을 실행
-	if (WeaponClasses.IsEmpty())
-		return;
-
-	if (AWeaponBase* NewWeapon = GetWorld()->SpawnActorDeferred<AWeaponBase>(
-																			 WeaponClasses[CurrentWeaponType],
-																			 FTransform::Identity,
-																			 GetOwner()))
+	if (bUseWeaponActor)
 	{
-		NewWeapon->FinishSpawning(FTransform::Identity);
-		NewWeapon->InitializeWeapon(InAvatarMeshComponent);
-		CurrentWeapon = NewWeapon;
+		// Weapon의 초기 설정 변수를 설정 후에 FinishSpawning을 호출해 블루프린트의 Construction(데이터 대입)을 실행
+		if (WeaponClasses.IsEmpty())
+			return;
+
+		if (AWeaponBase* NewWeapon = GetWorld()->SpawnActorDeferred<AWeaponBase>(
+																				 WeaponClasses[CurrentWeaponType],
+																				 FTransform::Identity,
+																				 GetOwner()))
+		{
+			NewWeapon->FinishSpawning(FTransform::Identity);
+			NewWeapon->InitializeWeapon(InAvatarMeshComponent);
+			CurrentWeapon = NewWeapon;
+		}
+
+		check(CurrentWeapon);
+	}
+	else
+	{
+		
 	}
 
-	check(CurrentWeapon);
+
 }
 
 void UCombatSystem::TryComboAttack_Implementation()

@@ -60,6 +60,9 @@ protected:
 		meta = (AllowprivateAccess = "true"))
 	ETeamType TeamID;
 
+	UPROPERTY(BlueprintReadWrite, Category = "Enemy|AI")
+	AActor* TargetActor;
+
 	/*/** 스켈레톤에 부착된 메시 오브젝트에 한정 #1#
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Enemy|Trace")
 	TObjectPtr<UDidItHitActorComponent> WeaponTraceComponent;*/

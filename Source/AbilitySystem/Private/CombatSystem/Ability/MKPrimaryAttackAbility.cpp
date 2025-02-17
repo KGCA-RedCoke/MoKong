@@ -59,11 +59,15 @@ void UMKPrimaryAttackAbility::Do_AttackTask()
 {
 	CombatSystem->UpdateComboData(CurrentMontage, SectionName, false);
 
+	FGameplayTagContainer EventTags;
+	EventTags.AddTag(FGameplayTag::RequestGameplayTag("Event.Montage.NextSection"));
+	EventTags.AddTag(FGameplayTag::RequestGameplayTag("Event.Montage.End"));
+
 	MontageTask = UAbilityTask_PlayMontageAndWaitForEvent::PlayMontageAndWaitForEvent(
 		 this,
 		 FName("Default"),
 		 CurrentMontage.Get(),
-		 FGameplayTagContainer(),
+		 EventTags,
 		 1.f,
 		 SectionName,
 		 true);

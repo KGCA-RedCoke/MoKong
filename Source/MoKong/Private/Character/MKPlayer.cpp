@@ -4,6 +4,8 @@
 #include "MoKong/Public/Character/MKPlayer.h"
 
 #include "ATPCCameraComponent.h"
+#include "ATPCCameraLockOnTargetObject.h"
+#include "Character/MokongEnemy.h"
 #include "Component/FootStepSFXComponent.h"
 
 // Sets default values
@@ -23,6 +25,15 @@ AMKPlayer::AMKPlayer()
 void AMKPlayer::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (PlayerCameraComponent)
+	{
+		if (UATPCCameraLockOnTargetObject* LockOnComp = PlayerCameraComponent->GetCameraLockOnTargetObject())
+		{
+			LockOnComp->OnTargetChangeDelegate.AddUniqueDynamic(this, &AMKPlayer::OnLockOnTargetChange);
+		}
+
+	}
 }
 
 void AMKPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -47,6 +58,40 @@ void AMKPlayer::PlayerStateChaneDelegate(EPlayerState NewState)
 	case EPlayerState::Action:
 		break;
 	case EPlayerState::Dead:
+		break;
+	}
+}
+
+void AMKPlayer::OnLockOnTargetChange(AActor* NewTarget, EATPCChangeTargetReason ChangeTargetReason)
+{
+	switch (ChangeTargetReason)
+	{
+	case EATPCChangeTargetReason::SetNew:
+		if (NewTarget)
+		{
+			TargetEnemy = Cast<AMokongEnemy>(NewTarget);
+			if (!TargetEnemy)
+				return;
+			TargetEnemy->ShowLockOnWidget(true);
+		}
+		else
+		{
+			if (TargetEnemy)
+			{
+				TargetEnemy->ShowLockOnWidget(false);
+				TargetEnemy = nullptr;
+			}
+		}
+		break;
+	case EATPCChangeTargetReason::LostByExitCameraMode:
+	case EATPCChangeTargetReason::LostByDistance:
+	case EATPCChangeTargetReason::LostByVisible:
+	case EATPCChangeTargetReason::LostByPlayerInput:
+		if (TargetEnemy)
+		{
+			TargetEnemy->ShowLockOnWidget(false);
+			TargetEnemy = nullptr;
+		}
 		break;
 	}
 }

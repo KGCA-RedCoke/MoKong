@@ -59,14 +59,21 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combat|Startup")
 	bool bUseWeaponActor;
 
+	/** 부착할 소켓 */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combat|Startup", meta=(EditCondition="!bUseWeaponActor"))
+	FName WeaponSocketName;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combat|Startup", meta=(EditCondition="!bUseWeaponActor"))
+	FDataTableRowHandle AttributeDataHandle;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combat|Startup", meta = (EditCondition="bUseWeaponActor"))
+	TMap<EWeaponType, TSubclassOf<AWeaponBase>> WeaponClasses;
+
 	UPROPERTY()
 	USkeletalMeshComponent* AvatarMeshComponent;
 
 	UPROPERTY()
 	TObjectPtr<UMKAbilitySystemComponent> AbilitySystemComponent;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combat|Startup")
-	TMap<EWeaponType, TSubclassOf<AWeaponBase>> WeaponClasses;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combat|State")
 	EWeaponType CurrentWeaponType;
