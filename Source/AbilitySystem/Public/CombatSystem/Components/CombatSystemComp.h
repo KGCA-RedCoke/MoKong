@@ -34,13 +34,11 @@ public:
 	virtual UCombatSystem* GetCombatComponent_Implementation() override;
 	virtual FName          GetSectionName_Implementation() const override;
 	virtual bool           IsNextAttackAvailable_Implementation() const override;
-	virtual bool           IsAttacking_Implementation() const override;
 	virtual bool           IsComboWindowOpen_Implementation() const override;
 	virtual void           SetAttacking_Implementation(const bool Value) override;
 	virtual void           SetNextAttackAvailable_Implementation(const bool Available) override;
 	virtual void           SetComboWindowOpen_Implementation(const bool Open) override;
 	virtual void           SetSectionName_Implementation(const FName& Name) override;
-	virtual AWeaponBase*   GetCurrentWeapon_Implementation() const override;
 	virtual AActor*        GetTargetActor_Implementation() const override;
 	// ~ICombatInterface
 
@@ -57,6 +55,10 @@ public:
 	void SwapWeapon(FName RowName);
 
 protected:
+	/** WeaponBase액터를 이용해서 무기를 부착할거라면 true 메시자체에 무기가 있는경우 false */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combat|Startup")
+	bool bUseWeaponActor;
+
 	UPROPERTY()
 	USkeletalMeshComponent* AvatarMeshComponent;
 

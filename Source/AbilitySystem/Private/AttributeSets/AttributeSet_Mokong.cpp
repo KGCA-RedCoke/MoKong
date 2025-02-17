@@ -29,7 +29,10 @@ void UAttributeSet_Mokong::PostAttributeBaseChange(const FGameplayAttribute& Att
 
 void UAttributeSet_Mokong::ClampAttributes(const FGameplayAttribute& Attribute, float& NewValue) const
 {
-	Super::ClampAttributes(Attribute, NewValue);
+	if (Attribute == GetCurrentFocusAttribute())
+	{
+		NewValue = FMath::Clamp(NewValue, 0.0f, GetTargetFocus());
+	}
 }
 
 void UAttributeSet_Mokong::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
@@ -40,12 +43,30 @@ void UAttributeSet_Mokong::GetLifetimeReplicatedProps(TArray<class FLifetimeProp
 	Params.bIsPushBased = true;
 	Params.Condition    = COND_OwnerOnly;
 
+	DOREPLIFETIME_WITH_PARAMS_FAST(UAttributeSet_Mokong, Level, Params);
+	DOREPLIFETIME_WITH_PARAMS_FAST(UAttributeSet_Mokong, CurrentExp, Params);
+	DOREPLIFETIME_WITH_PARAMS_FAST(UAttributeSet_Mokong, TargetExp, Params);
 	DOREPLIFETIME_WITH_PARAMS_FAST(UAttributeSet_Mokong, Attack, Params);
 	DOREPLIFETIME_WITH_PARAMS_FAST(UAttributeSet_Mokong, Defense, Params);
 	DOREPLIFETIME_WITH_PARAMS_FAST(UAttributeSet_Mokong, CriticalHitChance, Params);
 	DOREPLIFETIME_WITH_PARAMS_FAST(UAttributeSet_Mokong, CriticalHitDamage, Params);
 	DOREPLIFETIME_WITH_PARAMS_FAST(UAttributeSet_Mokong, DamageBonus, Params);
 	DOREPLIFETIME_WITH_PARAMS_FAST(UAttributeSet_Mokong, DamageReduction, Params);
+}
+
+void UAttributeSet_Mokong::OnRep_Level(const FGameplayAttributeData& OldValue)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UAttributeSet_Mokong, Level, OldValue);
+}
+
+void UAttributeSet_Mokong::OnRep_CurrentExp(const FGameplayAttributeData& OldValue)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UAttributeSet_Mokong, CurrentExp, OldValue);
+}
+
+void UAttributeSet_Mokong::OnRep_TargetExp(const FGameplayAttributeData& OldValue)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UAttributeSet_Mokong, TargetExp, OldValue);
 }
 
 void UAttributeSet_Mokong::OnRep_Attack(const FGameplayAttributeData& OldValue)

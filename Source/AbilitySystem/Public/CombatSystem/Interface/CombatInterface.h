@@ -31,16 +31,12 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Combat")
 	UCombatSystem* GetCombatComponent();
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Combat")
-	AWeaponBase* GetCurrentWeapon() const;
+
 	/**
 	 * 이미 입력이 처리되어 다음 콤보공격이 예약되어 있는지 반환
 	 */
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Combat")
 	bool IsNextAttackAvailable() const;
-
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Combat")
-	bool IsAttacking() const;
 
 	/**
 	 * 다음 콤보 입력이 가능한 구간인지 반환
@@ -63,12 +59,23 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Combat")
 	FName GetSectionName() const;
 
+	/**
+	 * 공격하기 전에 사전 정보 처리가 필요하면 여기서 재정의하세요
+	 * @param EffectLevel (GameplayEffect Level)
+	 */
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Combat")
 	void PreAttack(int32 EffectLevel = 1);
 
+	/**
+	 * 공격이 끝나고 처리할 것이 있으면 여기서 재정의하세요
+	 */
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Combat")
 	void PostAttack();
-
+	
+	/**
+	 * 수동으로 콤보공격의 섹션 이름을 설정
+	 * @param Name 몽타주 섹션 이름
+	 */
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Combat")
 	void SetSectionName(const FName& Name);
 

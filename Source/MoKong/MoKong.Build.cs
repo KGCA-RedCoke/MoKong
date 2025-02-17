@@ -15,7 +15,8 @@ public class MoKong : ModuleRules
 			"CoreUObject",
 			"Engine",
 			"InputCore",
-			"EnhancedInput"
+			"EnhancedInput",
+			"AIModule"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[]
@@ -30,7 +31,8 @@ public class MoKong : ModuleRules
 			"SlateCore",
 			"UMG",
 			"MotionWarping",
-			"AdvancedThirdPersonCamera" 
+			"AdvancedThirdPersonCamera",
+			"UISystem"
 		});
 
 		// Uncomment if you are using Slate UI

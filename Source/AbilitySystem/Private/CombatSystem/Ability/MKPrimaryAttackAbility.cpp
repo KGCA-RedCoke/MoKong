@@ -2,6 +2,9 @@
 
 
 #include "CombatSystem/Ability/MKPrimaryAttackAbility.h"
+
+#include "AbilitySystemComponent.h"
+#include "MKGameplayTags.h"
 #include "Abilities/Tasks/AbilityTask_WaitInputPress.h"
 #include "Actor/MKAbilityCharacter.h"
 #include "CombatSystem/Components/CombatSystemComp.h"
@@ -48,13 +51,12 @@ void UMKPrimaryAttackAbility::OnCancelled(FGameplayTag EventTag, FGameplayEventD
 		bShouldEndAbility = true;
 		return;
 	}
-	
+
 	EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, true);
 }
 
 void UMKPrimaryAttackAbility::Do_AttackTask()
 {
-	FName SectionName;
 	CombatSystem->UpdateComboData(CurrentMontage, SectionName, false);
 
 	MontageTask = UAbilityTask_PlayMontageAndWaitForEvent::PlayMontageAndWaitForEvent(
@@ -74,20 +76,35 @@ void UMKPrimaryAttackAbility::Do_AttackTask()
 
 	MontageTask->ReadyForActivation();
 
+	FRotator TargetRotation;
+	TargetRotation.Pitch = AvatarCharacter->GetActorRotation().Pitch;
+	TargetRotation.Roll  = AvatarCharacter->GetActorRotation().Roll;
+
+	// 타게팅 된 액터가 있으면 타겟을 향해 회전
 	if (AActor* Target = CombatSystem->GetTargetActor_Implementation())
 	{
-		FRotator TargetRotation = UKismetMathLibrary::FindLookAtRotation(
-																		 AvatarCharacter->GetActorLocation(),
-																		 Target->GetActorLocation());
-
-		TargetRotation.Pitch = AvatarCharacter->GetActorRotation().Pitch;
-		TargetRotation.Roll  = AvatarCharacter->GetActorRotation().Roll;
+		TargetRotation.Yaw = UKismetMathLibrary::FindLookAtRotation(
+																	AvatarCharacter->GetActorLocation(),
+																	Target->GetActorLocation()).Yaw;
 
 		AvatarCharacter->UpdateMotionWarpingTargetLocationAndRotation(
 																	  "FindTarget",
 																	  AvatarCharacter->GetActorLocation(),
 																	  TargetRotation);
 	}
+	// 아니면 플레이어라면? 플레이어 컨틀롤러 방향으로 회전
+	else if (GetAbilitySystemComponentFromActorInfo()->
+		HasMatchingGameplayTag(MoKong::CharacterTags::TAG_Character_Type_PC))
+	{
+		TargetRotation.Yaw = AvatarCharacter->GetControlRotation().Yaw;
+
+		AvatarCharacter->UpdateMotionWarpingTargetLocationAndRotation(
+																	  "FindTarget",
+																	  AvatarCharacter->GetActorLocation(),
+																	  TargetRotation);
+	}
+
+
 	bShouldEndAbility = true;
 }
 
@@ -95,6 +112,8 @@ void UMKPrimaryAttackAbility::EventReceived(FGameplayTag EventTag, FGameplayEven
 {
 	if (EventTag.MatchesTag(FGameplayTag::RequestGameplayTag("Event.Montage.End")))
 	{
+		AvatarCharacter->PlayAnimMontage(EndMontage.Get(), 1.f, SectionName);
+
 		OnCompleted(EventTag, EventData);
 		return;
 	}
@@ -137,9 +156,10 @@ void UMKPrimaryAttackAbility::ActivateAbility(const FGameplayAbilitySpecHandle  
 	Do_AttackTask();
 }
 
-void UMKPrimaryAttackAbility::EndAbility(const FGameplayAbilitySpecHandle Handle,
-	const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
-	bool bReplicateEndAbility, bool bWasCancelled)
+void UMKPrimaryAttackAbility::EndAbility(const FGameplayAbilitySpecHandle     Handle,
+										 const FGameplayAbilityActorInfo*     ActorInfo,
+										 const FGameplayAbilityActivationInfo ActivationInfo,
+										 bool                                 bReplicateEndAbility, bool bWasCancelled)
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 

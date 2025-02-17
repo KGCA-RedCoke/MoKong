@@ -11,7 +11,7 @@ AMKPlayerState* AMKAbilityPlayerController::GetPTPlayerState() const
 	return CastChecked<AMKPlayerState>(PlayerState, ECastCheckedType::NullAllowed);
 }
 
-UMKAbilitySystemComponent* AMKAbilityPlayerController::GetPTAbilitySystemComponent() const
+UMKAbilitySystemComponent* AMKAbilityPlayerController::GetMKAbilitySystemComponent() const
 {
 	const AMKPlayerState* PS = GetPTPlayerState();
 	return CastChecked<UMKAbilitySystemComponent>(PS->GetAbilitySystemComponent());
@@ -24,7 +24,7 @@ void AMKAbilityPlayerController::PreProcessInput(const float DeltaTime, const bo
 
 void AMKAbilityPlayerController::PostProcessInput(const float DeltaTime, const bool bGamePaused)
 {
-	if (UMKAbilitySystemComponent* ASC = GetPTAbilitySystemComponent())
+	if (UMKAbilitySystemComponent* ASC = GetMKAbilitySystemComponent())
 	{
 		ASC->ProcessAbilityInput(DeltaTime, bGamePaused);
 	}

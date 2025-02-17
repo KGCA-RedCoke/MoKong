@@ -25,6 +25,26 @@ void AMokongEnemy::BeginPlay()
 
 }
 
+float AMokongEnemy::SetMovementSpeed_Implementation(EAIMovementSpeed NewSpeed)
+{
+	return IEnemyAIInterface::SetMovementSpeed_Implementation(NewSpeed);
+}
+
+void AMokongEnemy::GetIdealRange_Implementation(float& OutAttackRange, float& OutDetectRange)
+{
+	IEnemyAIInterface::GetIdealRange_Implementation(OutAttackRange, OutDetectRange);
+}
+
+void AMokongEnemy::OnPlayerSeen_Implementation(AActor* Target)
+{
+	IEnemyAIInterface::OnPlayerSeen_Implementation(Target);
+}
+
+void AMokongEnemy::OnHeardSomething_Implementation(const FVector& Location)
+{
+	IEnemyAIInterface::OnHeardSomething_Implementation(Location);
+}
+
 void AMokongEnemy::ShowLockOnWidget(bool bShow)
 {
 	auto* lockOnWidgetClassWidget = Cast<ULockOnWidget>(LockOnWidgetComponent->GetWidget());

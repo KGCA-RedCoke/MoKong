@@ -18,30 +18,25 @@ AMKAbilityCharacter::AMKAbilityCharacter()
 
 	DeathVfx = CreateDefaultSubobject<UNiagaraComponent>(TEXT("VFX_Death"));
 
-	AvatarMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("AvatarMesh"));
-	AvatarMesh->SetupAttachment(GetMesh());
-	{
-		Head      = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Head"));
-		Helmet    = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Helmet"));
-		UpperBody = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("UpperBody"));
-		LowerBody = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("LowerBody"));
-		Shoes     = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Shoes"));
-		Gloves    = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Gloves"));
+	//~~ Modular Parts
+	Head   = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Head"));
+	Helmet = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Helmet"));
+	Suit   = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Suit"));
+	Shoes  = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Shoes"));
+	Gloves = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Gloves"));
 
-		Head->SetupAttachment(GetAvatarMesh());
-		Helmet->SetupAttachment(GetAvatarMesh());
-		UpperBody->SetupAttachment(GetAvatarMesh());
-		LowerBody->SetupAttachment(GetAvatarMesh());
-		Shoes->SetupAttachment(GetAvatarMesh());
-		Gloves->SetupAttachment(GetAvatarMesh());
+	Head->SetupAttachment(GetMesh());
+	Helmet->SetupAttachment(GetMesh());
+	Suit->SetupAttachment(GetMesh());
+	Shoes->SetupAttachment(GetMesh());
+	Gloves->SetupAttachment(GetMesh());
 
-		Head->SetLeaderPoseComponent(GetAvatarMesh());
-		Helmet->SetLeaderPoseComponent(GetAvatarMesh());
-		UpperBody->SetLeaderPoseComponent(GetAvatarMesh());
-		LowerBody->SetLeaderPoseComponent(GetAvatarMesh());
-		Shoes->SetLeaderPoseComponent(GetAvatarMesh());
-		Gloves->SetLeaderPoseComponent(GetAvatarMesh());
-	}
+	Head->SetLeaderPoseComponent(GetMesh());
+	Helmet->SetLeaderPoseComponent(GetMesh());
+	Suit->SetLeaderPoseComponent(GetMesh());
+	Shoes->SetLeaderPoseComponent(GetMesh());
+	Gloves->SetLeaderPoseComponent(GetMesh());
+	//~~ Modular Parts
 }
 
 void AMKAbilityCharacter::BeginPlay()
@@ -81,11 +76,6 @@ bool AMKAbilityCharacter::IsNextAttackAvailable_Implementation() const
 	return CombatComponent->IsNextAttackAvailable_Implementation();
 }
 
-bool AMKAbilityCharacter::IsAttacking_Implementation() const
-{
-	return CombatComponent->IsAttacking_Implementation();
-}
-
 void AMKAbilityCharacter::SetAttacking_Implementation(const bool Value)
 {
 	CombatComponent->SetAttacking_Implementation(Value);
@@ -114,11 +104,6 @@ void AMKAbilityCharacter::TryComboAttack_Implementation()
 void AMKAbilityCharacter::TrySectionAttack_Implementation()
 {
 	CombatComponent->TrySectionAttack_Implementation();
-}
-
-AWeaponBase* AMKAbilityCharacter::GetCurrentWeapon_Implementation() const
-{
-	return CombatComponent->GetCurrentWeapon_Implementation();
 }
 
 AActor* AMKAbilityCharacter::GetTargetActor_Implementation() const

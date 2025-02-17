@@ -4,6 +4,7 @@
 #include "AbilitySystem/GameplayAbility/MKGameplayAbilityJump.h"
 
 #include "Abilities/Tasks/AbilityTask_WaitInputRelease.h"
+#include "Actor/MKAbilityCharacter.h"
 #include "Component/LocomotionComponent.h"
 #include "GameFramework/Character.h"
 
@@ -11,12 +12,9 @@ void UMKGameplayAbilityJump::OnAvatarSet(const FGameplayAbilityActorInfo* ActorI
 {
 	Super::OnAvatarSet(ActorInfo, Spec);
 
-	if ((CharacterRef = Cast<ACharacter>(GetAvatarActorFromActorInfo())))
-	{
-		CharacterRef->LandedDelegate.AddUniqueDynamic(this, &UMKGameplayAbilityJump::OnCharacterLanded);
-	}
+	AvatarCharacter->LandedDelegate.AddUniqueDynamic(this, &UMKGameplayAbilityJump::OnCharacterLanded);
 
-	LocomotionComponent = CharacterRef->FindComponentByClass<ULocomotionComponent>();
+	LocomotionComponent = AvatarCharacter->FindComponentByClass<ULocomotionComponent>();
 }
 
 bool UMKGameplayAbilityJump::CommitCheck(const FGameplayAbilitySpecHandle     Handle,
@@ -27,7 +25,7 @@ bool UMKGameplayAbilityJump::CommitCheck(const FGameplayAbilitySpecHandle     Ha
 	if (!Super::CommitCheck(Handle, ActorInfo, ActivationInfo, OptionalRelevantTags))
 		return false;
 
-	return LocomotionComponent.Get() && CharacterRef->CanJump();
+	return LocomotionComponent.Get() && AvatarCharacter->CanJump();
 }
 
 void UMKGameplayAbilityJump::ActivateAbility(const FGameplayAbilitySpecHandle     Handle,

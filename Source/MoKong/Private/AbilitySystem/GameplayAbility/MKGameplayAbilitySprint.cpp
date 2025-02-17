@@ -5,6 +5,7 @@
 
 #include "AbilitySystemComponent.h"
 #include "Abilities/Tasks/AbilityTask_WaitInputRelease.h"
+#include "Actor/MKAbilityCharacter.h"
 #include "AttributeSets/AttributeSet_Stamina.h"
 #include "Component/LocomotionComponent.h"
 #include "GameFramework/Character.h"
@@ -13,8 +14,7 @@ void UMKGameplayAbilitySprint::OnAvatarSet(const FGameplayAbilityActorInfo* Acto
 {
 	Super::OnAvatarSet(ActorInfo, Spec);
 
-	CharacterRef        = Cast<ACharacter>(GetAvatarActorFromActorInfo());
-	LocomotionComponent = CharacterRef->FindComponentByClass<ULocomotionComponent>();
+	LocomotionComponent = AvatarCharacter->FindComponentByClass<ULocomotionComponent>();
 
 	GetAbilitySystemComponentFromActorInfo()->
 			GetGameplayAttributeValueChangeDelegate(UAttributeSet_Stamina::GetCurrentStaminaAttribute())

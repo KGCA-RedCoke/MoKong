@@ -24,7 +24,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAbilityCharacterDieDelegate);
  * 추상 클래스로 사용하며, 이 클래스를 상속받아서 구현해야 한다.
  */
 UCLASS(Abstract, NotBlueprintable)
-class ABILITYSYSTEM_API AMKAbilityCharacter : public ACharacter, public IAbilitySystemInterface, public ICombatInterface
+class ABILITYSYSTEM_API AMKAbilityCharacter : public ACharacter,
+											  public IAbilitySystemInterface,
+											  public ICombatInterface
 {
 	GENERATED_BODY()
 
@@ -35,8 +37,6 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
-	USkeletalMeshComponent* GetAvatarMesh() const { return AvatarMesh.Get(); }
-
 	UFUNCTION(BlueprintImplementableEvent)
 	void PostInitializeAbilitySystem();
 
@@ -58,14 +58,12 @@ public:
 	virtual FName          GetSectionName_Implementation() const override;
 	virtual bool           IsComboWindowOpen_Implementation() const override;
 	virtual bool           IsNextAttackAvailable_Implementation() const override;
-	virtual bool           IsAttacking_Implementation() const override;
 	virtual void           SetAttacking_Implementation(const bool Value) override;
 	virtual void           SetComboWindowOpen_Implementation(const bool Open) override;
 	virtual void           SetNextAttackAvailable_Implementation(const bool Available) override;
 	virtual void           SetSectionName_Implementation(const FName& Name) override;
 	virtual void           TryComboAttack_Implementation() override;
 	virtual void           TrySectionAttack_Implementation() override;
-	virtual AWeaponBase*   GetCurrentWeapon_Implementation() const override;
 	virtual AActor*        GetTargetActor_Implementation() const override;
 
 	virtual void PreAttack_Implementation(int32 EffectLevel) override;
@@ -102,15 +100,10 @@ protected:
 	UPROPERTY(BlueprintReadWrite, meta=(AllowPrivateAccess = "true"))
 	UMotionWarpingComponent* MotionWarpingComponent;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Modular")
-	TObjectPtr<USkeletalMeshComponent> AvatarMesh;
-
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Modular|Parts")
 	TObjectPtr<USkeletalMeshComponent> Helmet;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Modular|Parts")
-	TObjectPtr<USkeletalMeshComponent> UpperBody;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Modular|Parts")
-	TObjectPtr<USkeletalMeshComponent> LowerBody;
+	TObjectPtr<USkeletalMeshComponent> Suit;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Modular|Parts")
 	TObjectPtr<USkeletalMeshComponent> Shoes;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Modular|Parts")

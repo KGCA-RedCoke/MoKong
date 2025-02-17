@@ -3,9 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GenericTeamAgentInterface.h"
 #include "MoKongTypes.h"
 #include "AbilitySystem/Public/Actor/MKAbilityPlayer.h"
-#include "CombatSystem/Interface/CombatInterface.h"
+#include "AI/Interface/EnemyAIInterface.h"
 #include "MKPlayer.generated.h"
 
 class UATPCCameraComponent;
@@ -17,7 +18,7 @@ class UFootStepSFXComponent;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerStateChanged, EPlayerState, NewState);
 
 UCLASS(Blueprintable)
-class MOKONG_API AMKPlayer : public AMKAbilityPlayer
+class MOKONG_API AMKPlayer : public AMKAbilityPlayer, public IGenericTeamAgentInterface
 {
 	GENERATED_BODY()
 
@@ -33,6 +34,11 @@ public:
 private:
 	UFUNCTION()
 	void PlayerStateChaneDelegate(EPlayerState NewState);
+
+public:
+	//~~ IGenericTeamAgentInterface Begin ~~//
+	virtual FGenericTeamId GetGenericTeamId() const override { return FGenericTeamId(static_cast<uint8>(TeamID)); }
+	//~~ IGenericTeamAgentInterface End ~~//
 
 public:
 	UPROPERTY(BlueprintAssignable)
@@ -58,4 +64,7 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowprivateAccess = "true"), DisplayName = "카메라")
 	TObjectPtr<UATPCCameraComponent> PlayerCameraComponent;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player|Setup", DisplayName = "팀", meta = (AllowprivateAccess = "true"))
+	ETeamType TeamID;
 };

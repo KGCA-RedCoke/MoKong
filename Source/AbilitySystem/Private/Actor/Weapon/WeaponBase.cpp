@@ -28,10 +28,13 @@ AWeaponBase::AWeaponBase()
 
 void AWeaponBase::OnHitActorAdded(FHitResult LastItem)
 {
-	EffectContext.AddHitResult(LastItem);
 
-	UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(LastItem.GetActor())->
-			ApplyGameplayEffectSpecToSelf(*DamageEffectSpecHandle.Data.Get());
+	if (UAbilitySystemComponent* AbilitySystemComponent =
+			UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(LastItem.GetActor()))
+	{
+		EffectContext.AddHitResult(LastItem);
+		AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*DamageEffectSpecHandle.Data.Get());
+	}
 }
 
 

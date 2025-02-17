@@ -67,7 +67,7 @@ struct FSkillTreeWidgetData
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SkillTree", DisplayName= "스킬 설명")
 	FText Description;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "SkillTree", DisplayName= "아이콘")
-	UTexture2D* Icon;
+	UTexture2D* Icon = nullptr;
 
 };
 

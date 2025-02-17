@@ -1200,6 +1200,11 @@ void ULocomotionComponent::HandleHighProfileAction(const bool bAction, const flo
 						   (DesiredGaitProfile == EActionProfile::Mid && bAction)
 							   ? EActionProfile::High
 							   : EActionProfile::Mid);
+
+			if (DesiredGaitProfile == EActionProfile::High)
+			{
+				SetPose(EPose::Neutral);
+			}
 		}
 		else if (CurrentMovementType == EMovementType::Swim)
 		{

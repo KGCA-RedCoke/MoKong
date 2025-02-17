@@ -35,6 +35,5 @@ public:
 	void OnReleaseJump(float TimeHeld);
 
 private:
-	TObjectPtr<ACharacter>           CharacterRef;
 	TObjectPtr<ULocomotionComponent> LocomotionComponent;
 };

@@ -13,6 +13,9 @@
  * Contents:
  *
  *	-------------------- Attributes --------------------
+ * Level - 레벨
+ * CurrentExp - 현재 경험치
+ * TargetExp - 목표 경험치
  * Attack - 공격력
  * Defense - 방어력
  * CriticalHitChance - 치명타 확률 
@@ -38,6 +41,20 @@ public:
 
 	virtual void ClampAttributes(const FGameplayAttribute& Attribute, float& NewValue) const override;
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
+
+	UPROPERTY(BlueprintReadOnly, meta = (HideFromLevelInfos), ReplicatedUsing = OnRep_Level)
+	FGameplayAttributeData Level;
+	ATTRIBUTE_ACCESSORS(UAttributeSet_Mokong, Level)
+
+	// 경험치
+	UPROPERTY(BlueprintReadOnly, meta = (HideFromLevelInfos), ReplicatedUsing = OnRep_CurrentExp)
+	FGameplayAttributeData CurrentExp;
+	ATTRIBUTE_ACCESSORS(UAttributeSet_Mokong, CurrentExp)
+
+	// 목표 경험치
+	UPROPERTY(BlueprintReadOnly, meta = (HideFromLevelInfos), ReplicatedUsing = OnRep_TargetExp)
+	FGameplayAttributeData TargetExp;
+	ATTRIBUTE_ACCESSORS(UAttributeSet_Mokong, TargetExp)
 
 	/** 공격력 */
 	UPROPERTY(BlueprintReadOnly, meta = (HideFromLevelInfos), ReplicatedUsing = OnRep_Attack)
@@ -79,6 +96,15 @@ public:
 	ATTRIBUTE_ACCESSORS(UAttributeSet_Mokong, CurrentFocus)
 
 protected:
+	UFUNCTION()
+	virtual void OnRep_Level(const FGameplayAttributeData& OldValue);
+
+	UFUNCTION()
+	virtual void OnRep_CurrentExp(const FGameplayAttributeData& OldValue);
+
+	UFUNCTION()
+	virtual void OnRep_TargetExp(const FGameplayAttributeData& OldValue);
+
 	UFUNCTION()
 	virtual void OnRep_Attack(const FGameplayAttributeData& OldValue);
 

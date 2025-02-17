@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "MKAbilityPlayerController.generated.h"
 
+class AMKPlayerState;
 class UMKAbilitySystemComponent;
 /**
  * 
@@ -20,7 +21,7 @@ public:
 	AMKPlayerState* GetPTPlayerState() const;
 
 	UFUNCTION(BlueprintCallable, Category = "InputSystem|ISAbilitySystemComponent")
-	UMKAbilitySystemComponent* GetPTAbilitySystemComponent() const;
+	UMKAbilitySystemComponent* GetMKAbilitySystemComponent() const;
 
 protected:
 	virtual void PreProcessInput(const float DeltaTime, const bool bGamePaused) override;

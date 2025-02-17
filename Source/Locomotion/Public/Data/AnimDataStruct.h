@@ -215,19 +215,19 @@ struct FCharacterData
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	ACharacter* Character;
+	ACharacter* Character = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UCapsuleComponent* CapsuleCollision;
+	UCapsuleComponent* CapsuleCollision = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	USkeletalMeshComponent* SkeletalMeshComponent;
+	USkeletalMeshComponent* SkeletalMeshComponent = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UAnimInstance* AnimationInstance;
+	UAnimInstance* AnimationInstance = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UCharacterMovementComponent* MovementComponent;
+	UCharacterMovementComponent* MovementComponent = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector2D DefaultCapsuleSize = {0.f, 0.f};
@@ -309,7 +309,7 @@ struct FIdleSet
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UAnimSequence* Idle;
+	UAnimSequence* Idle = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float CustomFrame = 0.f;
@@ -339,7 +339,7 @@ struct FTurnInPlaceData
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UAnimSequence* Sequence;
+	UAnimSequence* Sequence = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float TargetRotation = 0.f;
@@ -416,7 +416,7 @@ struct FParkourAnim
 	bool bEnabled = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UAnimMontage* MontageToPlay;
+	UAnimMontage* MontageToPlay = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FMotionWarpingSetup> MotionWarpingSetups;
@@ -449,5 +449,5 @@ struct FComponentWithTransform
 	FTransform Transform;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UPrimitiveComponent* Component;
+	UPrimitiveComponent* Component = nullptr;
 };

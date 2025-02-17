@@ -35,7 +35,6 @@ public:
 	void OnReleaseInput(float TimeHeld);
 
 private:
-	TObjectPtr<ACharacter>           CharacterRef;
 	TObjectPtr<ULocomotionComponent> LocomotionComponent;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Sprint|Effect")

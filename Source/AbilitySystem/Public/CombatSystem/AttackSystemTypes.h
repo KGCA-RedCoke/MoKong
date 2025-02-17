@@ -119,17 +119,17 @@ struct FWeaponAttributeData : public FTableRowBase
 	TObjectPtr<USkeletalMesh> ScabbardSkeletalMesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, DisplayName = "희귀도")
-	EWeaponRarity Rarity;
+	EWeaponRarity Rarity = EWeaponRarity::Common;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, DisplayName = "공격")
-	int AttackPower;
+	int AttackPower = 1.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, DisplayName = "치명타율")
-	float CriticalRate;
+	float CriticalRate = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, DisplayName = "빙결 저항")
-	float FreezeResistance;
+	float FreezeResistance = 0.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, DisplayName = "연소 저항")
-	float FireResistance;
+	float FireResistance = 0.f;
 };

@@ -34,10 +34,12 @@ public:
 	UFUNCTION()
 	void OnInputPressed(float TimeWaited);
 
-	virtual void ActivateAbility(const FGameplayAbilitySpecHandle     Handle, const FGameplayAbilityActorInfo* ActorInfo,
+	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
 								 const FGameplayAbilityActivationInfo ActivationInfo,
-								 const FGameplayEventData*            TriggerEventData) override;
-	virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
+								 const FGameplayEventData* TriggerEventData) override;
+	virtual void EndAbility(const FGameplayAbilitySpecHandle     Handle, const FGameplayAbilityActorInfo* ActorInfo,
+							const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility,
+							bool                                 bWasCancelled) override;
 
 	void Do_AttackTask();
 
@@ -47,5 +49,10 @@ private:
 
 	bool bShouldEndAbility = false;
 
+	FName SectionName;
+
 	TObjectPtr<UAbilityTask_PlayMontageAndWaitForEvent> MontageTask;
+
+	UPROPERTY(EditAnywhere, Category = "Montage")
+	TObjectPtr<UAnimMontage> EndMontage;
 };

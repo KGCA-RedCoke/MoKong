@@ -86,11 +86,6 @@ bool UCombatSystem::IsNextAttackAvailable_Implementation() const
 	return bReadyToNextAttack;
 }
 
-bool UCombatSystem::IsAttacking_Implementation() const
-{
-	return bAttacking;
-}
-
 bool UCombatSystem::IsComboWindowOpen_Implementation() const
 {
 	return bComboWindowOpened;
@@ -114,11 +109,6 @@ void UCombatSystem::SetComboWindowOpen_Implementation(const bool Open)
 void UCombatSystem::SetSectionName_Implementation(const FName& Name)
 {
 	CurrentSectionName = Name;
-}
-
-AWeaponBase* UCombatSystem::GetCurrentWeapon_Implementation() const
-{
-	return CurrentWeapon.Get();
 }
 
 AActor* UCombatSystem::GetTargetActor_Implementation() const

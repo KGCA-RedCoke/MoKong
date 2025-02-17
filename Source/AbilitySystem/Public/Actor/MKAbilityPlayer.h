@@ -9,7 +9,8 @@
 class UMKInputConfig;
 
 UCLASS(Blueprintable)
-class ABILITYSYSTEM_API AMKAbilityPlayer : public AMKAbilityCharacter
+class ABILITYSYSTEM_API AMKAbilityPlayer :
+		public AMKAbilityCharacter
 {
 	GENERATED_BODY()
 
