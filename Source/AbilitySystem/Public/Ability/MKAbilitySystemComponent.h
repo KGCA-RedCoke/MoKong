@@ -52,7 +52,7 @@ public:
 	void InitializeAbilitySystemData(const FAbilitySystemInitializationData& AbilitySystemInitializationData,
 									 AActor*                                 InOwningActor, AActor* InAvatarActor);
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void TryActivateAbilityByName(FName AbilityName);
 
 	const UAttributeSet* GetOrCreateAttributeSet(const TSubclassOf<UAttributeSet>& InAttributeSet);
@@ -75,7 +75,7 @@ public:
 	virtual void ReceiveDamage(UMKAbilitySystemComponent* SourceASC, float UnmitigatedDamage, float MitigatedDamage);
 
 	void AddSpecHandle(FName AbilityName, const FGameplayAbilitySpecHandle& Handle);
-	
+
 	bool bStartupEffectsApplied;
 	bool AbilitySystemDataInitialized;
 
