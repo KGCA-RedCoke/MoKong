@@ -101,9 +101,9 @@ void AMKAbilityCharacter::TryComboAttack_Implementation()
 	CombatComponent->TryComboAttack_Implementation();
 }
 
-void AMKAbilityCharacter::TrySectionAttack_Implementation()
+void AMKAbilityCharacter::TrySectionAttack_Implementation(FName SectionName)
 {
-	CombatComponent->TrySectionAttack_Implementation();
+	CombatComponent->TrySectionAttack_Implementation(SectionName);
 }
 
 AActor* AMKAbilityCharacter::GetTargetActor_Implementation() const

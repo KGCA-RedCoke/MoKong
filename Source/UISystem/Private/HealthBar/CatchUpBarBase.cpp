@@ -16,6 +16,40 @@ void UCatchUpBarBase::NativeConstruct()
 	CatchupProgressBar->SetFillColorAndOpacity(CatchupColor);
 }
 
+void UCatchUpBarBase::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+{
+	Super::NativeTick(MyGeometry, InDeltaTime);
+
+	switch (State)
+	{
+	case ECatchupBarState::Paused:
+		break;
+	case ECatchupBarState::CatchingUp:
+		SetCatchupPercent(CatchupPercent - CatchupSpeed * InDeltaTime);
+		break;
+	case ECatchupBarState::Caught:
+		if (MainPercent < CatchupPercent)
+		{
+			State = ECatchupBarState::Paused;
+
+			GetWorld()->GetTimerManager().SetTimer(
+												   WaitingTimerHandle,
+												   this,
+												   &UCatchUpBarBase::StartCatchingUp,
+												   CatchupWaitTime,
+												   false);
+		}
+		break;
+	}
+
+	if (CatchupPercent <= MainPercent)
+	{
+		SetCatchupPercent(MainPercent);
+		State = ECatchupBarState::Caught;
+		GetWorld()->GetTimerManager().ClearTimer(WaitingTimerHandle);
+	}
+}
+
 void UCatchUpBarBase::InitializeCatchupValues(float InCurrentValue, float InMaxValue)
 {
 	// SetMaxValue(InMaxValue);

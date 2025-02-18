@@ -51,9 +51,9 @@ void UCombatSystem::TryComboAttack_Implementation()
 	AbilitySystemComponent->TryActivateAbilityByName("PrimaryAttack");
 }
 
-void UCombatSystem::TrySectionAttack_Implementation()
+void UCombatSystem::TrySectionAttack_Implementation(FName SectionName)
 {
-	ICombatInterface::TrySectionAttack_Implementation();
+	ICombatInterface::TrySectionAttack_Implementation(SectionName);
 }
 
 void UCombatSystem::PreAttack_Implementation(int32 EffectLevel)

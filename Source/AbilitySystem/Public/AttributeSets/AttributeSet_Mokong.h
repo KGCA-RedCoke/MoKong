@@ -16,6 +16,7 @@
  * Level - 레벨
  * CurrentExp - 현재 경험치
  * TargetExp - 목표 경험치
+ * Gourd  - 박(호리병)
  * Attack - 공격력
  * Defense - 방어력
  * CriticalHitChance - 치명타 확률 

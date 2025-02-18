@@ -26,7 +26,7 @@ public:
 
 	// ICombatInterface
 	virtual void TryComboAttack_Implementation() override;
-	virtual void TrySectionAttack_Implementation() override;
+	virtual void TrySectionAttack_Implementation(FName SectionName) override;
 
 	virtual void PreAttack_Implementation(int32 EffectLevel) override;
 	virtual void PostAttack_Implementation() override;

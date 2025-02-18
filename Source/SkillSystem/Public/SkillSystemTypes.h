@@ -9,19 +9,19 @@
 UENUM(BlueprintType, DisplayName = "스킬 타입")
 enum class ESkillType : uint8
 {
-	Abilities,	// 능력
-	Spells		// 신통력
+	Abilities UMETA(DisplayName = "능력"),	// 능력
+	Spells UMETA(DisplayName = "신통력")		// 신통력
 };
 
 UENUM(BlueprintType)
 enum class ESkillTreeType : uint8
 {
 	Foundation,		// 근기
-	StaffStances,	// 봉술
-	Mysticism,		// 묘술
-	Alteration,		// 체술
-	Strands,		// 잔털
-	Transformations,// 변신
+	StaffStances UMETA(DisplayName = "봉술"),	// 봉술
+	Mysticism UMETA(DisplayName = "묘술"),		// 묘술
+	Alteration UMETA(DisplayName = "체술"),		// 체술
+	Strands UMETA(DisplayName = "잔털"),		// 잔털
+	Transformations UMETA(DisplayName = "변신") // 변신
 };
 
 USTRUCT(BlueprintType)

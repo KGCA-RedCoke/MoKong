@@ -66,6 +66,8 @@ namespace MoKong
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Resistance_Ignore_Bleeding,
 									   "Resistance.Ignore.Bleeding",
 									   "Ignore Resistance to Bleeding. Will increase bleeding with the source value.")
+
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Debuff_Immobile, "Debuff.Immobile", "Immobile Target")
 	}
 
 	namespace Action
@@ -86,5 +88,12 @@ namespace MoKong
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Input_Dodge, "Input.Dodge", "회피 행동으로 매핑")
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Input_Sprint, "Input.Sprint", "달리기 행동으로 매핑")
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Input_Jump, "Input.Jump", "점프 행동으로 매핑")
+
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Input_SkillSlot1, "Input.SkillSlot1", "스킬 슬롯 1로 매핑")
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Input_SkillSlot2, "Input.SkillSlot2", "스킬 슬롯 2로 매핑")
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Input_SkillSlot3, "Input.SkillSlot3", "스킬 슬롯 3로 매핑")
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Input_SkillSlot4, "Input.SkillSlot4", "스킬 슬롯 4로 매핑")
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Input_Transformation, "Input.Transformation", "변신 행동으로 매핑");
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Input_DrinkGourd, "Input.DrinkGourd", "표주박 먹기 행동으로 매핑");
 	}
 }

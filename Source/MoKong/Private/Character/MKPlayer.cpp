@@ -6,6 +6,7 @@
 #include "ATPCCameraComponent.h"
 #include "ATPCCameraLockOnTargetObject.h"
 #include "Character/MokongEnemy.h"
+#include "CombatSystem/Components/CombatSystemComp.h"
 #include "Component/FootStepSFXComponent.h"
 
 // Sets default values
@@ -73,6 +74,7 @@ void AMKPlayer::OnLockOnTargetChange(AActor* NewTarget, EATPCChangeTargetReason 
 			if (!TargetEnemy)
 				return;
 			TargetEnemy->ShowLockOnWidget(true);
+			CombatComponent->SetTargetActor(NewTarget);
 		}
 		else
 		{
@@ -80,6 +82,7 @@ void AMKPlayer::OnLockOnTargetChange(AActor* NewTarget, EATPCChangeTargetReason 
 			{
 				TargetEnemy->ShowLockOnWidget(false);
 				TargetEnemy = nullptr;
+				CombatComponent->SetTargetActor(nullptr);
 			}
 		}
 		break;
@@ -91,6 +94,7 @@ void AMKPlayer::OnLockOnTargetChange(AActor* NewTarget, EATPCChangeTargetReason 
 		{
 			TargetEnemy->ShowLockOnWidget(false);
 			TargetEnemy = nullptr;
+			CombatComponent->SetTargetActor(nullptr);
 		}
 		break;
 	}

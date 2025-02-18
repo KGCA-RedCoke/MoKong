@@ -32,6 +32,7 @@ class UISYSTEM_API UCatchUpBarBase : public UUserWidget
 
 public:
 	virtual void NativeConstruct() override;
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
 public:
 	UFUNCTION(BlueprintCallable)
@@ -86,16 +87,16 @@ protected:
 	float MaxValue;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "CatchupBar")
-	float MainPercent = 0.f;
+	float MainPercent = 1.f;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "CatchupBar")
-	float CatchupPercent = 0.f;
+	float CatchupPercent = 1.f;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "CatchupBar")
 	FTimerHandle WaitingTimerHandle;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "CatchupBar")
-	float CatchupWaitTime;
+	float CatchupWaitTime = .5f;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "CatchupBar")
 	float CatchupSpeed;

@@ -27,7 +27,7 @@ public:
 	void TryComboAttack();
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Combat")
-	void TrySectionAttack();
+	void TrySectionAttack(FName SectionName);
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Combat")
 	UCombatSystem* GetCombatComponent();

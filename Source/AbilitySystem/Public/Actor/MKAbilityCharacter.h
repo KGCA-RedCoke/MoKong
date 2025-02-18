@@ -63,7 +63,7 @@ public:
 	virtual void           SetNextAttackAvailable_Implementation(const bool Available) override;
 	virtual void           SetSectionName_Implementation(const FName& Name) override;
 	virtual void           TryComboAttack_Implementation() override;
-	virtual void           TrySectionAttack_Implementation() override;
+	virtual void           TrySectionAttack_Implementation(FName SectionName) override;
 	virtual AActor*        GetTargetActor_Implementation() const override;
 
 	virtual void PreAttack_Implementation(int32 EffectLevel) override;

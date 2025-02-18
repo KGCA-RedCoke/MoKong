@@ -174,7 +174,7 @@ bool UPlayerHUDWidget::InitializeAbilitySystemWidget(UAbilitySystemComponent* In
 			const float CurrentFocus = AbilitySystemComponent->
 					GetNumericAttribute(UAttributeSet_Mokong::GetCurrentFocusAttribute());
 
-			On_MaximumFocusChanged(MaxFocus, 0.0f, CurrentFocus / MaxFocus);
+			On_MaximumFocusChanged(MaxFocus, 0.0f);
 			On_CurrentFocusChanged(CurrentFocus, 0.0f, CurrentFocus / MaxFocus);
 		}
 	}
@@ -280,7 +280,7 @@ void UPlayerHUDWidget::MaximumFocusChanged(const FOnAttributeChangeData& Data)
 	const float CurrentFocus = AbilitySystemComponent->
 			GetNumericAttribute(UAttributeSet_Mokong::GetCurrentFocusAttribute());
 
-	On_MaximumFocusChanged(Data.NewValue, Data.OldValue, Data.NewValue > 0.f ? CurrentFocus / Data.NewValue : 0.f);
+	On_MaximumFocusChanged(Data.NewValue, Data.OldValue);
 }
 
 void UPlayerHUDWidget::CurrentManaChanged(const FOnAttributeChangeData& Data)
