@@ -77,7 +77,7 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Ability System")
 	void On_MaximumManaChanged(const float NewValue, const float OldValue, const float NewPercentage);
 	UFUNCTION(BlueprintImplementableEvent, Category = "Ability System")
-	void On_MaximumFocusChanged(const float NewValue, const float OldValue);
+	void On_MaximumFocusChanged(const int32 NewValue, const int32 OldValue);
 
 	// Event called when the Current Health attribute value changes.
 	UFUNCTION(BlueprintImplementableEvent, Category = "Ability System")
@@ -104,6 +104,9 @@ public:
 	// Event called when the Bleeding attribute value changes.
 	UFUNCTION(BlueprintImplementableEvent, Category = "Ability System")
 	void On_BleedingChanged(const float NewValue, const float NewHealPerSecond, const float NewRemainingDuration);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Ability System")
+	void On_FocusFull(const int32 NewCharge);
 
 protected:
 	TWeakObjectPtr<UMKAbilitySystemComponent> AbilitySystemComponent;

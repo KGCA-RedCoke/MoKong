@@ -174,7 +174,7 @@ bool UPlayerHUDWidget::InitializeAbilitySystemWidget(UAbilitySystemComponent* In
 			const float CurrentFocus = AbilitySystemComponent->
 					GetNumericAttribute(UAttributeSet_Mokong::GetCurrentFocusAttribute());
 
-			On_MaximumFocusChanged(MaxFocus, 0.0f);
+			On_MaximumFocusChanged(MaxFocus * 0.01f, 0.0f);
 			On_CurrentFocusChanged(CurrentFocus, 0.0f, CurrentFocus / MaxFocus);
 		}
 	}
@@ -277,10 +277,11 @@ void UPlayerHUDWidget::MaximumFocusChanged(const FOnAttributeChangeData& Data)
 	{
 		return;
 	}
-	const float CurrentFocus = AbilitySystemComponent->
-			GetNumericAttribute(UAttributeSet_Mokong::GetCurrentFocusAttribute());
 
-	On_MaximumFocusChanged(Data.NewValue, Data.OldValue);
+	const float NewFocus = Data.NewValue * 0.01f;
+	const float OldFocus = Data.OldValue * 0.01f;
+
+	On_MaximumFocusChanged(NewFocus, OldFocus);
 }
 
 void UPlayerHUDWidget::CurrentManaChanged(const FOnAttributeChangeData& Data)
@@ -300,9 +301,16 @@ void UPlayerHUDWidget::CurrentFocusChanged(const FOnAttributeChangeData& Data)
 	{
 		return;
 	}
-	const float MaxFocus = AbilitySystemComponent->GetNumericAttribute(UAttributeSet_Mokong::GetTargetFocusAttribute());
 
-	On_CurrentFocusChanged(Data.NewValue, Data.OldValue, MaxFocus > 0.f ? Data.NewValue / MaxFocus : 0.f);
+	const float CurrentFocusChargeRate = FMath::Modulo(Data.NewValue, 100.f) + 1;
+	const float NewPercent             = CurrentFocusChargeRate * 0.01f;
+
+	On_CurrentFocusChanged(Data.NewValue, Data.OldValue, NewPercent);
+
+	if (FMath::IsNearlyEqual(NewPercent, 1.f))
+	{
+		On_FocusFull(FMath::DivideAndRoundUp(Data.NewValue, 100.f));
+	}
 }
 
 void UPlayerHUDWidget::BleedingChanged(const FOnAttributeChangeData& Data)
