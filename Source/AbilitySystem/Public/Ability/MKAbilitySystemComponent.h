@@ -17,11 +17,11 @@ enum class EASEffectEventType : uint8
 	Removed
 };
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGameplayEffectEventDelegate,
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnGameplayEffectChangeDelegate,
+											 const EASEffectEventType,
+											 EventType,
 											 const FActiveGameplayEffect&,
-											 Effect,
-											 EASEffectEventType,
-											 EventType);
+											 Effect);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FReceivedDamageDelegate,
 											   UMKAbilitySystemComponent*,
@@ -102,5 +102,5 @@ protected:
 	TMap<FName, FGameplayAbilitySpecHandle> AbilityHandles;
 
 public:
-	FOnGameplayEffectEventDelegate OnMKGameplayEffectEventDelegate;
+	FOnGameplayEffectChangeDelegate OnMKGameplayEffectEventDelegate;
 };

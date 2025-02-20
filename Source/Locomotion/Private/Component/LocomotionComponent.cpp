@@ -608,6 +608,11 @@ FVector ULocomotionComponent::SafeDivideVector(const FVector& InVector, const fl
 void ULocomotionComponent::SetDesiredGait(const EActionProfile TargetGaitProfile)
 {
 	DesiredGaitProfile = TargetGaitProfile;
+
+	if (DesiredGaitProfile == EActionProfile::High)
+	{
+		SetPose(EPose::Neutral);
+	}
 }
 
 void ULocomotionComponent::SetRotationMode(const ERotationMode TargetRotationMode)
@@ -1201,10 +1206,7 @@ void ULocomotionComponent::HandleHighProfileAction(const bool bAction, const flo
 							   ? EActionProfile::High
 							   : EActionProfile::Mid);
 
-			if (DesiredGaitProfile == EActionProfile::High)
-			{
-				SetPose(EPose::Neutral);
-			}
+
 		}
 		else if (CurrentMovementType == EMovementType::Swim)
 		{

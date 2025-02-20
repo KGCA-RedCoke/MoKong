@@ -66,7 +66,7 @@ public:
 	virtual void           TrySectionAttack_Implementation(FName SectionName) override;
 	virtual AActor*        GetTargetActor_Implementation() const override;
 
-	virtual void PreAttack_Implementation(int32 EffectLevel) override;
+	virtual void PreAttack_Implementation(float EffectLevel) override;
 	virtual void PostAttack_Implementation() override;
 	//~~ ICombatInterface End
 

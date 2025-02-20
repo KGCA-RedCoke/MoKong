@@ -28,7 +28,7 @@ public:
 	virtual void TryComboAttack_Implementation() override;
 	virtual void TrySectionAttack_Implementation(FName SectionName) override;
 
-	virtual void PreAttack_Implementation(int32 EffectLevel) override;
+	virtual void PreAttack_Implementation(float EffectLevel) override;
 	virtual void PostAttack_Implementation() override;
 
 	virtual UCombatSystem* GetCombatComponent_Implementation() override;

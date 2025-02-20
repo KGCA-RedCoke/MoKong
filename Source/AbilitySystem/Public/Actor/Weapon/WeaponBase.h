@@ -8,6 +8,7 @@
 #include "GameFramework/Actor.h"
 #include "WeaponBase.generated.h"
 
+class UMKAbilitySystemComponent;
 class UGameplayEffect;
 class UWeaponDataAsset;
 class UDidItHitActorComponent;
@@ -87,4 +88,11 @@ public:
 
 	UPROPERTY(BlueprintReadWrite)
 	FGameplayEffectContextHandle EffectContext;
+
+	UPROPERTY(BlueprintReadWrite)
+	float EffectLevel;
+
+private:
+	UPROPERTY()
+	TObjectPtr<UMKAbilitySystemComponent> AbilitySystemComponent;
 };

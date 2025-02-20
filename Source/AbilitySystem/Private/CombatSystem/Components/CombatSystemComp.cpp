@@ -39,9 +39,7 @@ void UCombatSystem::InitializeCombatSystem(USkeletalMeshComponent* InAvatarMeshC
 		check(CurrentWeapon);
 	}
 	else
-	{
-		
-	}
+	{}
 
 
 }
@@ -56,18 +54,12 @@ void UCombatSystem::TrySectionAttack_Implementation(FName SectionName)
 	ICombatInterface::TrySectionAttack_Implementation(SectionName);
 }
 
-void UCombatSystem::PreAttack_Implementation(int32 EffectLevel)
+void UCombatSystem::PreAttack_Implementation(float EffectLevel)
 {
 	if (CurrentWeapon)
 	{
-		CurrentWeapon->EffectContext = AbilitySystemComponent->MakeEffectContext();
-
-		CurrentWeapon->DamageEffectSpecHandle = AbilitySystemComponent->MakeOutgoingSpec(CurrentWeapon->
-				 DamageGameplayEffect,
-				 EffectLevel,
-				 CurrentWeapon->EffectContext);
-
 		CurrentWeapon->PreAttack();
+		CurrentWeapon->EffectLevel = EffectLevel;
 	}
 
 }

@@ -7,6 +7,7 @@
 #include "AbilitySystemGlobals.h"
 #include "DidItHitActorComponent.h"
 #include "MKAbilitySystemBlueprintLibrary.h"
+#include "Ability/MKAbilitySystemComponent.h"
 #include "CombatSystem/WeaponDataAsset.h"
 
 
@@ -29,11 +30,17 @@ AWeaponBase::AWeaponBase()
 void AWeaponBase::OnHitActorAdded(FHitResult LastItem)
 {
 
-	if (UAbilitySystemComponent* AbilitySystemComponent =
-			UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(LastItem.GetActor()))
+	if (auto* TargetAbility = UMKAbilitySystemComponent::GetAbilitySystemComponentFromActor(LastItem.GetActor()))
 	{
+		EffectContext = AbilitySystemComponent->MakeEffectContext();
+
+		DamageEffectSpecHandle = AbilitySystemComponent->MakeOutgoingSpec(
+																		  DamageGameplayEffect,
+																		  EffectLevel,
+																		  EffectContext);
+
 		EffectContext.AddHitResult(LastItem);
-		AbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*DamageEffectSpecHandle.Data.Get());
+		TargetAbility->ApplyGameplayEffectSpecToSelf(*DamageEffectSpecHandle.Data.Get());
 	}
 }
 
@@ -60,6 +67,9 @@ void AWeaponBase::InitializeWeapon(USkeletalMeshComponent* InOwnerMeshComponent)
 
 	DidItHitActor->MyActorsToIgnore.AddUnique(AvatarMeshComponent->GetOwner());
 	DidItHitActor->OnItemAdded.AddUniqueDynamic(this, &AWeaponBase::OnHitActorAdded);
+
+	AbilitySystemComponent =
+			UMKAbilitySystemComponent::GetAbilitySystemComponentFromActor(InOwnerMeshComponent->GetOwner());
 }
 
 void AWeaponBase::PreAttack()

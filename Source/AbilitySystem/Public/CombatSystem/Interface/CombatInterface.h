@@ -64,14 +64,14 @@ public:
 	 * @param EffectLevel (GameplayEffect Level)
 	 */
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Combat")
-	void PreAttack(int32 EffectLevel = 1);
+	void PreAttack(float EffectLevel = 1);
 
 	/**
 	 * 공격이 끝나고 처리할 것이 있으면 여기서 재정의하세요
 	 */
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Combat")
 	void PostAttack();
-	
+
 	/**
 	 * 수동으로 콤보공격의 섹션 이름을 설정
 	 * @param Name 몽타주 섹션 이름

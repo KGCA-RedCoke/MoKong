@@ -339,18 +339,18 @@ void UMKAbilitySystemComponent::AbilitySpecInputReleased(FGameplayAbilitySpec& S
 	// }
 }
 
-void UMKAbilitySystemComponent::OnGameplayEffectAddedCallback(UAbilitySystemComponent* const ASC,
-															  const FGameplayEffectSpec&     Spec,
-															  FActiveGameplayEffectHandle    Handle)
+void UMKAbilitySystemComponent::OnGameplayEffectAddedCallback(UAbilitySystemComponent* const    ASC,
+															  const FGameplayEffectSpec&        Spec,
+															  const FActiveGameplayEffectHandle Handle)
 {
 	if (const FActiveGameplayEffect* ActiveEffect = GetActiveGameplayEffect(Handle))
 	{
-		OnMKGameplayEffectEventDelegate.Broadcast(*ActiveEffect, EASEffectEventType::Added);
+		OnMKGameplayEffectEventDelegate.Broadcast(EASEffectEventType::Added, *ActiveEffect);
 	}
 }
 
 void UMKAbilitySystemComponent::OnGameplayEffectRemovedCallback(const FActiveGameplayEffect& ActiveGameplayEffect)
 {
-	OnMKGameplayEffectEventDelegate.Broadcast(ActiveGameplayEffect, EASEffectEventType::Removed);
+	OnMKGameplayEffectEventDelegate.Broadcast(EASEffectEventType::Removed, ActiveGameplayEffect);
 
 }

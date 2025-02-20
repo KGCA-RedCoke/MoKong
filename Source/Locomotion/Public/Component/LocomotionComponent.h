@@ -98,6 +98,7 @@ protected:
 
 #pragma region Setter
 
+public:
 #pragma region State
 	UFUNCTION(BlueprintCallable)
 	void SetDesiredGait(const EActionProfile TargetGaitProfile);
@@ -153,6 +154,8 @@ public:
 	FORCEINLINE EActionProfile  GetCurrentGaitProfile() const { return CurrentGaitProfile; };
 	FORCEINLINE EActionProfile  GetDesiredGaitProfile() const { return DesiredGaitProfile; };
 	FORCEINLINE ELocomotionMode GetCurrentLocomotionMode() const { return CurrentLocomotionMode; };
+	FORCEINLINE EPose           GetCurrentPose() const { return CurrentPose; };
+	FORCEINLINE ERotationMode   GetCurrentRotationMode() const { return CurrentRotationMode; };
 
 
 #pragma endregion

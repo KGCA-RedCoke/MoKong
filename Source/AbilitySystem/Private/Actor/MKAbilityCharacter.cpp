@@ -111,7 +111,7 @@ AActor* AMKAbilityCharacter::GetTargetActor_Implementation() const
 	return CombatComponent->GetTargetActor_Implementation();
 }
 
-void AMKAbilityCharacter::PreAttack_Implementation(int32 EffectLevel)
+void AMKAbilityCharacter::PreAttack_Implementation(float EffectLevel)
 {
 	CombatComponent->PreAttack_Implementation(EffectLevel);
 }

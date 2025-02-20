@@ -63,6 +63,12 @@ void UMKPrimaryAttackAbility::Do_AttackTask()
 	EventTags.AddTag(FGameplayTag::RequestGameplayTag("Event.Montage.NextSection"));
 	EventTags.AddTag(FGameplayTag::RequestGameplayTag("Event.Montage.End"));
 
+	if (SectionName == "1" && GetAbilitySystemComponentFromActorInfo()->
+		HasMatchingGameplayTag(MoKong::Action::TAG_Action_Sprint))
+	{
+		SectionName = "1_Sprint";
+	}
+
 	MontageTask = UAbilityTask_PlayMontageAndWaitForEvent::PlayMontageAndWaitForEvent(
 		 this,
 		 FName("Default"),

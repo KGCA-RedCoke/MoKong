@@ -33,6 +33,10 @@ protected:
 public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+
+	UFUNCTION(BlueprintCallable)
+	AMokongEnemy* GetNearestEnemy(float Distance = 1000.f);
+
 private:
 	UFUNCTION()
 	void PlayerStateChaneDelegate(EPlayerState NewState);
@@ -43,6 +47,14 @@ public:
 	//~~ IGenericTeamAgentInterface Begin ~~//
 	virtual FGenericTeamId GetGenericTeamId() const override { return FGenericTeamId(static_cast<uint8>(TeamID)); }
 	//~~ IGenericTeamAgentInterface End ~~//
+
+	//~~ CombatInterface Begin ~~//
+	virtual void    PreAttack_Implementation(float EffectLevel = 1) override;
+	virtual AActor* GetTargetActor_Implementation() const override;
+	//~~ CombatInterface End ~~//
+
+	UFUNCTION(BlueprintCallable)
+	bool IsLockingOn() const;
 
 public:
 	UPROPERTY(BlueprintAssignable)

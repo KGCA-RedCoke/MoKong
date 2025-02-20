@@ -6,8 +6,9 @@
 #include "ATPCCameraComponent.h"
 #include "ATPCCameraLockOnTargetObject.h"
 #include "Character/MokongEnemy.h"
-#include "CombatSystem/Components/CombatSystemComp.h"
 #include "Component/FootStepSFXComponent.h"
+#include "Component/LocomotionComponent.h"
+#include "Engine/OverlapResult.h"
 
 // Sets default values
 AMKPlayer::AMKPlayer()
@@ -43,6 +44,42 @@ void AMKPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
+AMokongEnemy* AMKPlayer::GetNearestEnemy(float Distance)
+{
+	AActor*                ClosestActor = nullptr;
+	TArray<FOverlapResult> HitResults;
+
+	const FVector Origin  = GetActorLocation();
+	const FVector Forward = GetControlRotation().Vector();
+
+	const bool bAnythingHit = GetWorld()->OverlapMultiByObjectType(
+																   HitResults,
+																   Origin + (Distance * 0.5f) * Forward,
+																   FQuat::Identity,
+																   ECollisionChannel::ECC_GameTraceChannel2,
+																   FCollisionShape::MakeSphere(Distance));
+
+	if (bAnythingHit)
+	{
+		float DistanceFromNearestActor = TNumericLimits<float>::Max();
+
+		for (const FOverlapResult& HitResult : HitResults)
+		{
+			if (AActor* Actor = HitResult.GetActor())
+			{
+				const float DistanceFromActorToCheck = (Origin - Actor->GetActorLocation()).SizeSquared();
+				if (DistanceFromActorToCheck < DistanceFromNearestActor)
+				{
+					ClosestActor             = Actor;
+					DistanceFromNearestActor = DistanceFromActorToCheck;
+				}
+			}
+		}
+	}
+
+	return Cast<AMokongEnemy>(ClosestActor);
+}
+
 void AMKPlayer::PlayerStateChaneDelegate(EPlayerState NewState)
 {
 	if (NewState == CurrentPlayerState)
@@ -71,31 +108,36 @@ void AMKPlayer::OnLockOnTargetChange(AActor* NewTarget, EATPCChangeTargetReason 
 		if (NewTarget)
 		{
 			TargetEnemy = Cast<AMokongEnemy>(NewTarget);
-			if (!TargetEnemy)
-				return;
 			TargetEnemy->ShowLockOnWidget(true);
-			CombatComponent->SetTargetActor(NewTarget);
 		}
 		else
 		{
-			if (TargetEnemy)
-			{
-				TargetEnemy->ShowLockOnWidget(false);
-				TargetEnemy = nullptr;
-				CombatComponent->SetTargetActor(nullptr);
-			}
+			TargetEnemy->ShowLockOnWidget(false);
+			TargetEnemy = nullptr;
 		}
 		break;
 	case EATPCChangeTargetReason::LostByExitCameraMode:
 	case EATPCChangeTargetReason::LostByDistance:
 	case EATPCChangeTargetReason::LostByVisible:
 	case EATPCChangeTargetReason::LostByPlayerInput:
-		if (TargetEnemy)
-		{
-			TargetEnemy->ShowLockOnWidget(false);
-			TargetEnemy = nullptr;
-			CombatComponent->SetTargetActor(nullptr);
-		}
+		TargetEnemy->ShowLockOnWidget(false);
+		TargetEnemy = nullptr;
 		break;
 	}
+	LocomotionComponent->SetPose(TargetEnemy ? EPose::Aiming : EPose::Neutral);
+}
+
+void AMKPlayer::PreAttack_Implementation(float EffectLevel)
+{
+	Super::PreAttack_Implementation(EffectLevel);
+}
+
+AActor* AMKPlayer::GetTargetActor_Implementation() const
+{
+	return TargetEnemy.Get();
+}
+
+bool AMKPlayer::IsLockingOn() const
+{
+	return IsValid(PlayerCameraComponent->GetCameraLockOnTargetObject()->GetTargetActor());
 }

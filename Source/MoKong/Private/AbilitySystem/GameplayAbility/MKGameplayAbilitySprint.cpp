@@ -38,6 +38,9 @@ bool UMKGameplayAbilitySprint::CommitCheck(const FGameplayAbilitySpecHandle     
 		LocomotionComponent->HandleHighProfileAction(true, 0.f);
 		return false;
 	}
+
+	CachedRotationMode = LocomotionComponent->GetCurrentPose();
+
 	const float CurrentStamina = GetAbilitySystemComponentFromActorInfo()->
 			GetNumericAttribute(UAttributeSet_Stamina::GetCurrentStaminaAttribute());
 
@@ -81,7 +84,11 @@ void UMKGameplayAbilitySprint::EndAbility(const FGameplayAbilitySpecHandle     H
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 
-	LocomotionComponent->HandleHighProfileAction(false, 0.f);
+	if (!bWasCancelled)
+	{
+		LocomotionComponent->HandleHighProfileAction(false, 0.f);
+		LocomotionComponent->SetPose(CachedRotationMode);
+	}
 	GetAbilitySystemComponentFromActorInfo()->RemoveActiveGameplayEffect(SprintCostActiveEffectHandle, -1);
 }
 

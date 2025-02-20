@@ -4,15 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameplayEffect.h"
-#include "Ability/MKAbilitySystemComponent.h"
 #include "Blueprint/UserWidget.h"
 #include "PlayerHUDWidget.generated.h"
 
-
-class AMokongEnemy;
-enum class EMKEffectEventType : uint8;
 class UMKAbilitySystemComponent;
-class UAbilitySystemComponent;
+enum class EASEffectEventType : uint8;
 
 USTRUCT(BlueprintType)
 struct FMKEffectEventInfo
@@ -31,8 +27,6 @@ struct FMKEffectEventInfo
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FActiveGameplayEffect ActiveEffect;
 };
-
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnBossEncounter, AMokongEnemy*, BossInfo);
 
 /**
  * 
@@ -62,7 +56,7 @@ public:
 	// Called to initialize the User Widget and bind to Attribute change delegates
 	// Can be called again to re-initialize the values
 	UFUNCTION(BlueprintCallable, Category = "Ability System")
-	bool InitializeAbilitySystemWidget(UAbilitySystemComponent* InOwnerAbilitySystemComponent);
+	bool InitializeAbilitySystemWidget(UAbilitySystemComponent* OwnerAbilitySystemComponent);
 
 	// Returns the Owner's Ability System Component.  
 	UFUNCTION(BlueprintCallable, BlueprintPure)
@@ -129,9 +123,6 @@ protected:
 	FDelegateHandle BleedingChangeDelegate;
 	FDelegateHandle BleedHealChangeDelegate;
 
-	UPROPERTY(BlueprintAssignable)
-	FOnBossEncounter OnBossEncounter;
-
 	void MaximumHealthChanged(const FOnAttributeChangeData& Data);
 	void MaximumStaminaChanged(const FOnAttributeChangeData& Data);
 	void MaximumManaChanged(const FOnAttributeChangeData& Data);
@@ -152,8 +143,9 @@ protected:
 	static void ResetDelegateHandle(FDelegateHandle DelegateHandle, UAbilitySystemComponent* OldAbilitySystemComponent,
 									const FGameplayAttribute& Attribute);
 
+public:
 	UFUNCTION()
-	void OnGameplayEffectEventCallback(const FActiveGameplayEffect& Effect, const EASEffectEventType EventType);
+	void EffectChangeCallback(const EASEffectEventType EventType, const FActiveGameplayEffect& Effect);
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void K2_OnGameplayEffectEventCallback(const UMKAbilitySystemComponent* const ASC,

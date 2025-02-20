@@ -6,6 +6,7 @@
 #include "Ability/MKGameplayAbility.h"
 #include "MKGameplayAbilitySprint.generated.h"
 
+enum class EPose : uint8;
 class ULocomotionComponent;
 /**
  * 
@@ -39,6 +40,8 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Sprint|Effect")
 	TSubclassOf<UGameplayEffect> SprintCostEffectClass;
+
+	EPose CachedRotationMode;
 
 	FGameplayEffectSpecHandle   SprintCostEffectHandle;
 	FActiveGameplayEffectHandle SprintCostActiveEffectHandle;

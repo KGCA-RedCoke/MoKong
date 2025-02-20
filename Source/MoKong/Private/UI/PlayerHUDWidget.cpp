@@ -2,6 +2,7 @@
 
 
 #include "UI/PlayerHUDWidget.h"
+
 #include "Ability/MKAbilitySystemComponent.h"
 #include "Ability/MKGameplayEffectUIData.h"
 #include "AttributeSets/AttributeSet_Health.h"
@@ -10,11 +11,11 @@
 #include "AttributeSets/AttributeSet_Resistance.h"
 #include "AttributeSets/AttributeSet_Stamina.h"
 
-bool UPlayerHUDWidget::InitializeAbilitySystemWidget(UAbilitySystemComponent* InOwnerAbilitySystemComponent)
+bool UPlayerHUDWidget::InitializeAbilitySystemWidget(UAbilitySystemComponent* OwnerAbilitySystemComponent)
 {
 	UAbilitySystemComponent* OldAbilitySystemComponent = AbilitySystemComponent.Get();
 
-	AbilitySystemComponent = Cast<UMKAbilitySystemComponent>(InOwnerAbilitySystemComponent);
+	AbilitySystemComponent = Cast<UMKAbilitySystemComponent>(OwnerAbilitySystemComponent);
 
 	// The Ability System Component is invalid. Stop here and return false. 
 	if (!GetOwnerAbilitySystemComponent())
@@ -22,7 +23,6 @@ bool UPlayerHUDWidget::InitializeAbilitySystemWidget(UAbilitySystemComponent* In
 		return false;
 	}
 
-	// Reset any old Attribute Change Delegates if they are still bound.
 	if (IsValid(OldAbilitySystemComponent))
 	{
 		ResetDelegateHandle(MaximumHealthChangeDelegate,
@@ -70,7 +70,6 @@ bool UPlayerHUDWidget::InitializeAbilitySystemWidget(UAbilitySystemComponent* In
 
 	bool bBindingDone = false;
 
-	// Bind Health attribute delegates if the Ability System Component has the required Attribute Set -and- we are listening for Health attributes.
 	if (bListenForAttributeChanges)
 	{
 		if (AbilitySystemComponent->HasAttributeSetForAttribute(UAttributeSet_Health::GetMaximumHealthAttribute()))
@@ -179,15 +178,11 @@ bool UPlayerHUDWidget::InitializeAbilitySystemWidget(UAbilitySystemComponent* In
 		}
 	}
 
-	if (bListenForEffectEvents && AbilitySystemComponent
-		.
-		IsValid()
-	)
+	if (bListenForEffectEvents && AbilitySystemComponent.IsValid())
 	{
-		bBindingDone = true;
-		AbilitySystemComponent->OnMKGameplayEffectEventDelegate.AddDynamic(this,
-																		   &UPlayerHUDWidget::
-																		   OnGameplayEffectEventCallback);
+		AbilitySystemComponent->OnMKGameplayEffectEventDelegate.AddDynamic(
+																		   this,
+																		   &UPlayerHUDWidget::EffectChangeCallback);
 	}
 
 	K2_InitializeAbilitySystemWidget(bBindingDone);
@@ -302,12 +297,12 @@ void UPlayerHUDWidget::CurrentFocusChanged(const FOnAttributeChangeData& Data)
 		return;
 	}
 
-	const float CurrentFocusChargeRate = FMath::Modulo(Data.NewValue, 100.f) + 1;
+	const float CurrentFocusChargeRate = FMath::Modulo(Data.NewValue, 100.f);
 	const float NewPercent             = CurrentFocusChargeRate * 0.01f;
 
 	On_CurrentFocusChanged(Data.NewValue, Data.OldValue, NewPercent);
 
-	if (FMath::IsNearlyEqual(NewPercent, 1.f))
+	if (!FMath::IsNearlyZero(Data.NewValue) && FMath::IsNearlyEqual(NewPercent, 0.f))
 	{
 		On_FocusFull(FMath::DivideAndRoundUp(Data.NewValue, 100.f));
 	}
@@ -338,9 +333,11 @@ void UPlayerHUDWidget::ResetDelegateHandle(FDelegateHandle           DelegateHan
 	}
 }
 
-void UPlayerHUDWidget::OnGameplayEffectEventCallback(const FActiveGameplayEffect& Effect,
-													 const EASEffectEventType     EventType)
+void UPlayerHUDWidget::EffectChangeCallback(const EASEffectEventType     EventType,
+											const FActiveGameplayEffect& Effect)
 {
+	UE_LOG(LogTemp, Warning, TEXT("EffectChangeCallback"));
+
 	if (!AbilitySystemComponent.IsValid())
 	{
 		return;
@@ -354,10 +351,10 @@ void UPlayerHUDWidget::OnGameplayEffectEventCallback(const FActiveGameplayEffect
 		return;
 	}
 
-	if (!UMKGameplayEffectUIData::GetGameplayEffectUIDataFromActiveEffect(Effect))
-	{
-		return;
-	}
+	// if (!UMKGameplayEffectUIData::GetGameplayEffectUIDataFromActiveEffect(Effect))
+	// {
+	// 	return;
+	// }
 
 	FMKEffectEventInfo Info{};
 	Info.bIsInhibited = Effect.bIsInhibited;
