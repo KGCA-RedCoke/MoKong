@@ -27,6 +27,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void InitializeWeapon(USkeletalMeshComponent* InOwnerMeshComponent);
 
+	UFUNCTION(BlueprintCallable)
+	void AttachWeapon();
+	UFUNCTION(BlueprintCallable)
+	void DettachWeapon();
 	void PreAttack();
 	void PostAttack();
 

@@ -5,7 +5,9 @@
 
 #include "ATPCCameraComponent.h"
 #include "ATPCCameraLockOnTargetObject.h"
+#include "Ability/MKAbilitySystemComponent.h"
 #include "Character/MokongEnemy.h"
+#include "CombatSystem/Components/CombatSystemComp.h"
 #include "Component/FootStepSFXComponent.h"
 #include "Component/LocomotionComponent.h"
 #include "Engine/OverlapResult.h"
@@ -15,6 +17,11 @@ AMKPlayer::AMKPlayer()
 {
 	PlayerCameraComponent = CreateDefaultSubobject<UATPCCameraComponent>(TEXT("플레이어캠"));
 	PlayerCameraComponent->SetupAttachment(GetRootComponent());
+
+	TransformMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("변신메시"));
+	TransformMeshComponent->SetupAttachment(GetRootComponent());
+	TransformMeshComponent->SetVisibility(false);
+	TransformMeshComponent->SetActive(false);
 
 	GourdMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("호리병메시"));
 	GourdMeshComponent->SetupAttachment(GetMesh(), FName("gourd_main"));
@@ -63,15 +70,20 @@ AMokongEnemy* AMKPlayer::GetNearestEnemy(float Distance)
 	{
 		float DistanceFromNearestActor = TNumericLimits<float>::Max();
 
+		// 플레이어가 보는 방향으로 가장 가까운 적을 찾는다.
+		float NearestFacingDot = -1.f;
 		for (const FOverlapResult& HitResult : HitResults)
 		{
 			if (AActor* Actor = HitResult.GetActor())
 			{
-				const float DistanceFromActorToCheck = (Origin - Actor->GetActorLocation()).SizeSquared();
-				if (DistanceFromActorToCheck < DistanceFromNearestActor)
+
+				const FVector ToActor = Actor->GetActorLocation() - Origin;
+				const float   Dot     = FVector::DotProduct(ToActor.GetSafeNormal(), Forward);
+
+				if (Dot > NearestFacingDot)
 				{
-					ClosestActor             = Actor;
-					DistanceFromNearestActor = DistanceFromActorToCheck;
+					NearestFacingDot = Dot;
+					ClosestActor     = Actor;
 				}
 			}
 		}
@@ -140,4 +152,40 @@ AActor* AMKPlayer::GetTargetActor_Implementation() const
 bool AMKPlayer::IsLockingOn() const
 {
 	return IsValid(PlayerCameraComponent->GetCameraLockOnTargetObject()->GetTargetActor());
+}
+
+void AMKPlayer::Transform()
+{
+	// Try to transform
+	const bool bShouldRevert = AbilitySystemComponent->
+			HasMatchingGameplayTag(FGameplayTag::RequestGameplayTag("Status.Transform"));
+
+	ChangeActiveMesh(bShouldRevert ? EPlayerTransformTypes::Self : EPlayerTransformTypes::Transform);
+}
+
+void AMKPlayer::ChangeActiveMesh(const EPlayerTransformTypes TransformType)
+{
+	switch (TransformType)
+	{
+	case EPlayerTransformTypes::Self:
+		TransformMeshComponent->SetVisibility(false);
+		TransformMeshComponent->SetActive(false);
+		GetMesh()->SetActive(true);
+		GetMesh()->SetVisibility(true, true);
+		CombatComponent->SwapWeapon(EWeaponType::BoStaff, GetMesh());
+		break;
+	case EPlayerTransformTypes::HonBaek:
+		break;
+	case EPlayerTransformTypes::Animal:
+		break;
+	case EPlayerTransformTypes::Transform:
+		TransformMeshComponent->SetVisibility(true);
+		TransformMeshComponent->SetActive(true);
+		GetMesh()->SetActive(false);
+		GetMesh()->SetVisibility(false, true);
+		CombatComponent->SwapWeapon(EWeaponType::Sword, TransformMeshComponent.Get());
+		break;
+	}
+
+
 }

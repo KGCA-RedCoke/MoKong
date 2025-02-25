@@ -13,8 +13,10 @@ UCLASS()
 class FOOTSFX_API UFootStepAnimNotify : public UAnimNotify
 {
 	GENERATED_BODY()
-
+	
 protected:
 	virtual void Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation,
 	                    const FAnimNotifyEventReference& EventReference) override;
+
+	virtual bool ShouldFireInEditor() override;
 };

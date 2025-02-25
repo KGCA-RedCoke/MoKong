@@ -24,6 +24,7 @@ public class MoKong : ModuleRules
 			"AbilitySystem",
 			"GameplayAbilities",
 			"GameplayTasks",
+			"GameplayTags",
 			"FootSFX",
 			"Locomotion",
 			"SkillSystem",

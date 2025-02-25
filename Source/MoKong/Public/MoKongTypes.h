@@ -14,3 +14,12 @@ enum class EPlayerState : uint8
 	Action UMETA(DisplayName = "행동"),
 	Dead UMETA(DisplayName = "죽음")
 };
+
+UENUM(BlueprintType)
+enum class EPlayerTransformTypes : uint8
+{
+	Self UMETA(DisplayName = "오공"),
+	HonBaek UMETA(DisplayName = "혼백"),
+	Animal UMETA(DisplayName = "동물"),
+	Transform UMETA(DisplayName = "변신"),
+};

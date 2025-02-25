@@ -183,6 +183,15 @@ enum class EParkourWallHitResult : uint8
 	Mantle
 };
 
+UENUM(BlueprintType)
+enum class EDodgeType : uint8
+{
+	Dodge,
+	PerfectDodge,
+	Roll,
+	JXSQ
+};
+
 /* ============================================= Struct ================================================ */
 
 USTRUCT(BlueprintType)

@@ -24,8 +24,8 @@ protected:
 #pragma endregion
 
 	UFUNCTION(BlueprintCallable)
-	void HandleRollAndDodgeAction(bool           bPressed, EMovementDirection Direction, float MoveDistance,
-								  UAnimMontage*& MontageToPlay, FName&        SectionToPlay);
+	void HandleRollAndDodgeAction(bool  bPressed, EDodgeType         DodgeType, EMovementDirection Direction,
+								  float MoveDistance, UAnimMontage*& MontageToPlay, FName&         SectionToPlay);
 
 	/* TraceWall을 실행하기 전에 이 로직을 실행
 	 @param Direction 현재 캐릭터가 가고자 하는 방향
@@ -135,7 +135,13 @@ protected:
 	EMovementDirection LedgeMovementDirection;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dodge&Roll")
-	UAnimMontage* DodgeRollMontage;
+	UAnimMontage* PerfectDodgeMontage;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dodge&Roll")
+	UAnimMontage* RollMontage;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dodge&Roll")
+	UAnimMontage* DodgeMontage;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dodge&Roll")
+	UAnimMontage* JXSQDodgeMontage;
 
 
 	friend ULocomotionComponent;

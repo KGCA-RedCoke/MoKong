@@ -9,7 +9,7 @@
 
 class UPanelWidget;
 class UMKAbilitySystemComponent;
-class UEffectWidget;
+class UEffectWidget_Skill;
 class UMKGameplayEffectUIData;
 
 UENUM(BlueprintType)
@@ -53,11 +53,11 @@ protected:
 
 	// Widget class to instantiate. Default is set in the editor.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Config)
-	TSoftClassPtr<UEffectWidget> WidgetClass;
+	TSoftClassPtr<UEffectWidget_Skill> WidgetClass;
 
 	// Like to the spawned widget.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TObjectPtr<UEffectWidget> Widget;
+	TObjectPtr<UEffectWidget_Skill> Widget;
 
 protected:
 	// Total duration of the effect. Not updated except if server is changing it.

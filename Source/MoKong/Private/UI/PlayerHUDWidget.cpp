@@ -336,7 +336,6 @@ void UPlayerHUDWidget::ResetDelegateHandle(FDelegateHandle           DelegateHan
 void UPlayerHUDWidget::EffectChangeCallback(const EASEffectEventType     EventType,
 											const FActiveGameplayEffect& Effect)
 {
-	UE_LOG(LogTemp, Warning, TEXT("EffectChangeCallback"));
 
 	if (!AbilitySystemComponent.IsValid())
 	{
@@ -351,16 +350,18 @@ void UPlayerHUDWidget::EffectChangeCallback(const EASEffectEventType     EventTy
 		return;
 	}
 
-	// if (!UMKGameplayEffectUIData::GetGameplayEffectUIDataFromActiveEffect(Effect))
-	// {
-	// 	return;
-	// }
+	if (!UMKGameplayEffectUIData::GetGameplayEffectUIDataFromActiveEffect(Effect))
+	{
+		return;
+	}
 
 	FMKEffectEventInfo Info{};
 	Info.bIsInhibited = Effect.bIsInhibited;
 	Info.Spec         = Effect.Spec;
 	Info.Def          = Effect.Spec.Def;
 	Info.ActiveEffect = Effect;
+
+	
 
 	K2_OnGameplayEffectEventCallback(AbilitySystemComponent.Get(), EventType, Effect.Handle, Info);
 }

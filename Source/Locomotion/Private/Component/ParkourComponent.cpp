@@ -146,8 +146,8 @@ void UParkourComponent::OnMontageBlendOut(UAnimMontage* Montage, bool bInterrupt
 	}
 }
 
-void UParkourComponent::HandleRollAndDodgeAction(const bool     bPressed, EMovementDirection Direction, float MoveDistance,
-												 UAnimMontage*& MontageToPlay, FName&        SectionToPlay)
+void UParkourComponent::HandleRollAndDodgeAction(const bool bPressed, EDodgeType DodgeType, EMovementDirection Direction,
+												 float MoveDistance, UAnimMontage*& MontageToPlay, FName& SectionToPlay)
 {
 	if (bPressed &&
 		CurrentParkourState == EParkourState::None &&
@@ -161,24 +161,47 @@ void UParkourComponent::HandleRollAndDodgeAction(const bool     bPressed, EMovem
 
 		const FVector StartLocation = GetCharacter()->GetActorLocation() + 100 * MoveDirection;
 
-		const FRotator Rotation = CurrentInputDirection.IsNearlyZero()
-									  ? GetCharacter()->GetActorRotation()
-									  : UKismetMathLibrary::MakeRotFromX(CurrentInputDirection);
+		FRotator Rotation = CurrentInputDirection.IsNearlyZero()
+								? GetCharacter()->GetActorRotation()
+								: UKismetMathLibrary::MakeRotFromX(CurrentInputDirection);
 
 		SetParkourState(EParkourState::Dodge);
-		CachedMontage = DodgeRollMontage;
-		MontageToPlay = DodgeRollMontage;
+		switch (DodgeType)
+		{
+		case EDodgeType::Dodge:
+			CachedMontage = DodgeMontage;
+			break;
+		case EDodgeType::PerfectDodge:
+			CachedMontage = PerfectDodgeMontage;
+			break;
+		case EDodgeType::Roll:
+			CachedMontage = RollMontage;
+			break;
+		case EDodgeType::JXSQ:
+			CachedMontage = JXSQDodgeMontage;
+			break;
+		}
+		MontageToPlay = CachedMontage;
 
 		SectionToPlay = "Forward";
 
 		if (RotationMode == ERotationMode::LookingDirection)
 		{
+			MotionWarpingComponent->RemoveWarpTarget("Rotation");
+
 			switch (Direction)
 			{
 			case EMovementDirection::Forward:
 				SectionToPlay = "Forward";
+				MotionWarpingComponent->AddOrUpdateWarpTargetFromTransform(
+																		   "Rotation",
+																		   FTransform(Rotation, StartLocation));
 				break;
 			case EMovementDirection::Backward:
+				Rotation.Yaw += 180.f;
+				MotionWarpingComponent->AddOrUpdateWarpTargetFromTransform(
+																		   "Rotation",
+																		   FTransform(Rotation, StartLocation));
 				SectionToPlay = "Backward";
 				break;
 			case EMovementDirection::Left:
@@ -189,7 +212,6 @@ void UParkourComponent::HandleRollAndDodgeAction(const bool     bPressed, EMovem
 				break;
 			}
 
-			MotionWarpingComponent->RemoveWarpTarget("Rotation");
 			MotionWarpingComponent->AddOrUpdateWarpTargetFromLocation(
 																	  "Move",
 																	  GetCharacter()->GetActorLocation() +
@@ -207,7 +229,7 @@ void UParkourComponent::HandleRollAndDodgeAction(const bool     bPressed, EMovem
 																	   "Move",
 																	   FTransform(Rotation,
 																					  GetCharacter()->GetActorLocation() +
-																					  300 * MoveDirection));
+																					  MoveDistance * MoveDirection));
 
 			LocomotionComponent->SetCharacterRotation(
 													  FRotator(0, Rotation.Yaw, 0),

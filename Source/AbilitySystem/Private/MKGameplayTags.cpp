@@ -59,13 +59,19 @@ namespace MoKong
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_DamageType_Bleeding,
 									   "DamageType.Bleeding",
 									   "Bleeding Damage Type. Used to calculated Resistance to Bleeding Damage.")
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Immunity_Attacks, "Immunity.Attacks", "모든 공격에 면역")
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Immunity_Bleeding, "Immunity.Bleeding", "Immune to Bleeding")
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Immunity_All, "Immunity.All", "모든 공격, 상태이상에 면역")
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Resistance_Modifier_Bleeding,
 									   "Resistance.Modifier.Bleeding",
 									   "Granting Resistance to Bleeding")
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Resistance_Ignore_Bleeding,
 									   "Resistance.Ignore.Bleeding",
 									   "Ignore Resistance to Bleeding. Will increase bleeding with the source value.")
+
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Status_Invisible, "Status.Invisible", "투명화 상태")
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Status_Transform, "Status.Transform", "변신")
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Status_HonBaek, "Status.HonBaek", "혼백")
 
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Debuff_Immobile, "Debuff.Immobile", "Immobile Target")
 	}
@@ -77,6 +83,19 @@ namespace MoKong
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Action_Dodge, "Action.Dodge", "회피 중일 때")
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Action_Sprint, "Action.Sprint", "달리기 중일 때")
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Action_Jump, "Action.Jump", "점프 중일 때")
+
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Action_Immobilize, "Action.Immobilize", "정지술")
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Action_CloudStep, "Action.CloudStep", "기화술")
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Action_APluckOfMany, "Action.APluckOfMany", "분신술")
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Action_Transformations, "Action.Transformations", "변신")
+	}
+
+	namespace Cooldown
+	{
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Cooldown_Immobilize, "Cooldown.Immobilize", "정지술 쿨타임")
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Cooldown_CloudStep, "Cooldown.CloudStep", "기화술 쿨타임")
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Cooldown_APluckOfMany, "Cooldown.APluckOfMany", "분신술 쿨타임")
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Cooldown_Transformations, "Cooldown.Transformations", "변신 쿨타임")
 	}
 
 	namespace Input
@@ -95,5 +114,13 @@ namespace MoKong
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Input_SkillSlot4, "Input.SkillSlot4", "스킬 슬롯 4로 매핑")
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Input_Transformation, "Input.Transformation", "변신 행동으로 매핑");
 		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Input_DrinkGourd, "Input.DrinkGourd", "표주박 먹기 행동으로 매핑");
+
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Input_Interact, "Input.Interact", "상호작용 행동으로 매핑");
+	}
+
+	namespace Event
+	{
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Event_Wukong_SpawnReplication, "Event.Wukong.SpawnReplication", "오공 복제 생성 이벤트")
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(TAG_Event_Wukong_OpenBox, "Event.Wukong.OpenBox", "오공 상자 열기 이벤트")
 	}
 }

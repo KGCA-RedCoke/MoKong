@@ -52,7 +52,7 @@ public:
 	void UpdateComboData(TObjectPtr<UAnimMontage>& MontageToPlay, FName& SectionToPlay, bool bInAir = false);
 
 	UFUNCTION(BlueprintCallable)
-	void SwapWeapon(FName RowName);
+	void SwapWeapon(EWeaponType Type, USkeletalMeshComponent* InMeshComponent = nullptr);
 
 protected:
 	/** WeaponBase액터를 이용해서 무기를 부착할거라면 true 메시자체에 무기가 있는경우 false */
@@ -68,6 +68,8 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combat|Startup", meta = (EditCondition="bUseWeaponActor"))
 	TMap<EWeaponType, TSubclassOf<AWeaponBase>> WeaponClasses;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combat|State")
+	TMap<EWeaponType, AWeaponBase*> SpawnedWeapons;
 
 	UPROPERTY()
 	USkeletalMeshComponent* AvatarMeshComponent;

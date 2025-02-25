@@ -53,14 +53,7 @@ void AWeaponBase::InitializeWeapon(USkeletalMeshComponent* InOwnerMeshComponent)
 
 	SwapWeapon(AttributeDataHandle.RowName);
 
-
-	// Socket Attach
-	SM_Weapon->AttachToComponent(AvatarMeshComponent,
-								 FAttachmentTransformRules::KeepRelativeTransform,
-								 WeaponDataAsset->WeaponAttachmentData.HolsterSocket);
-	SK_Weapon->AttachToComponent(AvatarMeshComponent,
-								 FAttachmentTransformRules::KeepRelativeTransform,
-								 WeaponDataAsset->WeaponAttachmentData.HolsterSocket);
+	AttachWeapon();
 
 	DidItHitActor->SetupVariables(SK_Weapon.Get(), this);
 	SK_Weapon->SetLeaderPoseComponent(InOwnerMeshComponent);
@@ -70,6 +63,30 @@ void AWeaponBase::InitializeWeapon(USkeletalMeshComponent* InOwnerMeshComponent)
 
 	AbilitySystemComponent =
 			UMKAbilitySystemComponent::GetAbilitySystemComponentFromActor(InOwnerMeshComponent->GetOwner());
+}
+
+void AWeaponBase::AttachWeapon()
+{
+	SetActorHiddenInGame(false);
+	SetActorEnableCollision(true);
+	SetActorTickEnabled(true);
+	GetRootComponent()->SetVisibility(true, true);
+
+	// Socket Attach
+	SM_Weapon->AttachToComponent(AvatarMeshComponent,
+								 FAttachmentTransformRules::KeepRelativeTransform,
+								 WeaponDataAsset->WeaponAttachmentData.HandSocket);
+	SK_Weapon->AttachToComponent(AvatarMeshComponent,
+								 FAttachmentTransformRules::KeepRelativeTransform,
+								 WeaponDataAsset->WeaponAttachmentData.HandSocket);
+}
+
+void AWeaponBase::DettachWeapon()
+{
+	SetActorHiddenInGame(true);
+	SetActorEnableCollision(false);
+	SetActorTickEnabled(false);
+	GetRootComponent()->SetVisibility(false, true);
 }
 
 void AWeaponBase::PreAttack()

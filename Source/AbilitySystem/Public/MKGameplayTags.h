@@ -46,9 +46,15 @@ namespace MoKong
 		// -- Bleeding --
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Debuff_Bleeding);
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_DamageType_Bleeding);
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Immunity_Attacks);
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Immunity_Bleeding);
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Immunity_All);
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Resistance_Modifier_Bleeding);
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Resistance_Ignore_Bleeding);
+
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Status_Invisible);	// 투명화 상태
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Status_Transform);	// 변신
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Status_HonBaek);	// 혼백
 
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Debuff_Immobile);	// 정지
 	}
@@ -60,6 +66,23 @@ namespace MoKong
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Action_Dodge);
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Action_Sprint);
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Action_Jump);
+
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Action_Immobilize);
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Action_CloudStep);
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Action_APluckOfMany);
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Action_Transformations);
+	}
+
+	namespace Cooldown
+	{
+		// 정지술
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Cooldown_Immobilize);
+		// 기화술
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Cooldown_CloudStep);
+		// 분신술
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Cooldown_APluckOfMany);
+		// 변신
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Cooldown_Transformations);
 	}
 
 	namespace Input
@@ -75,5 +98,12 @@ namespace MoKong
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Input_SkillSlot4);
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Input_Transformation);
 		UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Input_DrinkGourd);
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Input_Interact);
+	}
+
+	namespace Event
+	{
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Event_Wukong_SpawnReplication);
+		UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_Event_Wukong_OpenBox);
 	}
 }

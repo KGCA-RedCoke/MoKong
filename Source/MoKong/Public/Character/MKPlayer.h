@@ -56,6 +56,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool IsLockingOn() const;
 
+	UFUNCTION(BlueprintCallable)
+	void Transform();
+
+private:
+	void ChangeActiveMesh(const EPlayerTransformTypes TransformType);
+
 public:
 	UPROPERTY(BlueprintAssignable)
 	FOnPlayerStateChanged OnPlayerStateChanged;
@@ -81,6 +87,9 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowprivateAccess = "true"), DisplayName = "카메라")
 	TObjectPtr<UATPCCameraComponent> PlayerCameraComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowprivateAccess = "true"))
+	TObjectPtr<USkeletalMeshComponent> TransformMeshComponent;	// 변신 메시
+
 	UPROPERTY(EditDefaultsOnly,
 		BlueprintReadOnly,
 		Category = "Player|Setup",
@@ -90,4 +99,7 @@ private:
 
 	UPROPERTY(BlueprintReadWrite, Category = "Player|Target", meta=(AllowprivateAccess = "true"))
 	TObjectPtr<AMokongEnemy> TargetEnemy;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Interaction", meta = (AllowPrivateAccess = "true"))
+	bool bCanInteract = false;
 };

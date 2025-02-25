@@ -5,7 +5,7 @@
 
 #include "AbilitySystemComponent.h"
 #include "Ability/MKGameplayEffectUIData.h"
-#include "Widgets/EffectWidget.h"
+#include "Widgets/EffectWidget_Skill.h"
 
 class UWorld* UEffectWidgetController::GetWorld() const
 {

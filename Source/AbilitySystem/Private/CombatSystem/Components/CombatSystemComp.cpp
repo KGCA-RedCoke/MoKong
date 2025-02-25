@@ -34,6 +34,7 @@ void UCombatSystem::InitializeCombatSystem(USkeletalMeshComponent* InAvatarMeshC
 			NewWeapon->FinishSpawning(FTransform::Identity);
 			NewWeapon->InitializeWeapon(InAvatarMeshComponent);
 			CurrentWeapon = NewWeapon;
+			SpawnedWeapons.Add(CurrentWeaponType, CurrentWeapon.Get());
 		}
 
 		check(CurrentWeapon);
@@ -161,5 +162,34 @@ void UCombatSystem::UpdateComboData(TObjectPtr<UAnimMontage>& MontageToPlay, FNa
 	}
 }
 
-void UCombatSystem::SwapWeapon(FName RowName)
-{}
+void UCombatSystem::SwapWeapon(EWeaponType Type, USkeletalMeshComponent* InMeshComponent)
+{
+	if (SpawnedWeapons.Contains(Type))
+	{
+		if (CurrentWeapon)
+		{
+			CurrentWeapon->DettachWeapon();
+		}
+
+		CurrentWeapon = SpawnedWeapons[Type];
+		CurrentWeapon->AttachWeapon();
+	}
+	else if (WeaponClasses.Contains(Type))
+	{
+		if (AWeaponBase* NewWeapon = GetWorld()->SpawnActorDeferred<AWeaponBase>(
+																				 WeaponClasses[Type],
+																				 FTransform::Identity,
+																				 GetOwner()))
+		{
+			if (CurrentWeapon)
+			{
+				CurrentWeapon->DettachWeapon();
+			}
+
+			NewWeapon->FinishSpawning(FTransform::Identity);
+			NewWeapon->InitializeWeapon(InMeshComponent);
+			CurrentWeapon = NewWeapon;
+			SpawnedWeapons.Add(CurrentWeaponType, CurrentWeapon.Get());
+		}
+	}
+}
