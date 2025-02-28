@@ -131,6 +131,10 @@
 		{
 			"Name": "SkeletalMerging",
 			"Enabled": true
+		},
+		{
+			"Name": "Water",
+			"Enabled": true
 		}
 	]
 }
