@@ -50,7 +50,11 @@ void UEffectWidget_Skill::SetCooldown(const float Duration)
 	CooldownDuration = Duration; // 전체 쿨다운 시간 저장
 	ElapsedTime      = 0.f; // 경과 시간 초기화
 
-	GetWorld()->GetTimerManager().SetTimer(CooldownTimerHandle, this, &UEffectWidget_Skill::OnCooldownFinished, 0.5, true);
+	GetWorld()->GetTimerManager().SetTimer(CooldownTimerHandle,
+										   this,
+										   &UEffectWidget_Skill::OnCooldownFinished,
+										   TickInterval,
+										   true);
 }
 
 void UEffectWidget_Skill::OnCooldownFinished()
@@ -60,7 +64,7 @@ void UEffectWidget_Skill::OnCooldownFinished()
 		return;
 	}
 
-	ElapsedTime += 0.5f; // 타이머가 0.05초마다 호출되므로 시간 추가
+	ElapsedTime += TickInterval; // 타이머가 0.05초마다 호출되므로 시간 추가
 
 	float Progress = FMath::Clamp(1.f - (ElapsedTime / CooldownDuration), 0.f, 1.f);
 	ProgressBar_CoolTime->SetPercent(Progress);

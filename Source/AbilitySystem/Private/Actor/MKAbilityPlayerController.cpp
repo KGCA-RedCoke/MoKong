@@ -17,6 +17,16 @@ UMKAbilitySystemComponent* AMKAbilityPlayerController::GetMKAbilitySystemCompone
 	return CastChecked<UMKAbilitySystemComponent>(PS->GetAbilitySystemComponent());
 }
 
+void AMKAbilityPlayerController::OnPossess(APawn* InPawn)
+{
+	Super::OnPossess(InPawn);
+
+	if (AMKPlayerState* PS = GetPTPlayerState())
+	{
+		PS->SwapAbilityActorInfo(InPawn, InPawn);
+	}
+}
+
 void AMKAbilityPlayerController::PreProcessInput(const float DeltaTime, const bool bGamePaused)
 {
 	Super::PreProcessInput(DeltaTime, bGamePaused);

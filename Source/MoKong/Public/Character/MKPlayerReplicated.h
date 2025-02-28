@@ -6,6 +6,8 @@
 #include "Actor/MKAbilityCharacter.h"
 #include "MKPlayerReplicated.generated.h"
 
+class UPoseableMeshComponent;
+
 UCLASS()
 class MOKONG_API AMKPlayerReplicated : public AMKAbilityCharacter
 {
@@ -21,5 +23,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ReplicateMeshFromPlayer();
 
-
+private:
+	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UPoseableMeshComponent> PoseableMesh;
 };

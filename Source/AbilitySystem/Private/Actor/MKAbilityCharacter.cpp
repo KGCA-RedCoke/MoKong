@@ -42,8 +42,11 @@ AMKAbilityCharacter::AMKAbilityCharacter()
 void AMKAbilityCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+}
 
-	CombatComponent->InitializeCombatSystem(GetMesh());
+void AMKAbilityCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
 }
 
 UAbilitySystemComponent* AMKAbilityCharacter::GetAbilitySystemComponent() const

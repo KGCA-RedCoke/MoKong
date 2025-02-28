@@ -14,6 +14,11 @@ AMKPlayerState::AMKPlayerState()
 	AbilitySystemComponent = CreateDefaultSubobject<UMKAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
 }
 
+void AMKPlayerState::SwapAbilityActorInfo(AActor* NewOwner, AActor* NewAvatar)
+{
+	AbilitySystemComponent->InitAbilityActorInfo(NewOwner, NewAvatar);
+}
+
 UAbilitySystemComponent* AMKPlayerState::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;

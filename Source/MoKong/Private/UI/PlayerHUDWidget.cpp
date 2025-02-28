@@ -15,13 +15,13 @@ bool UPlayerHUDWidget::InitializeAbilitySystemWidget(UAbilitySystemComponent* Ow
 {
 	UAbilitySystemComponent* OldAbilitySystemComponent = AbilitySystemComponent.Get();
 
-	AbilitySystemComponent = Cast<UMKAbilitySystemComponent>(OwnerAbilitySystemComponent);
+	bool bBindingDone = Super::InitializeAbilitySystemWidget(OwnerAbilitySystemComponent);
 
-	// The Ability System Component is invalid. Stop here and return false. 
-	if (!GetOwnerAbilitySystemComponent())
+	if (!bBindingDone)
 	{
 		return false;
 	}
+
 
 	if (IsValid(OldAbilitySystemComponent))
 	{
@@ -68,7 +68,6 @@ bool UPlayerHUDWidget::InitializeAbilitySystemWidget(UAbilitySystemComponent* Ow
 							UAttributeSet_Mokong::GetCurrentFocusAttribute());
 	}
 
-	bool bBindingDone = false;
 
 	if (bListenForAttributeChanges)
 	{
@@ -178,21 +177,7 @@ bool UPlayerHUDWidget::InitializeAbilitySystemWidget(UAbilitySystemComponent* Ow
 		}
 	}
 
-	if (bListenForEffectEvents && AbilitySystemComponent.IsValid())
-	{
-		AbilitySystemComponent->OnMKGameplayEffectEventDelegate.AddDynamic(
-																		   this,
-																		   &UPlayerHUDWidget::EffectChangeCallback);
-	}
-
-	K2_InitializeAbilitySystemWidget(bBindingDone);
-
 	return bBindingDone;
-}
-
-UMKAbilitySystemComponent* UPlayerHUDWidget::GetOwnerAbilitySystemComponent() const
-{
-	return AbilitySystemComponent.Get();
 }
 
 void UPlayerHUDWidget::MaximumHealthChanged(const FOnAttributeChangeData& Data)
@@ -320,48 +305,4 @@ void UPlayerHUDWidget::BleedingChanged(const FOnAttributeChangeData& Data)
 	const float Duration = BleedHeal > 0 ? Bleeding / BleedHeal : 0.f;
 
 	On_BleedingChanged(Bleeding, BleedHeal, Duration);
-}
-
-void UPlayerHUDWidget::ResetDelegateHandle(FDelegateHandle           DelegateHandle,
-										   UAbilitySystemComponent*  OldAbilitySystemComponent,
-										   const FGameplayAttribute& Attribute)
-{
-	if (IsValid(OldAbilitySystemComponent))
-	{
-		OldAbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Attribute).Remove(DelegateHandle);
-		DelegateHandle.Reset();
-	}
-}
-
-void UPlayerHUDWidget::EffectChangeCallback(const EASEffectEventType     EventType,
-											const FActiveGameplayEffect& Effect)
-{
-
-	if (!AbilitySystemComponent.IsValid())
-	{
-		return;
-	}
-
-	FGameplayTagContainer AssetTags{};
-	Effect.Spec.GetAllAssetTags(AssetTags);
-
-	if (!EffectEventTagRequirements.RequirementsMet(AssetTags))
-	{
-		return;
-	}
-
-	if (!UMKGameplayEffectUIData::GetGameplayEffectUIDataFromActiveEffect(Effect))
-	{
-		return;
-	}
-
-	FMKEffectEventInfo Info{};
-	Info.bIsInhibited = Effect.bIsInhibited;
-	Info.Spec         = Effect.Spec;
-	Info.Def          = Effect.Spec.Def;
-	Info.ActiveEffect = Effect;
-
-	
-
-	K2_OnGameplayEffectEventCallback(AbilitySystemComponent.Get(), EventType, Effect.Handle, Info);
 }

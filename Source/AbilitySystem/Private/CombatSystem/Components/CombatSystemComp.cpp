@@ -15,6 +15,9 @@ UCombatSystem::UCombatSystem()
 
 void UCombatSystem::InitializeCombatSystem(USkeletalMeshComponent* InAvatarMeshComponent)
 {
+	if (AvatarMeshComponent)
+		return;
+
 	AvatarMeshComponent = InAvatarMeshComponent;
 
 	AbilitySystemComponent = UMKAbilitySystemComponent::GetAbilitySystemComponentFromActor(GetOwner());

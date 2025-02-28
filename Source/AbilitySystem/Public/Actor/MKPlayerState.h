@@ -18,6 +18,10 @@ class ABILITYSYSTEM_API AMKPlayerState : public APlayerState, public IAbilitySys
 public:
 	AMKPlayerState();
 
+	UFUNCTION(BlueprintCallable)
+	void SwapAbilityActorInfo(AActor* NewOwner, AActor* NewAvatar);
+
+public:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = "Ability System")
 	UAbilitySystemComponent* AbilitySystemComponent;
 

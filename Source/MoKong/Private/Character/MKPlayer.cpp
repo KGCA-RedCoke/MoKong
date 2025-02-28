@@ -18,11 +18,6 @@ AMKPlayer::AMKPlayer()
 	PlayerCameraComponent = CreateDefaultSubobject<UATPCCameraComponent>(TEXT("플레이어캠"));
 	PlayerCameraComponent->SetupAttachment(GetRootComponent());
 
-	TransformMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("변신메시"));
-	TransformMeshComponent->SetupAttachment(GetRootComponent());
-	TransformMeshComponent->SetVisibility(false);
-	TransformMeshComponent->SetActive(false);
-
 	GourdMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("호리병메시"));
 	GourdMeshComponent->SetupAttachment(GetMesh(), FName("gourd_main"));
 
@@ -168,22 +163,12 @@ void AMKPlayer::ChangeActiveMesh(const EPlayerTransformTypes TransformType)
 	switch (TransformType)
 	{
 	case EPlayerTransformTypes::Self:
-		TransformMeshComponent->SetVisibility(false);
-		TransformMeshComponent->SetActive(false);
-		GetMesh()->SetActive(true);
-		GetMesh()->SetVisibility(true, true);
-		CombatComponent->SwapWeapon(EWeaponType::BoStaff, GetMesh());
 		break;
 	case EPlayerTransformTypes::HonBaek:
 		break;
 	case EPlayerTransformTypes::Animal:
 		break;
 	case EPlayerTransformTypes::Transform:
-		TransformMeshComponent->SetVisibility(true);
-		TransformMeshComponent->SetActive(true);
-		GetMesh()->SetActive(false);
-		GetMesh()->SetVisibility(false, true);
-		CombatComponent->SwapWeapon(EWeaponType::Sword, TransformMeshComponent.Get());
 		break;
 	}
 

@@ -30,6 +30,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+
 public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
@@ -86,9 +87,6 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowprivateAccess = "true"), DisplayName = "카메라")
 	TObjectPtr<UATPCCameraComponent> PlayerCameraComponent;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowprivateAccess = "true"))
-	TObjectPtr<USkeletalMeshComponent> TransformMeshComponent;	// 변신 메시
 
 	UPROPERTY(EditDefaultsOnly,
 		BlueprintReadOnly,

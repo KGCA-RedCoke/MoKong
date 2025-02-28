@@ -73,12 +73,9 @@ void AWeaponBase::AttachWeapon()
 	GetRootComponent()->SetVisibility(true, true);
 
 	// Socket Attach
-	SM_Weapon->AttachToComponent(AvatarMeshComponent,
-								 FAttachmentTransformRules::KeepRelativeTransform,
-								 WeaponDataAsset->WeaponAttachmentData.HandSocket);
-	SK_Weapon->AttachToComponent(AvatarMeshComponent,
-								 FAttachmentTransformRules::KeepRelativeTransform,
-								 WeaponDataAsset->WeaponAttachmentData.HandSocket);
+	AttachToComponent(AvatarMeshComponent,
+					  FAttachmentTransformRules::KeepRelativeTransform,
+					  WeaponDataAsset->WeaponAttachmentData.HandSocket);
 }
 
 void AWeaponBase::DettachWeapon()

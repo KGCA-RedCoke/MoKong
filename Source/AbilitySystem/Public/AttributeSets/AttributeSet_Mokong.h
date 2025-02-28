@@ -92,9 +92,25 @@ public:
 	FGameplayAttributeData TargetFocus;
 	ATTRIBUTE_ACCESSORS(UAttributeSet_Mokong, TargetFocus)
 
+	/** 현재 강공격 게이지 */
 	UPROPERTY(BlueprintReadOnly, meta = (HideFromLevelInfos), ReplicatedUsing = OnRep_CurrentFocus)
 	FGameplayAttributeData CurrentFocus;
 	ATTRIBUTE_ACCESSORS(UAttributeSet_Mokong, CurrentFocus)
+
+	// /** 강공격 차지 속도 */
+	// UPROPERTY(BlueprintReadOnly, meta = (HideFromLevelInfos), ReplicatedUsing = OnRep_ChargeSpeed)
+	// FGameplayAttributeData ChargeSpeed;
+	// ATTRIBUTE_ACCESSORS(UAttributeSet_Mokong, ChargeSpeed)
+	//
+	// /** 공격 기력 감소*/
+	// UPROPERTY(BlueprintReadOnly, meta = (HideFromLevelInfos), ReplicatedUsing = OnRep_AttackCost)
+	// FGameplayAttributeData LightAttackCost;
+	// ATTRIBUTE_ACCESSORS(UAttributeSet_Mokong, LightAttackCost)
+	//
+	// /** 강공격 기력 소모 */
+	// UPROPERTY(BlueprintReadOnly, meta = (HideFromLevelInfos), ReplicatedUsing = OnRep_ChargeAttackCost)
+	// FGameplayAttributeData ChargeAttackCost;
+	// ATTRIBUTE_ACCESSORS(UAttributeSet_Mokong, ChargeAttackCost)
 
 protected:
 	UFUNCTION()

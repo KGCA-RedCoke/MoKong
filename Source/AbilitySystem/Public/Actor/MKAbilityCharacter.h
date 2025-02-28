@@ -35,6 +35,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void PossessedBy(AController* NewController) override;
 
 public:
 	UFUNCTION(BlueprintImplementableEvent)
@@ -79,9 +80,13 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void UpdateMotionWarpingTargetLocation(FName WarpName, const FVector& TargetLocation);
+	
 	UFUNCTION(BlueprintCallable)
 	void UpdateMotionWarpingTargetLocationAndRotation(FName           WarpName, const FVector& TargetLocation,
 													  const FRotator& TargetRotation);
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void SetOverlayMaterial(UMaterialInterface* Material);
 
 public:
 	UPROPERTY(BlueprintAssignable)

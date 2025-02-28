@@ -24,6 +24,6 @@ void AMKAbilityNPC::BeginPlay()
 		PostInitializeAbilitySystem();
 	}
 
-	Super::BeginPlay();
+	ACharacter::BeginPlay();
 
 }

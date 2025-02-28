@@ -21,6 +21,9 @@ protected:
 
 	float RemainingDuration = 0.f;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	float TickInterval = 0.1f;
+
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (BindWidget))
 	TObjectPtr<UImage> Image_Icon;
 

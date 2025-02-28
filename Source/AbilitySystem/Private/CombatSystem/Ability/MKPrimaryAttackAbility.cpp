@@ -86,33 +86,33 @@ void UMKPrimaryAttackAbility::Do_AttackTask()
 
 	MontageTask->ReadyForActivation();
 
-	FRotator TargetRotation;
-	TargetRotation.Pitch = AvatarCharacter->GetActorRotation().Pitch;
-	TargetRotation.Roll  = AvatarCharacter->GetActorRotation().Roll;
-
-	// 타게팅 된 액터가 있으면 타겟을 향해 회전
-	if (AActor* Target = CombatSystem->GetTargetActor_Implementation())
-	{
-		TargetRotation.Yaw = UKismetMathLibrary::FindLookAtRotation(
-																	AvatarCharacter->GetActorLocation(),
-																	Target->GetActorLocation()).Yaw;
-
-		AvatarCharacter->UpdateMotionWarpingTargetLocationAndRotation(
-																	  "FindTarget",
-																	  AvatarCharacter->GetActorLocation(),
-																	  TargetRotation);
-	}
-	// 아니면 플레이어라면? 플레이어 컨틀롤러 방향으로 회전
-	else if (GetAbilitySystemComponentFromActorInfo()->
-		HasMatchingGameplayTag(MoKong::CharacterTags::TAG_Character_Type_PC))
-	{
-		TargetRotation.Yaw = AvatarCharacter->GetControlRotation().Yaw;
-
-		AvatarCharacter->UpdateMotionWarpingTargetLocationAndRotation(
-																	  "FindTarget",
-																	  AvatarCharacter->GetActorLocation(),
-																	  TargetRotation);
-	}
+	// FRotator TargetRotation;
+	// TargetRotation.Pitch = AvatarCharacter->GetActorRotation().Pitch;
+	// TargetRotation.Roll  = AvatarCharacter->GetActorRotation().Roll;
+	//
+	// // 타게팅 된 액터가 있으면 타겟을 향해 회전
+	// if (AActor* Target = CombatSystem->GetTargetActor_Implementation())
+	// {
+	// 	TargetRotation.Yaw = UKismetMathLibrary::FindLookAtRotation(
+	// 																AvatarCharacter->GetActorLocation(),
+	// 																Target->GetActorLocation()).Yaw;
+	//
+	// 	AvatarCharacter->UpdateMotionWarpingTargetLocationAndRotation(
+	// 																  "FindTarget",
+	// 																  AvatarCharacter->GetActorLocation(),
+	// 																  TargetRotation);
+	// }
+	// // 아니면 플레이어라면? 플레이어 컨틀롤러 방향으로 회전
+	// else if (GetAbilitySystemComponentFromActorInfo()->
+	// 	HasMatchingGameplayTag(MoKong::CharacterTags::TAG_Character_Type_PC))
+	// {
+	// 	TargetRotation.Yaw = AvatarCharacter->GetControlRotation().Yaw;
+	//
+	// 	AvatarCharacter->UpdateMotionWarpingTargetLocationAndRotation(
+	// 																  "FindTarget",
+	// 																  AvatarCharacter->GetActorLocation(),
+	// 																  TargetRotation);
+	// }
 
 
 	bShouldEndAbility = true;

@@ -8,8 +8,7 @@
 #include "Ability/MKGameplayEffectUIData.h"
 #include "Widgets/EffectWidget_Skill.h"
 
-void UPlayerHUDAttackWidget::OnSkillSlotCooldown(const EASEffectEventType     EventType,
-									  const FActiveGameplayEffect& Effect)
+void UPlayerHUDAttackWidget::EffectChangeCallback(const EASEffectEventType EventType, const FActiveGameplayEffect& Effect)
 {
 	UE_LOG(LogTemp, Warning, TEXT("EffectChangeCallback"));
 
@@ -21,10 +20,10 @@ void UPlayerHUDAttackWidget::OnSkillSlotCooldown(const EASEffectEventType     Ev
 	FGameplayTagContainer AssetTags{};
 	Effect.Spec.GetAllAssetTags(AssetTags);
 
-	if (!UMKGameplayEffectUIData::GetGameplayEffectUIDataFromActiveEffect(Effect))
-	{
-		return;
-	}
+	// if (!UMKGameplayEffectUIData::GetGameplayEffectUIDataFromActiveEffect(Effect))
+	// {
+	// 	return;
+	// }
 
 	FMKEffectEventInfo Info{};
 	Info.bIsInhibited = Effect.bIsInhibited;
@@ -57,36 +56,4 @@ void UPlayerHUDAttackWidget::OnSkillSlotCooldown(const EASEffectEventType     Ev
 
 
 	K2_OnGameplayEffectEventCallback(AbilitySystemComponent.Get(), EventType, Effect.Handle, Info);
-}
-
-
-bool UPlayerHUDAttackWidget::InitializeAbilitySystemWidget(UAbilitySystemComponent* InOwnerAbilitySystemComponent)
-{
-	UAbilitySystemComponent* OldAbilitySystemComponent = AbilitySystemComponent.Get();
-
-	AbilitySystemComponent = Cast<UMKAbilitySystemComponent>(InOwnerAbilitySystemComponent);
-
-	if (!GetOwnerAbilitySystemComponent())
-	{
-		return false;
-	}
-
-	bool bBindingDone = false;
-
-	if (AbilitySystemComponent.IsValid())
-	{
-		bBindingDone = true;
-		AbilitySystemComponent->OnMKGameplayEffectEventDelegate.AddDynamic(this,
-																		   &UPlayerHUDAttackWidget::
-																		   OnSkillSlotCooldown);
-	}
-
-	K2_InitializeAbilitySystemWidget(bBindingDone);
-
-	return bBindingDone;
-}
-
-UMKAbilitySystemComponent* UPlayerHUDAttackWidget::GetOwnerAbilitySystemComponent() const
-{
-	return AbilitySystemComponent.Get();
 }

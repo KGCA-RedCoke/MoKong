@@ -5,6 +5,7 @@
 
 #include "AbilitySystemGlobals.h"
 #include "Ability/MKAbilitySystemComponent.h"
+#include "CombatSystem/Components/CombatSystemComp.h"
 #include "GameFramework/PlayerState.h"
 #include "Input/MKEnhancedInputComponent.h"
 
@@ -24,6 +25,7 @@ void AMKAbilityPlayer::InitializeAbilitySystem()
 
 	if (!AbilitySystemComponent)
 	{
+		UE_LOG(LogTemp, Error, TEXT("AMKAbilityPlayer::InitializeAbilitySystem - AbilitySystemComponent is nullptr"));
 		return;
 	}
 
@@ -34,7 +36,7 @@ void AMKAbilityPlayer::InitializeAbilitySystem()
 
 void AMKAbilityPlayer::PossessedBy(AController* NewController)
 {
-	Super::PossessedBy(NewController);
+	ACharacter::PossessedBy(NewController);
 
 	InitializeAbilitySystem();
 }
