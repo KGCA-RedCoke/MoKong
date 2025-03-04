@@ -57,6 +57,11 @@ public:
 	FGameplayAttributeData TargetExp;
 	ATTRIBUTE_ACCESSORS(UAttributeSet_Mokong, TargetExp)
 
+	//** 스킬 포인트 */
+	UPROPERTY(BlueprintReadOnly, meta = (HideFromLevelInfos), ReplicatedUsing = OnRep_SkillPoint)
+	FGameplayAttributeData SkillPoint;
+	ATTRIBUTE_ACCESSORS(UAttributeSet_Mokong, SkillPoint)
+
 	/** 공격력 */
 	UPROPERTY(BlueprintReadOnly, meta = (HideFromLevelInfos), ReplicatedUsing = OnRep_Attack)
 	FGameplayAttributeData Attack;
@@ -97,20 +102,20 @@ public:
 	FGameplayAttributeData CurrentFocus;
 	ATTRIBUTE_ACCESSORS(UAttributeSet_Mokong, CurrentFocus)
 
-	// /** 강공격 차지 속도 */
-	// UPROPERTY(BlueprintReadOnly, meta = (HideFromLevelInfos), ReplicatedUsing = OnRep_ChargeSpeed)
-	// FGameplayAttributeData ChargeSpeed;
-	// ATTRIBUTE_ACCESSORS(UAttributeSet_Mokong, ChargeSpeed)
-	//
-	// /** 공격 기력 감소*/
-	// UPROPERTY(BlueprintReadOnly, meta = (HideFromLevelInfos), ReplicatedUsing = OnRep_AttackCost)
-	// FGameplayAttributeData LightAttackCost;
-	// ATTRIBUTE_ACCESSORS(UAttributeSet_Mokong, LightAttackCost)
-	//
-	// /** 강공격 기력 소모 */
-	// UPROPERTY(BlueprintReadOnly, meta = (HideFromLevelInfos), ReplicatedUsing = OnRep_ChargeAttackCost)
-	// FGameplayAttributeData ChargeAttackCost;
-	// ATTRIBUTE_ACCESSORS(UAttributeSet_Mokong, ChargeAttackCost)
+	/** 강공격 차지 속도 */
+	UPROPERTY(BlueprintReadOnly, meta = (HideFromLevelInfos), ReplicatedUsing = OnRep_ChargeSpeed)
+	FGameplayAttributeData ChargeSpeed;
+	ATTRIBUTE_ACCESSORS(UAttributeSet_Mokong, ChargeSpeed)
+
+	/** 공격 기력 감소*/
+	UPROPERTY(BlueprintReadOnly, meta = (HideFromLevelInfos), ReplicatedUsing = OnRep_LightAttackCost)
+	FGameplayAttributeData LightAttackCost;
+	ATTRIBUTE_ACCESSORS(UAttributeSet_Mokong, LightAttackCost)
+
+	/** 강공격 기력 소모 */
+	UPROPERTY(BlueprintReadOnly, meta = (HideFromLevelInfos), ReplicatedUsing = OnRep_ChargeAttackCost)
+	FGameplayAttributeData ChargeAttackCost;
+	ATTRIBUTE_ACCESSORS(UAttributeSet_Mokong, ChargeAttackCost)
 
 protected:
 	UFUNCTION()
@@ -121,6 +126,9 @@ protected:
 
 	UFUNCTION()
 	virtual void OnRep_TargetExp(const FGameplayAttributeData& OldValue);
+
+	UFUNCTION()
+	virtual void OnRep_SkillPoint(const FGameplayAttributeData& OldValue);
 
 	UFUNCTION()
 	virtual void OnRep_Attack(const FGameplayAttributeData& OldValue);
@@ -145,4 +153,13 @@ protected:
 
 	UFUNCTION()
 	virtual void OnRep_CurrentFocus(const FGameplayAttributeData& OldValue);
+
+	UFUNCTION()
+	virtual void OnRep_ChargeSpeed(const FGameplayAttributeData& OldValue);
+
+	UFUNCTION()
+	virtual void OnRep_LightAttackCost(const FGameplayAttributeData& OldValue);
+
+	UFUNCTION()
+	virtual void OnRep_ChargeAttackCost(const FGameplayAttributeData& OldValue);
 };

@@ -32,7 +32,7 @@ float AMokongEnemy::SetMovementSpeed_Implementation(EAIMovementSpeed NewSpeed)
 
 void AMokongEnemy::GetIdealRange_Implementation(float& OutAttackRange, float& OutDetectRange)
 {
-	IEnemyAIInterface::GetIdealRange_Implementation(OutAttackRange, OutDetectRange);
+	Execute_GetIdealRange(this, OutAttackRange, OutDetectRange);
 }
 
 void AMokongEnemy::OnPlayerSeen_Implementation(AActor* Target)

@@ -15,13 +15,11 @@ UCombatSystem::UCombatSystem()
 
 void UCombatSystem::InitializeCombatSystem(USkeletalMeshComponent* InAvatarMeshComponent)
 {
-	if (AvatarMeshComponent)
-		return;
-
 	AvatarMeshComponent = InAvatarMeshComponent;
 
 	AbilitySystemComponent = UMKAbilitySystemComponent::GetAbilitySystemComponentFromActor(GetOwner());
-	check(AbilitySystemComponent);
+	if (!AbilitySystemComponent)
+		return;
 
 	if (bUseWeaponActor)
 	{
@@ -50,7 +48,7 @@ void UCombatSystem::InitializeCombatSystem(USkeletalMeshComponent* InAvatarMeshC
 
 void UCombatSystem::TryComboAttack_Implementation()
 {
-	AbilitySystemComponent->TryActivateAbilityByName("PrimaryAttack");
+	// AbilitySystemComponent->TryActivateAbilityByName("PrimaryAttack");
 }
 
 void UCombatSystem::TrySectionAttack_Implementation(FName SectionName)

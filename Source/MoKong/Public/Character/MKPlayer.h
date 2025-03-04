@@ -10,6 +10,8 @@
 #include "AI/Interface/EnemyAIInterface.h"
 #include "MKPlayer.generated.h"
 
+class UTransformData;
+class UMeshPartsData;
 class AMokongEnemy;
 class UATPCCameraComponent;
 class UMotionWarpingComponent;
@@ -29,12 +31,9 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-
+	virtual void PossessedBy(AController* NewController) override;
 
 public:
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-
 	UFUNCTION(BlueprintCallable)
 	AMokongEnemy* GetNearestEnemy(float Distance = 1000.f);
 
@@ -60,8 +59,24 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Transform();
 
+	UFUNCTION(BlueprintCallable)
+	void SetMeshParts(EMeshParts MeshPart, USkeletalMesh* NewMesh);
+
 private:
+	/** 메인 MeshComponent를 교체 */
 	void ChangeActiveMesh(const EPlayerTransformTypes TransformType);
+
+	/** 원래 상태로 복귀 */
+	UFUNCTION(BlueprintCallable)
+	void TransformToSelf();
+
+	/** 혼백 Active (이 경우는 메인은 교체하지 않아도 됨) */
+	UFUNCTION(BlueprintCallable)
+	void TransformToHonBaek();
+
+	/** 이 경우 메인 메시를 바꿔준다. */
+	UFUNCTION(BlueprintCallable)
+	void TransformToByeonSin();
 
 public:
 	UPROPERTY(BlueprintAssignable)
@@ -82,6 +97,9 @@ private:
 	UPROPERTY(BlueprintReadOnly, Transient, Category = "Player|State", meta=(AllowprivateAccess = "true"))
 	EPlayerState CurrentPlayerState;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(AllowprivateAccess = "true"), DisplayName= "혼백")
+	TObjectPtr<USkeletalMeshComponent> HonBaekMeshComponent;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(AllowprivateAccess = "true"), DisplayName= "호리병")
 	TObjectPtr<UStaticMeshComponent> GourdMeshComponent;
 
@@ -98,6 +116,18 @@ private:
 	UPROPERTY(BlueprintReadWrite, Category = "Player|Target", meta=(AllowprivateAccess = "true"))
 	TObjectPtr<AMokongEnemy> TargetEnemy;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Interaction", meta = (AllowPrivateAccess = "true"))
-	bool bCanInteract = false;
+	/** 저장된 파츠 */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta=(AllowprivateAccess = "true"), Category="Transform")
+	TObjectPtr<UMeshPartsData> CachedMeshPartsData;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta=(AllowprivateAccess = "true"), Category="Transform")
+	TObjectPtr<UTransformData> CachedTransformData;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta=(AllowprivateAccess = "true"), Category="Transform")
+	TSoftObjectPtr<USkeletalMesh> WukongMesh;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta=(AllowprivateAccess = "true"), Category="Transform")
+	TSoftClassPtr<UAnimInstance> WukongAnimInstance;
+
+	UPROPERTY(BlueprintReadWrite, meta=(AllowprivateAccess = "true"))
+	bool bCanInteract;
 };

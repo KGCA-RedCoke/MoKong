@@ -120,7 +120,10 @@ void UMKPrimaryAttackAbility::Do_AttackTask()
 
 void UMKPrimaryAttackAbility::EventReceived(FGameplayTag EventTag, FGameplayEventData EventData)
 {
-	if (EventTag.MatchesTag(FGameplayTag::RequestGameplayTag("Event.Montage.End")))
+	bool bTransformState = GetAbilitySystemComponentFromActorInfo()->
+			HasMatchingGameplayTag(FGameplayTag::RequestGameplayTag(FName("Status.Transform")));
+
+	if (EventTag.MatchesTag(FGameplayTag::RequestGameplayTag("Event.Montage.End")) && !bTransformState)
 	{
 		AvatarCharacter->PlayAnimMontage(EndMontage.Get(), 1.f, SectionName);
 

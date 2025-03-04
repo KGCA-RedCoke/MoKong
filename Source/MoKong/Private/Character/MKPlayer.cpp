@@ -10,6 +10,7 @@
 #include "CombatSystem/Components/CombatSystemComp.h"
 #include "Component/FootStepSFXComponent.h"
 #include "Component/LocomotionComponent.h"
+#include "Data/TransformData.h"
 #include "Engine/OverlapResult.h"
 
 // Sets default values
@@ -18,8 +19,12 @@ AMKPlayer::AMKPlayer()
 	PlayerCameraComponent = CreateDefaultSubobject<UATPCCameraComponent>(TEXT("플레이어캠"));
 	PlayerCameraComponent->SetupAttachment(GetRootComponent());
 
-	GourdMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("호리병메시"));
-	GourdMeshComponent->SetupAttachment(GetMesh(), FName("gourd_main"));
+	HonBaekMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("혼백"));
+	HonBaekMeshComponent->SetupAttachment(GetMesh());
+	HonBaekMeshComponent->SetVisibility(false);
+
+	GourdMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Gourd"));
+	GourdMeshComponent->SetupAttachment(GetMesh(), "gourd_main");
 
 	FootstepComponent = CreateDefaultSubobject<UFootStepSFXComponent>(TEXT("FootstepComponent"));
 
@@ -40,10 +45,11 @@ void AMKPlayer::BeginPlay()
 	}
 }
 
-void AMKPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void AMKPlayer::PossessedBy(AController* NewController)
 {
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
+	Super::PossessedBy(NewController);
+	
+	CombatComponent->InitializeCombatSystem(GetMesh());
 }
 
 AMokongEnemy* AMKPlayer::GetNearestEnemy(float Distance)
@@ -165,12 +171,65 @@ void AMKPlayer::ChangeActiveMesh(const EPlayerTransformTypes TransformType)
 	case EPlayerTransformTypes::Self:
 		break;
 	case EPlayerTransformTypes::HonBaek:
+		TransformToHonBaek();
 		break;
 	case EPlayerTransformTypes::Animal:
+		UE_LOG(LogTemp, Warning, TEXT( "아직 구현되지 않음." ));
 		break;
 	case EPlayerTransformTypes::Transform:
+		TransformToByeonSin();
 		break;
 	}
 
 
+}
+
+void AMKPlayer::TransformToSelf()
+{
+	GetMesh()->SetSkeletalMesh(WukongMesh.Get());
+	GetMesh()->SetAnimInstanceClass(WukongAnimInstance.Get());
+	CombatComponent->SwapWeapon(EWeaponType::BoStaff, GetMesh());
+
+	GetMesh()->SetVisibility(true, true);
+	GetMesh()->SetVisibility(false, false);
+}
+
+void AMKPlayer::TransformToHonBaek() {}
+
+void AMKPlayer::TransformToByeonSin()
+{
+	if (!CachedTransformData)
+	{
+		UE_LOG(LogTemp, Warning, TEXT( "변신 데이터가 없습니다." ));
+		return;
+	}
+
+	GetMesh()->SetSkeletalMesh(CachedTransformData->AvatarMesh.Get());
+	GetMesh()->SetAnimInstanceClass(CachedTransformData->AnimationInstance.Get());
+	CombatComponent->SwapWeapon(CachedTransformData->WeaponType, GetMesh());
+	GetMesh()->SetVisibility(false, true);
+
+	GetMesh()->SetVisibility(true, false);
+}
+
+void AMKPlayer::SetMeshParts(const EMeshParts MeshPart, USkeletalMesh* NewMesh)
+{
+	switch (MeshPart)
+	{
+	case EMeshParts::Helmet:
+		Helmet->SetSkeletalMesh(NewMesh);
+		break;
+	case EMeshParts::Suit:
+		Suit->SetSkeletalMesh(NewMesh);
+		break;
+	case EMeshParts::Shoes:
+		Shoes->SetSkeletalMesh(NewMesh);
+		break;
+	case EMeshParts::Gloves:
+		Gloves->SetSkeletalMesh(NewMesh);
+		break;
+	case EMeshParts::Head:
+		Head->SetSkeletalMesh(NewMesh);
+		break;
+	}
 }

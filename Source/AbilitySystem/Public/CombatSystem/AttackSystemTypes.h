@@ -44,7 +44,7 @@ enum class EWeaponType: uint8
 };
 
 UENUM(BlueprintType)
-enum class EWeaponRarity : uint8
+enum class EItemRarity : uint8
 {
 	Common UMETA(DisplayName = "일반급"),
 	Uncommon UMETA(DisplayName = "상급"),
@@ -113,13 +113,8 @@ struct FWeaponAttributeData : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, DisplayName = "메시(스켈레탈)")
 	TObjectPtr<USkeletalMesh> WeaponSkeletalMesh;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, DisplayName = "메시 (칼집)")
-	TObjectPtr<UStaticMesh> ScabbardStaticMesh;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, DisplayName = "메시(칼집)(스켈레탈)")
-	TObjectPtr<USkeletalMesh> ScabbardSkeletalMesh;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, DisplayName = "희귀도")
-	EWeaponRarity Rarity = EWeaponRarity::Common;
+	EItemRarity Rarity = EItemRarity::Common;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, DisplayName = "공격")
 	int AttackPower = 1.f;

@@ -46,12 +46,18 @@ void UAttributeSet_Mokong::GetLifetimeReplicatedProps(TArray<class FLifetimeProp
 	DOREPLIFETIME_WITH_PARAMS_FAST(UAttributeSet_Mokong, Level, Params);
 	DOREPLIFETIME_WITH_PARAMS_FAST(UAttributeSet_Mokong, CurrentExp, Params);
 	DOREPLIFETIME_WITH_PARAMS_FAST(UAttributeSet_Mokong, TargetExp, Params);
+	DOREPLIFETIME_WITH_PARAMS_FAST(UAttributeSet_Mokong, SkillPoint, Params);
 	DOREPLIFETIME_WITH_PARAMS_FAST(UAttributeSet_Mokong, Attack, Params);
 	DOREPLIFETIME_WITH_PARAMS_FAST(UAttributeSet_Mokong, Defense, Params);
 	DOREPLIFETIME_WITH_PARAMS_FAST(UAttributeSet_Mokong, CriticalHitChance, Params);
 	DOREPLIFETIME_WITH_PARAMS_FAST(UAttributeSet_Mokong, CriticalHitDamage, Params);
 	DOREPLIFETIME_WITH_PARAMS_FAST(UAttributeSet_Mokong, DamageBonus, Params);
 	DOREPLIFETIME_WITH_PARAMS_FAST(UAttributeSet_Mokong, DamageReduction, Params);
+	DOREPLIFETIME_WITH_PARAMS_FAST(UAttributeSet_Mokong, TargetFocus, Params);
+	DOREPLIFETIME_WITH_PARAMS_FAST(UAttributeSet_Mokong, CurrentFocus, Params);
+	DOREPLIFETIME_WITH_PARAMS_FAST(UAttributeSet_Mokong, ChargeSpeed, Params);
+	DOREPLIFETIME_WITH_PARAMS_FAST(UAttributeSet_Mokong, LightAttackCost, Params);
+	DOREPLIFETIME_WITH_PARAMS_FAST(UAttributeSet_Mokong, ChargeAttackCost, Params);
 }
 
 void UAttributeSet_Mokong::OnRep_Level(const FGameplayAttributeData& OldValue)
@@ -67,6 +73,26 @@ void UAttributeSet_Mokong::OnRep_CurrentExp(const FGameplayAttributeData& OldVal
 void UAttributeSet_Mokong::OnRep_TargetExp(const FGameplayAttributeData& OldValue)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UAttributeSet_Mokong, TargetExp, OldValue);
+}
+
+void UAttributeSet_Mokong::OnRep_SkillPoint(const FGameplayAttributeData& OldValue)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UAttributeSet_Mokong, SkillPoint, OldValue);
+}
+
+void UAttributeSet_Mokong::OnRep_ChargeSpeed(const FGameplayAttributeData& OldValue)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UAttributeSet_Mokong, ChargeSpeed, OldValue);
+}
+
+void UAttributeSet_Mokong::OnRep_LightAttackCost(const FGameplayAttributeData& OldValue)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UAttributeSet_Mokong, LightAttackCost, OldValue);
+}
+
+void UAttributeSet_Mokong::OnRep_ChargeAttackCost(const FGameplayAttributeData& OldValue)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UAttributeSet_Mokong, ChargeAttackCost, OldValue);
 }
 
 void UAttributeSet_Mokong::OnRep_Attack(const FGameplayAttributeData& OldValue)

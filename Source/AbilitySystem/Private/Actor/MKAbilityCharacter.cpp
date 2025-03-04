@@ -124,6 +124,16 @@ void AMKAbilityCharacter::PostAttack_Implementation()
 	CombatComponent->PostAttack_Implementation();
 }
 
+void AMKAbilityCharacter::GetMeshParts(USkeletalMesh*& HelmetMesh, USkeletalMesh*& SuitMesh, USkeletalMesh*& ShoesMesh,
+									   USkeletalMesh*& GlovesMesh, USkeletalMesh*& HeadMesh) const
+{
+	HelmetMesh = Helmet->GetSkeletalMeshAsset();
+	SuitMesh   = Suit->GetSkeletalMeshAsset();
+	ShoesMesh  = Shoes->GetSkeletalMeshAsset();
+	GlovesMesh = Gloves->GetSkeletalMeshAsset();
+	HeadMesh   = Head->GetSkeletalMeshAsset();
+}
+
 bool AMKAbilityCharacter::IsAlive() const
 {
 	float CurrentHealth = AbilitySystemComponent->GetNumericAttribute(UAttributeSet_Health::GetCurrentHealthAttribute());

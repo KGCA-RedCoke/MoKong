@@ -72,6 +72,11 @@ public:
 	//~~ ICombatInterface End
 
 public:
+	/** 부착된 스켈레탈 메시 파츠 반환 */
+	UFUNCTION(BlueprintCallable)
+	void GetMeshParts(USkeletalMesh*& HelmetMesh, USkeletalMesh*& SuitMesh, USkeletalMesh*& ShoesMesh,
+					  USkeletalMesh*& GlovesMesh, USkeletalMesh*& HeadMesh) const;
+
 	UFUNCTION(BlueprintCallable)
 	bool IsAlive() const;
 
@@ -80,7 +85,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void UpdateMotionWarpingTargetLocation(FName WarpName, const FVector& TargetLocation);
-	
+
 	UFUNCTION(BlueprintCallable)
 	void UpdateMotionWarpingTargetLocationAndRotation(FName           WarpName, const FVector& TargetLocation,
 													  const FRotator& TargetRotation);

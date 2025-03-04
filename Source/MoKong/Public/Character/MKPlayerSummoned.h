@@ -3,18 +3,20 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GenericTeamAgentInterface.h"
 #include "Actor/MKAbilityCharacter.h"
-#include "MKPlayerReplicated.generated.h"
+#include "AI/Interface/EnemyAIInterface.h"
+#include "MKPlayerSummoned.generated.h"
 
 class UPoseableMeshComponent;
 
 UCLASS()
-class MOKONG_API AMKPlayerReplicated : public AMKAbilityCharacter
+class MOKONG_API AMKPlayerSummoned : public AMKAbilityCharacter
 {
 	GENERATED_BODY()
 
 public:
-	AMKPlayerReplicated();
+	AMKPlayerSummoned();
 
 protected:
 	virtual void BeginPlay() override;
@@ -24,6 +26,8 @@ public:
 	void ReplicateMeshFromPlayer();
 
 private:
+
+
 	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UPoseableMeshComponent> PoseableMesh;
 };

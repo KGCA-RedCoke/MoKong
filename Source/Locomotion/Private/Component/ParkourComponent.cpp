@@ -79,6 +79,10 @@ void UParkourComponent::OnMontageBlendOut(UAnimMontage* Montage, bool bInterrupt
 {
 	if (CachedMontage == Montage)
 	{
+		auto* Cont =  GetCharacter()->GetController();
+		if (!Cont)
+			return;
+		
 		PreviousParkourState = EParkourState::None;
 
 		// 위로 올라가는 모션
@@ -96,7 +100,7 @@ void UParkourComponent::OnMontageBlendOut(UAnimMontage* Montage, bool bInterrupt
 
 			LocomotionComponent->CurrentCharacterState = ECharacterState::Stable;
 
-			GetCharacter()->GetController()->SetIgnoreMoveInput(false);
+			Cont->SetIgnoreMoveInput(false);
 		}
 		// 매달리는 모션
 		else if (CurrentParkourState == EParkourState::Hang || CurrentParkourState == EParkourState::Ledge ||
@@ -104,7 +108,7 @@ void UParkourComponent::OnMontageBlendOut(UAnimMontage* Montage, bool bInterrupt
 		{
 			GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 
-			GetCharacter()->GetController()->SetIgnoreMoveInput(false);
+			Cont->SetIgnoreMoveInput(false);
 		}
 		// 넘어가는 모션
 		else if (CurrentParkourState == EParkourState::Vault)
@@ -116,7 +120,7 @@ void UParkourComponent::OnMontageBlendOut(UAnimMontage* Montage, bool bInterrupt
 
 			LocomotionComponent->SetMovementType(EMovementType::Ground);
 
-			GetCharacter()->GetController()->SetIgnoreMoveInput(false);
+			Cont->SetIgnoreMoveInput(false);
 
 			FFindFloorResult FloorResult;
 			GetMovementComponent()->ComputeFloorDist(GetCapsuleComponent()->GetComponentLocation(),
@@ -131,13 +135,13 @@ void UParkourComponent::OnMontageBlendOut(UAnimMontage* Montage, bool bInterrupt
 															 : ECharacterState::Falling;
 			GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 
-			GetCharacter()->GetController()->SetIgnoreMoveInput(false);
+			Cont->SetIgnoreMoveInput(false);
 		}
 		else if (CurrentParkourState == EParkourState::Dodge)
 		{
 			SetParkourState(EParkourState::None);
 
-			GetCharacter()->GetController()->SetIgnoreMoveInput(false);
+			Cont->SetIgnoreMoveInput(false);
 		}
 	}
 	else if (CurrentParkourState == EParkourState::None)

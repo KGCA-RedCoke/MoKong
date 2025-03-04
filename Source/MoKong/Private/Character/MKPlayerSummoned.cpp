@@ -1,13 +1,13 @@
 ﻿// CopyRight KGCA - Team RedCoke
 
 
-#include "Character/MKPlayerReplicated.h"
+#include "Character/MKPlayerSummoned.h"
 
 #include "Components/PoseableMeshComponent.h"
 
 
 // Sets default values
-AMKPlayerReplicated::AMKPlayerReplicated()
+AMKPlayerSummoned::AMKPlayerSummoned()
 {
 	PoseableMesh = CreateDefaultSubobject<UPoseableMeshComponent>(TEXT("PoseableMesh"));
 	PoseableMesh->SetupAttachment(GetRootComponent());
@@ -20,13 +20,12 @@ AMKPlayerReplicated::AMKPlayerReplicated()
 }
 
 // Called when the game starts or when spawned
-void AMKPlayerReplicated::BeginPlay()
+void AMKPlayerSummoned::BeginPlay()
 {
 	Super::BeginPlay();
 }
 
-void AMKPlayerReplicated::ReplicateMeshFromPlayer()
+void AMKPlayerSummoned::ReplicateMeshFromPlayer()
 {
 	// PoseableMesh->CopyPoseFromSkeletalComponent()
 }
-

@@ -20,12 +20,12 @@ AMKAbilityPlayer::AMKAbilityPlayer()
 
 void AMKAbilityPlayer::InitializeAbilitySystem()
 {
+	UE_LOG( LogTemp, Warning, TEXT( "Init Ability." ) );
 	AbilitySystemComponent = Cast<
 		UMKAbilitySystemComponent>(UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(GetPlayerState()));
 
 	if (!AbilitySystemComponent)
 	{
-		UE_LOG(LogTemp, Error, TEXT("AMKAbilityPlayer::InitializeAbilitySystem - AbilitySystemComponent is nullptr"));
 		return;
 	}
 
@@ -39,6 +39,7 @@ void AMKAbilityPlayer::PossessedBy(AController* NewController)
 	ACharacter::PossessedBy(NewController);
 
 	InitializeAbilitySystem();
+
 }
 
 void AMKAbilityPlayer::OnRep_PlayerState()

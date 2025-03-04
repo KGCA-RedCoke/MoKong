@@ -55,8 +55,15 @@ void AWeaponBase::InitializeWeapon(USkeletalMeshComponent* InOwnerMeshComponent)
 
 	AttachWeapon();
 
-	DidItHitActor->SetupVariables(SK_Weapon.Get(), this);
-	SK_Weapon->SetLeaderPoseComponent(InOwnerMeshComponent);
+	if (AttributeData.WeaponSkeletalMesh)
+	{
+		DidItHitActor->SetupVariables(SK_Weapon.Get(), this);
+		SK_Weapon->SetLeaderPoseComponent(InOwnerMeshComponent);
+	}
+	else
+	{
+		DidItHitActor->SetupVariables(SM_Weapon.Get(), this);
+	}
 
 	DidItHitActor->MyActorsToIgnore.AddUnique(AvatarMeshComponent->GetOwner());
 	DidItHitActor->OnItemAdded.AddUniqueDynamic(this, &AWeaponBase::OnHitActorAdded);
@@ -145,12 +152,6 @@ void AWeaponBase::SwapWeapon(FName RowName)
 		{
 			SK_Weapon->SetSkeletalMesh(AttributeData.WeaponSkeletalMesh.Get());
 		}
-
-		// 소유자 Mesh에 따로 붙여야 함
-		if (AttributeData.ScabbardStaticMesh)
-		{}
-		if (AttributeData.ScabbardSkeletalMesh)
-		{}
 
 
 	}
