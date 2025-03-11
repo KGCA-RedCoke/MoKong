@@ -12,6 +12,7 @@
 #include "Component/LocomotionComponent.h"
 #include "Data/TransformData.h"
 #include "Engine/OverlapResult.h"
+#include "InventorySystem/Public/Actor/Gourd.h"
 
 // Sets default values
 AMKPlayer::AMKPlayer()
@@ -22,9 +23,6 @@ AMKPlayer::AMKPlayer()
 	HonBaekMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("혼백"));
 	HonBaekMeshComponent->SetupAttachment(GetMesh());
 	HonBaekMeshComponent->SetVisibility(false);
-
-	GourdMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Gourd"));
-	GourdMeshComponent->SetupAttachment(GetMesh(), "gourd_main");
 
 	FootstepComponent = CreateDefaultSubobject<UFootStepSFXComponent>(TEXT("FootstepComponent"));
 
@@ -42,13 +40,18 @@ void AMKPlayer::BeginPlay()
 			LockOnComp->OnTargetChangeDelegate.AddUniqueDynamic(this, &AMKPlayer::OnLockOnTargetChange);
 		}
 
+		GourdActor = GetWorld()->SpawnActor<AGourd>(GourdClass.Get());
+		if (GourdActor)
+		{
+			GourdActor->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, "gourd_main");
+		}
 	}
 }
 
 void AMKPlayer::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
-	
+
 	CombatComponent->InitializeCombatSystem(GetMesh());
 }
 
@@ -140,9 +143,9 @@ void AMKPlayer::OnLockOnTargetChange(AActor* NewTarget, EATPCChangeTargetReason 
 	LocomotionComponent->SetPose(TargetEnemy ? EPose::Aiming : EPose::Neutral);
 }
 
-void AMKPlayer::PreAttack_Implementation(float EffectLevel)
+void AMKPlayer::PreAttack_Implementation(TSubclassOf<UGameplayEffect> Effect, float Level)
 {
-	Super::PreAttack_Implementation(EffectLevel);
+	Super::PreAttack_Implementation(Effect, Level);
 }
 
 AActor* AMKPlayer::GetTargetActor_Implementation() const
@@ -156,61 +159,7 @@ bool AMKPlayer::IsLockingOn() const
 }
 
 void AMKPlayer::Transform()
-{
-	// Try to transform
-	const bool bShouldRevert = AbilitySystemComponent->
-			HasMatchingGameplayTag(FGameplayTag::RequestGameplayTag("Status.Transform"));
-
-	ChangeActiveMesh(bShouldRevert ? EPlayerTransformTypes::Self : EPlayerTransformTypes::Transform);
-}
-
-void AMKPlayer::ChangeActiveMesh(const EPlayerTransformTypes TransformType)
-{
-	switch (TransformType)
-	{
-	case EPlayerTransformTypes::Self:
-		break;
-	case EPlayerTransformTypes::HonBaek:
-		TransformToHonBaek();
-		break;
-	case EPlayerTransformTypes::Animal:
-		UE_LOG(LogTemp, Warning, TEXT( "아직 구현되지 않음." ));
-		break;
-	case EPlayerTransformTypes::Transform:
-		TransformToByeonSin();
-		break;
-	}
-
-
-}
-
-void AMKPlayer::TransformToSelf()
-{
-	GetMesh()->SetSkeletalMesh(WukongMesh.Get());
-	GetMesh()->SetAnimInstanceClass(WukongAnimInstance.Get());
-	CombatComponent->SwapWeapon(EWeaponType::BoStaff, GetMesh());
-
-	GetMesh()->SetVisibility(true, true);
-	GetMesh()->SetVisibility(false, false);
-}
-
-void AMKPlayer::TransformToHonBaek() {}
-
-void AMKPlayer::TransformToByeonSin()
-{
-	if (!CachedTransformData)
-	{
-		UE_LOG(LogTemp, Warning, TEXT( "변신 데이터가 없습니다." ));
-		return;
-	}
-
-	GetMesh()->SetSkeletalMesh(CachedTransformData->AvatarMesh.Get());
-	GetMesh()->SetAnimInstanceClass(CachedTransformData->AnimationInstance.Get());
-	CombatComponent->SwapWeapon(CachedTransformData->WeaponType, GetMesh());
-	GetMesh()->SetVisibility(false, true);
-
-	GetMesh()->SetVisibility(true, false);
-}
+{}
 
 void AMKPlayer::SetMeshParts(const EMeshParts MeshPart, USkeletalMesh* NewMesh)
 {

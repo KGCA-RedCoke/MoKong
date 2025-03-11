@@ -67,8 +67,11 @@ public:
 	virtual void           TrySectionAttack_Implementation(FName SectionName) override;
 	virtual AActor*        GetTargetActor_Implementation() const override;
 
-	virtual void PreAttack_Implementation(float EffectLevel) override;
+	virtual void PreAttack_Implementation(TSubclassOf<UGameplayEffect> Effect, float Level) override;
 	virtual void PostAttack_Implementation() override;
+
+	virtual void PlayHitReact_Implementation(const FVector& ImpactLocation, float Damage,
+											 const FGameplayTagContainer& AdditionalTags) override;
 	//~~ ICombatInterface End
 
 public:
@@ -79,9 +82,6 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	bool IsAlive() const;
-
-	UFUNCTION(BlueprintNativeEvent)
-	void PlayHitReact(EHitReactDirection Direction);
 
 	UFUNCTION(BlueprintCallable)
 	void UpdateMotionWarpingTargetLocation(FName WarpName, const FVector& TargetLocation);

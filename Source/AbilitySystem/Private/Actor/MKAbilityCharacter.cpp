@@ -114,14 +114,20 @@ AActor* AMKAbilityCharacter::GetTargetActor_Implementation() const
 	return CombatComponent->GetTargetActor_Implementation();
 }
 
-void AMKAbilityCharacter::PreAttack_Implementation(float EffectLevel)
+void AMKAbilityCharacter::PreAttack_Implementation(TSubclassOf<UGameplayEffect> Effect, float Level)
 {
-	CombatComponent->PreAttack_Implementation(EffectLevel);
+	CombatComponent->PreAttack_Implementation(Effect, Level);
 }
 
 void AMKAbilityCharacter::PostAttack_Implementation()
 {
 	CombatComponent->PostAttack_Implementation();
+}
+
+void AMKAbilityCharacter::PlayHitReact_Implementation(const FVector& ImpactLocation, float Damage,
+													  const FGameplayTagContainer& AdditionalTags)
+{
+	CombatComponent->PlayHitReact_Implementation(ImpactLocation, Damage, AdditionalTags);
 }
 
 void AMKAbilityCharacter::GetMeshParts(USkeletalMesh*& HelmetMesh, USkeletalMesh*& SuitMesh, USkeletalMesh*& ShoesMesh,
@@ -157,18 +163,18 @@ void AMKAbilityCharacter::UpdateMotionWarpingTargetLocationAndRotation(
 																		 TargetRotation);
 }
 
-void AMKAbilityCharacter::PlayHitReact_Implementation(EHitReactDirection Direction)
-{
-	if (IsAlive())
-	{
-		OnCharacterBaseHitReact.Broadcast(Direction);
-	}
-	else
-	{
-		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
-		OnAbilityCharacterDie.Broadcast();
-	}
-
-}
+// void AMKAbilityCharacter::PlayHitReact_Implementation(EHitReactDirection Direction)
+// {
+// 	if (IsAlive())
+// 	{
+// 		OnCharacterBaseHitReact.Broadcast(Direction);
+// 	}
+// 	else
+// 	{
+// 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+// 		GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+//
+// 		OnAbilityCharacterDie.Broadcast();
+// 	}
+//
+// }

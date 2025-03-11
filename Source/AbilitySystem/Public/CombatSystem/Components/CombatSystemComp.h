@@ -8,6 +8,7 @@
 #include "Components/ActorComponent.h"
 #include "CombatSystemComp.generated.h"
 
+struct FGameplayTagContainer;
 class UMKAbilitySystemComponent;
 class UAbilitySystemComponent;
 class AWeaponBase;
@@ -28,7 +29,7 @@ public:
 	virtual void TryComboAttack_Implementation() override;
 	virtual void TrySectionAttack_Implementation(FName SectionName) override;
 
-	virtual void PreAttack_Implementation(float EffectLevel) override;
+	virtual void PreAttack_Implementation(TSubclassOf<UGameplayEffect> Effect, float Level) override;
 	virtual void PostAttack_Implementation() override;
 
 	virtual UCombatSystem* GetCombatComponent_Implementation() override;
@@ -40,6 +41,9 @@ public:
 	virtual void           SetComboWindowOpen_Implementation(const bool Open) override;
 	virtual void           SetSectionName_Implementation(const FName& Name) override;
 	virtual AActor*        GetTargetActor_Implementation() const override;
+
+	virtual void PlayHitReact_Implementation(const FVector& ImpactLocation, float Damage,
+											 const FGameplayTagContainer& AdditionalTags) override;
 	// ~ICombatInterface
 
 	UFUNCTION(BlueprintCallable)

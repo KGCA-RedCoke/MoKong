@@ -16,6 +16,6 @@ public class MoKongTarget : TargetRules
 
 	private void RegisterModulesCreatedByRider()
 	{
-		ExtraModuleNames.AddRange(new string[] { "FootSFX", "Locomotion", "SkillSystem", "AbilitySystem", "UISystem" });
+		ExtraModuleNames.AddRange(new string[] { "FootSFX", "Locomotion", "SkillSystem", "AbilitySystem", "UISystem", "InventorySystem" });
 	}
 }

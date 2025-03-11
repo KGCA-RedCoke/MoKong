@@ -8,6 +8,7 @@
 
 class AWeaponBase;
 class UCombatSystem;
+
 // This class does not need to be modified.
 UINTERFACE()
 class UCombatInterface : public UInterface
@@ -61,10 +62,11 @@ public:
 
 	/**
 	 * 공격하기 전에 사전 정보 처리가 필요하면 여기서 재정의하세요
+	 * @param GameplayEffect
 	 * @param EffectLevel (GameplayEffect Level)
 	 */
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Combat")
-	void PreAttack(float EffectLevel = 1);
+	void PreAttack(TSubclassOf<class UGameplayEffect> Effect, float Level = 1);
 
 	/**
 	 * 공격이 끝나고 처리할 것이 있으면 여기서 재정의하세요
@@ -84,4 +86,7 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Combat")
 	AActor* GetTargetActor() const;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Combat")
+	void PlayHitReact(const FVector& ImpactLocation, float Damage, const FGameplayTagContainer& AdditionalTags);
 };

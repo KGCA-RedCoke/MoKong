@@ -33,7 +33,8 @@ public class MoKong : ModuleRules
 			"UMG",
 			"MotionWarping",
 			"AdvancedThirdPersonCamera",
-			"UISystem"
+			"UISystem",
+			"InventorySystem"
 		});
 
 		// Uncomment if you are using Slate UI

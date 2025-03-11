@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "MoKongTypes.h"
+#include "ItemTypes.h"
 #include "Engine/DataAsset.h"
 #include "MeshPartsData.generated.h"
 

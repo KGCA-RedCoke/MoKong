@@ -56,12 +56,11 @@ void UCombatSystem::TrySectionAttack_Implementation(FName SectionName)
 	ICombatInterface::TrySectionAttack_Implementation(SectionName);
 }
 
-void UCombatSystem::PreAttack_Implementation(float EffectLevel)
+void UCombatSystem::PreAttack_Implementation(TSubclassOf<UGameplayEffect> Effect, float Level)
 {
 	if (CurrentWeapon)
 	{
-		CurrentWeapon->PreAttack();
-		CurrentWeapon->EffectLevel = EffectLevel;
+		CurrentWeapon->PreAttack(Effect, Level);
 	}
 
 }
@@ -117,6 +116,12 @@ void UCombatSystem::SetSectionName_Implementation(const FName& Name)
 AActor* UCombatSystem::GetTargetActor_Implementation() const
 {
 	return TargetActor.Get();
+}
+
+void UCombatSystem::PlayHitReact_Implementation(const FVector&               ImpactLocation, float Damage,
+												const FGameplayTagContainer& AdditionalTags)
+{
+	ICombatInterface::PlayHitReact_Implementation(ImpactLocation, Damage, AdditionalTags);
 }
 
 

@@ -6,6 +6,7 @@
 #include "MKAbilitySystemBlueprintLibrary.h"
 #include "MKGameplayTags.h"
 #include "Ability/MKAbilitySystemComponent.h"
+#include "AttributeSets/AttributeSet_Mokong.h"
 
 const FMKDamageStatics* UDamageGameplayEffectExecutionCalculation::DamageStatics = nullptr;
 
@@ -23,6 +24,10 @@ UDamageGameplayEffectExecutionCalculation::UDamageGameplayEffectExecutionCalcula
 	RelevantAttributesToCapture.Add(DamageStatics->ReceivedBleedDef);
 	RelevantAttributesToCapture.Add(DamageStatics->BleedingDef);
 	RelevantAttributesToCapture.Add(DamageStatics->DamageDef);
+
+	RelevantAttributesToCapture.Add(DamageStatics->AttackDef);
+	RelevantAttributesToCapture.Add(DamageStatics->CriticalHitChanceDef);
+	RelevantAttributesToCapture.Add(DamageStatics->CriticalHitDamageDef);
 }
 
 void UDamageGameplayEffectExecutionCalculation::Execute_Implementation(
@@ -108,18 +113,42 @@ void UDamageGameplayEffectExecutionCalculation::CalculateDamageAndApply(const UM
 																		const FGameplayEffectAttributeCaptureDefinition&
 																		AttributeDef, FProperty* OutputProperty,
 																		const FGameplayTag&      DamageType,
-																		const FGameplayTag&      ResistanceTag,
+																		const FGameplayTag&      ResistnceTag,
 																		const FGameplayTag&      IgnoreResistanceTag,
 																		const FGameplayTag&      ImmunityTag)
 {
+	// 어트리뷰트 값 가져오기
+	float AttackPower = 0.f;
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(
+															   DamageStatics->AttackDef,
+															   EvaluationParameters,
+															   AttackPower);
+
+	float CriticalChance = 0.f;
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(
+															   DamageStatics->CriticalHitChanceDef,
+															   EvaluationParameters,
+															   CriticalChance);
+
+	float CriticalRate = 1.f; // 기본 배율 1.0 (치명타 아닐 경우)
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(
+															   DamageStatics->CriticalHitDamageDef,
+															   EvaluationParameters,
+															   CriticalRate);
+
 	float DamageRaw = 0.f;
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(AttributeDef, EvaluationParameters, DamageRaw);
 	DamageRaw = FMath::Max(DamageRaw, 0.f);
 
-	// No Damage, we can return.
 	if (DamageRaw == 0.f)
 	{
 		return;
+	}
+
+	// 치명타 확률 적용 (확률 기반)
+	if (FMath::FRand() <= CriticalChance)
+	{
+		DamageRaw *= CriticalRate;
 	}
 
 	// Immune to this type of damage, return early
@@ -150,8 +179,9 @@ void UDamageGameplayEffectExecutionCalculation::CalculateDamageAndApply(const UM
 
 	float Resistance_DamageMultiplier = 1.f;
 
-	const bool bIgnoreResistance = IgnoreResistanceTag.IsValid() && EvaluationParameters.SourceTags->
-			HasAny(IgnoreResistanceTag.GetSingleTagContainer());
+	const bool bIgnoreResistance =
+			IgnoreResistanceTag.IsValid()	// 저항 태그 존재 
+			&& EvaluationParameters.SourceTags->HasAny(IgnoreResistanceTag.GetSingleTagContainer());
 	if (!bIgnoreResistance)
 	{
 		// The GE doesn't have any tag bypassing the resistance, so we calculate.

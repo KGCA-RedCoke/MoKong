@@ -55,12 +55,12 @@ void UAttributeSet_Health::PostGameplayEffectExecute(const FGameplayEffectModCal
 
 			const FHitResult* Hit = Data.EffectSpec.GetContext().GetHitResult();
 
-			if (Hit)
-			{
-				EHitReactDirection Direction = EHitReactDirection::Forward;
-
-				TargetCharacter->PlayHitReact(Direction);
-			}
+			// if (Hit)
+			// {
+			// 	EHitReactDirection Direction = EHitReactDirection::Forward;
+			//
+			// 	TargetCharacter->PlayHitReact(Direction);
+			// }
 		}
 		return;
 	}

@@ -165,7 +165,6 @@ void UMKPrimaryAttackAbility::ActivateAbility(const FGameplayAbilitySpecHandle  
 	}
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-
 	Do_AttackTask();
 }
 

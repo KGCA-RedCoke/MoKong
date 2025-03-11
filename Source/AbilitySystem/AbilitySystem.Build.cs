@@ -30,7 +30,8 @@ public class AbilitySystem : ModuleRules
 				"ModelViewViewModel",
 				"DidItHit",
 				"MotionWarping",
-				"Niagara"
+				"Niagara",
+				"InventorySystem"
 			}
 		);
 	}

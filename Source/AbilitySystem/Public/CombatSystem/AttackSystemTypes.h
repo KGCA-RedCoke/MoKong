@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ItemTypes.h"
 #include "AttackSystemTypes.generated.h"
 
 class AWeaponBase;
@@ -41,17 +42,6 @@ enum class EWeaponType: uint8
 	SwordShield UMETA(DisplayName = "검과 방패"),
 	BoStaff UMETA(DisplayName = "봉"),
 	EWeaponType_MAX
-};
-
-UENUM(BlueprintType)
-enum class EItemRarity : uint8
-{
-	Common UMETA(DisplayName = "일반급"),
-	Uncommon UMETA(DisplayName = "상급"),
-	Rare UMETA(DisplayName = "우수급"),
-	Epic UMETA(DisplayName = "특급"),
-	Mythical UMETA(DisplayName = "신화급"),
-	Legendary UMETA(DisplayName = "신선급"),
 };
 
 /** 몽타주 집합 셋 */

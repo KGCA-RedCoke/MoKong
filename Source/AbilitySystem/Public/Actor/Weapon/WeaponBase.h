@@ -31,7 +31,7 @@ public:
 	void AttachWeapon();
 	UFUNCTION(BlueprintCallable)
 	void DettachWeapon();
-	void PreAttack();
+	void PreAttack(TSubclassOf<UGameplayEffect> Effect, float Level);
 	void PostAttack();
 
 public:
@@ -97,6 +97,6 @@ public:
 	float EffectLevel;
 
 private:
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly, meta= (AllowPrivateAccess = true))
 	TObjectPtr<UMKAbilitySystemComponent> AbilitySystemComponent;
 };

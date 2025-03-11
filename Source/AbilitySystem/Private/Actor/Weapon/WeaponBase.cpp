@@ -93,14 +93,23 @@ void AWeaponBase::DettachWeapon()
 	GetRootComponent()->SetVisibility(false, true);
 }
 
-void AWeaponBase::PreAttack()
+void AWeaponBase::PreAttack(TSubclassOf<UGameplayEffect> Effect, float Level)
 {
+	DamageGameplayEffect = Effect;
+	EffectLevel          = Level;
+
 	DidItHitActor->ToggleTraceCheck(true);
+
+	AbilitySystemComponent->
+			AddLooseGameplayTags(DamageGameplayEffect->GetDefaultObject<UGameplayEffect>()->GetAssetTags());
 }
 
 void AWeaponBase::PostAttack()
 {
 	DidItHitActor->ToggleTraceCheck(false);
+
+	AbilitySystemComponent->
+			RemoveLooseGameplayTags(DamageGameplayEffect->GetDefaultObject<UGameplayEffect>()->GetAssetTags());
 }
 
 void AWeaponBase::SheathWeapon(int32 Index)
