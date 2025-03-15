@@ -41,40 +41,47 @@ void UAttributeSet_Health::PostGameplayEffectExecute(const FGameplayEffectModCal
 
 	if (Data.EvaluatedData.Attribute == GetDamageAttribute())
 	{
-		// Store a local copy of the amount of Damage done and clear the Damage attribute.
 		const float LocalDamageDone = GetDamage();
 
 		SetDamage(0.f);
 
-		if (LocalDamageDone > 0.0f)
+		if (LocalDamageDone > 0.0f && TargetCharacter->IsAlive())
 		{
-			// Apply the Health change and then clamp it.
 			const float NewHealth = GetCurrentHealth() - LocalDamageDone;
 
 			SetCurrentHealth(FMath::Clamp(NewHealth, 0.0f, GetMaximumHealth()));
 
-			const FHitResult* Hit = Data.EffectSpec.GetContext().GetHitResult();
+			if (TargetCharacter->IsAlive())
+			{
+				const FHitResult* Hit = Data.EffectSpec.GetContext().GetHitResult();
 
-			// if (Hit)
-			// {
-			// 	EHitReactDirection Direction = EHitReactDirection::Forward;
-			//
-			// 	TargetCharacter->PlayHitReact(Direction);
-			// }
+				if (Hit)
+				{
+					ICombatInterface::Execute_PlayHitReact(TargetCharacter,
+														   Hit->ImpactPoint,
+														   LocalDamageDone,
+														   Data.EffectSpec.CapturedSourceTags.GetSpecTags());
+
+					TargetCharacter->OnCharacterBaseHitReact.Broadcast(EHitReactDirection::Forward);
+				}
+			}
+			else
+			{
+				TargetCharacter->OnAbilityCharacterDie.Broadcast();
+			}
+
 		}
 		return;
 	}
 
 	if (Data.EvaluatedData.Attribute == GetHealingAttribute())
 	{
-		// Store a local copy of the amount of Healing done and clear the Healing attribute.
 		const float LocalHealingDone = GetHealing();
 
 		SetHealing(0.f);
 
 		if (LocalHealingDone > 0.0f)
 		{
-			// Apply the Health change and then clamp it.
 			const float NewHealth = GetCurrentHealth() + LocalHealingDone;
 
 			SetCurrentHealth(FMath::Clamp(NewHealth, 0.0f, GetMaximumHealth()));

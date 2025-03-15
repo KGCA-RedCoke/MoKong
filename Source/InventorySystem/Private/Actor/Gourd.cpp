@@ -2,7 +2,10 @@
 
 
 #include "Actor/Gourd.h"
-#include "Ability/MKAbilitySystemComponent.h"
+
+#include "AbilitySystemComponent.h"
+#include "AbilitySystemGlobals.h"
+#include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
 
 AGourd::AGourd()
@@ -23,21 +26,22 @@ void AGourd::InitializeData()
 	Super::InitializeData();
 
 	AbilitySystemComponent =
-			UMKAbilitySystemComponent::GetAbilitySystemComponentFromActor(UGameplayStatics::GetPlayerCharacter(GetWorld(),
-																				   0));
+			UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 	check(AbilitySystemComponent);
 
 	if (auto* CastPtr = static_cast<FMKGourdItemSpec*>(ItemSpecPtr))
 	{
 		GourdData = *CastPtr;
 
-		SK_Mesh->SetSkeletalMesh(GourdData.SK_Mesh.Get());
+		Remain = GourdData.Remain;
+
+		SK_Mesh->SetSkeletalMesh(GourdData.SK_Mesh.LoadSynchronous());
 	}
 }
 
 bool AGourd::CanConsume() const
 {
-	return GourdData.Remain > 0;
+	return Remain > 0;
 }
 
 void AGourd::SwitchData(FName RowName)
@@ -48,16 +52,20 @@ void AGourd::SwitchData(FName RowName)
 	if (ItemSpecPtr)
 	{
 		GourdData = *static_cast<FMKGourdItemSpec*>(ItemSpecPtr);
+
+		Remain = GourdData.Remain;
+
+		SK_Mesh->SetSkeletalMesh(GourdData.SK_Mesh.LoadSynchronous());
 	}
 }
 
 void AGourd::ConsumeGourd()
 {
-	GourdData.Remain--;
+	Remain--;
 
 	for (auto& GE : GourdData.AssociatedGE)
 	{
-		FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(GE.Get(),
+		FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(GE.LoadSynchronous(),
 				 GourdLevel,
 				 AbilitySystemComponent->MakeEffectContext());
 

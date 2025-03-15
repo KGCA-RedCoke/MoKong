@@ -19,6 +19,11 @@ void ACrowdEnemyAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 
+	if (IGenericTeamAgentInterface* TeamAgent = Cast<IGenericTeamAgentInterface>(InPawn))
+	{
+		SetGenericTeamId(TeamAgent->GetGenericTeamId());
+	}
+
 	if (AMokongEnemy* Enemy = Cast<AMokongEnemy>(InPawn))
 	{
 		UBehaviorTree* BT = Enemy->GetBehaviorTree();

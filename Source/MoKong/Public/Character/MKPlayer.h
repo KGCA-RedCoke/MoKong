@@ -10,6 +10,8 @@
 #include "AI/Interface/EnemyAIInterface.h"
 #include "MKPlayer.generated.h"
 
+class UInventorySystemComponent;
+class AMKPlayerController;
 class AGourd;
 class UTransformData;
 class UMeshPartsData;
@@ -37,6 +39,8 @@ protected:
 public:
 	UFUNCTION(BlueprintCallable)
 	AMokongEnemy* GetNearestEnemy(float Distance = 1000.f);
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE UInventorySystemComponent* GetInventorySystemComponent() const { return InventorySystemComponent.Get(); }
 
 private:
 	UFUNCTION()
@@ -91,6 +95,9 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowprivateAccess = "true"), DisplayName = "카메라")
 	TObjectPtr<UATPCCameraComponent> PlayerCameraComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta=(AllowprivateAccess = "true"))
+	TObjectPtr<USceneCaptureComponent2D> SceneCaptureComponent;
+
 	UPROPERTY(EditDefaultsOnly,
 		BlueprintReadOnly,
 		Category = "Player|Setup",
@@ -102,15 +109,18 @@ private:
 	TObjectPtr<AMokongEnemy> TargetEnemy;
 
 	/** 저장된 파츠 */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta=(AllowprivateAccess = "true"), Category="Transform")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta=(AllowprivateAccess = "true"), Category="Player|Transform")
 	TObjectPtr<UMeshPartsData> CachedMeshPartsData;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta=(AllowprivateAccess = "true"), Category="Transform")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta=(AllowprivateAccess = "true"), Category="Player|Transform")
 	TObjectPtr<UTransformData> CachedTransformData;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta=(AllowprivateAccess = "true"), Category="Transform")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, meta=(AllowprivateAccess = "true"), Category="Player|Transform")
 	TSoftClassPtr<AGourd> GourdClass;
 
 	UPROPERTY(BlueprintReadWrite, meta=(AllowprivateAccess = "true"))
 	bool bCanInteract;
+
+	UPROPERTY(BlueprintReadWrite, meta=(AllowprivateAccess = "true"), Category= "Player|Controller")
+	TObjectPtr<UInventorySystemComponent> InventorySystemComponent;
 };

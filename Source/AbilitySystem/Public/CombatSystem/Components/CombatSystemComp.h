@@ -8,6 +8,7 @@
 #include "Components/ActorComponent.h"
 #include "CombatSystemComp.generated.h"
 
+class AWeapon;
 struct FGameplayTagContainer;
 class UMKAbilitySystemComponent;
 class UAbilitySystemComponent;
@@ -71,9 +72,9 @@ protected:
 	FDataTableRowHandle AttributeDataHandle;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combat|Startup", meta = (EditCondition="bUseWeaponActor"))
-	TMap<EWeaponType, TSubclassOf<AWeaponBase>> WeaponClasses;
+	TMap<EWeaponType, TSubclassOf<AWeapon>> WeaponClasses;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combat|State")
-	TMap<EWeaponType, AWeaponBase*> SpawnedWeapons;
+	TMap<EWeaponType, AWeapon*> SpawnedWeapons;
 
 	UPROPERTY()
 	USkeletalMeshComponent* AvatarMeshComponent;
@@ -85,7 +86,7 @@ protected:
 	EWeaponType CurrentWeaponType;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combat|State")
-	TObjectPtr<AWeaponBase> CurrentWeapon;
+	TObjectPtr<AWeapon> CurrentWeapon;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Combat|State")
 	TObjectPtr<AActor> TargetActor;

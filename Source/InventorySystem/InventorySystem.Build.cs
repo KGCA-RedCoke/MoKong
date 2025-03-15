@@ -12,6 +12,7 @@ public class InventorySystem : ModuleRules
 				"Core",
 				"Slate",
 				"SlateCore",
+				"CommonUI",
 				"UMG"
 			}
 		);
@@ -23,8 +24,8 @@ public class InventorySystem : ModuleRules
 				"Engine",
 				"InputCore",
 				"GameplayAbilities",
-				"AbilitySystem",
-				"GameplayTags"
+				"GameplayTags",
+				"DidItHit"
 			}
 		);
 	}

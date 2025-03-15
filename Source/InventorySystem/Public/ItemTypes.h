@@ -52,9 +52,7 @@ enum class ESortMethod : uint8
 {
 	SimpleSort,
 	By_Type,
-	By_Rarity,
-	By_Value,
-	By_Weight
+	By_Rarity
 };
 
 UENUM(BlueprintType)
@@ -118,6 +116,69 @@ enum class EMeshParts : uint8
 	Head UMETA(DisplayName = "머리")
 };
 
+
+UENUM(BlueprintType)
+enum class EWeaponType: uint8
+{
+	Unarmed UMETA(DisplayName = "무장 해제"),
+	Sword UMETA(DisplayName = "카타나"),
+	Bow UMETA(DisplayName = "활"),
+	SwordShield UMETA(DisplayName = "검과 방패"),
+	BoStaff UMETA(DisplayName = "봉"),
+	EWeaponType_MAX
+};
+
+/** 몽타주 집합 셋 */
+USTRUCT(BlueprintType)
+struct FWeaponMontageSet
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, DisplayName = "장착 몽타주")
+	TArray<TObjectPtr<UAnimMontage>> EquipMontage;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, DisplayName = "해제 몽타주")
+	TArray<TObjectPtr<UAnimMontage>> UnEquipMontage;
+};
+
+
+USTRUCT(BlueprintType)
+struct FWeaponCombatData
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TMap<FName, TObjectPtr<UAnimMontage>> GroundComboMontages;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TMap<FName, TObjectPtr<UAnimMontage>> AirComboMontages;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TMap<FName, TObjectPtr<UAnimMontage>> AbilityMontages;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TMap<FName, TObjectPtr<UAnimMontage>> SkillMontages;
+
+};
+
+
+USTRUCT(BlueprintType)
+struct FWeaponAttachmentData
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, DisplayName = "무기 장착 소켓")
+	FName HandSocket;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, DisplayName = "무기 부착 소켓")
+	FName HolsterSocket;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, DisplayName = "칼집 장착 소켓")
+	FName ScabbardSocket;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, DisplayName = "칼집 부착 소켓")
+	FName ScabbardHolsterSocket;
+};
+
 /* ============================== Structs ===================================*/
 
 /**
@@ -131,32 +192,52 @@ struct FMKItemSpec : public FTableRowBase
 public:
 	/** 표시 이름 */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	FName ItemName;
+	FText ItemName;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	TSoftObjectPtr<UTexture2D> IconThumbnail;
+	TSoftObjectPtr<UTexture2D> IconThumbnail = nullptr;
 
 	/** 아이템 설명 */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FText Description;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	EItemCategory Category;
+	EItemCategory Category = EItemCategory::None;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	EInventoryPanel Panel = EInventoryPanel::Items;
 
 	/** 희귀도 */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	EItemRarity Rarity;
+	EItemRarity Rarity = EItemRarity::Common;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	int32 Index;
+	bool bStackable = false;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TArray<TSoftClassPtr<class UGameplayEffect>> AssociatedGE;
 
 	friend bool operator==(const FMKItemSpec& Lhs, const FMKItemSpec& Rhs)
 	{
-		return Lhs.ItemName.IsEqual(Rhs.ItemName, ENameCase::IgnoreCase);
+		return Lhs.ItemName.EqualToCaseIgnored(Rhs.ItemName);
 	}
+};
+
+USTRUCT(BlueprintType)
+struct FMKInventoryItemSpec
+{
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	FMKItemSpec ItemData;
+
+	/** 슬롯 스택 */
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	int32 Quantity = 0;
+
+	/** 슬롯 인덱스 */
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	int32 Index = 0;
 };
 
 USTRUCT(BlueprintType)

@@ -103,15 +103,6 @@
 			]
 		},
 		{
-			"Name": "MKCombat",
-			"Enabled": false
-		},
-		{
-			"Name": "NinjaGAS",
-			"Enabled": false,
-			"MarketplaceURL": "com.epicgames.launcher://ue/Fab/product/5200fc7c-2cb4-4a2e-a204-8200cebab05d"
-		},
-		{
 			"Name": "ObjectDistribution",
 			"Enabled": true,
 			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/5a78cc6e9a1549d0bb05e8d906dac776"

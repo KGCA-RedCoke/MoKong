@@ -9,16 +9,22 @@
 #include "Character/MokongEnemy.h"
 #include "CombatSystem/Components/CombatSystemComp.h"
 #include "Component/FootStepSFXComponent.h"
+#include "Component/InventorySystemComponent.h"
 #include "Component/LocomotionComponent.h"
-#include "Data/TransformData.h"
+#include "Components/SceneCaptureComponent2D.h"
 #include "Engine/OverlapResult.h"
 #include "InventorySystem/Public/Actor/Gourd.h"
+#include "Player/MKPlayerController.h"
 
 // Sets default values
 AMKPlayer::AMKPlayer()
 {
 	PlayerCameraComponent = CreateDefaultSubobject<UATPCCameraComponent>(TEXT("플레이어캠"));
 	PlayerCameraComponent->SetupAttachment(GetRootComponent());
+
+	SceneCaptureComponent = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("SceneCapture"));
+	SceneCaptureComponent->SetupAttachment(GetRootComponent());
+	SceneCaptureComponent->ShowOnlyActorComponents(this, true);
 
 	HonBaekMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("혼백"));
 	HonBaekMeshComponent->SetupAttachment(GetMesh());
@@ -40,10 +46,16 @@ void AMKPlayer::BeginPlay()
 			LockOnComp->OnTargetChangeDelegate.AddUniqueDynamic(this, &AMKPlayer::OnLockOnTargetChange);
 		}
 
-		GourdActor = GetWorld()->SpawnActor<AGourd>(GourdClass.Get());
-		if (GourdActor)
+		if (!GourdClass.IsNull())
 		{
-			GourdActor->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, "gourd_main");
+			GourdActor = GetWorld()->SpawnActor<AGourd>(GourdClass.LoadSynchronous());
+
+			if (GourdActor)
+			{
+				GourdActor->AttachToComponent(GetMesh(),
+											  FAttachmentTransformRules::SnapToTargetIncludingScale,
+											  "gourd_main");
+			}
 		}
 	}
 }
@@ -53,6 +65,14 @@ void AMKPlayer::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 
 	CombatComponent->InitializeCombatSystem(GetMesh());
+
+	if (auto* ControllerRef = Cast<AMKPlayerController>(NewController))
+	{
+		InventorySystemComponent = ControllerRef->PlayerInventory;
+		ensure(InventorySystemComponent);
+
+		OnAbilityCharacterDie.AddUniqueDynamic(ControllerRef, &AMKPlayerController::ResetState);
+	}
 }
 
 AMokongEnemy* AMKPlayer::GetNearestEnemy(float Distance)

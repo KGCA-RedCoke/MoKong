@@ -5,7 +5,7 @@
 
 #include "AbilitySystemComponent.h"
 #include "Ability/MKAbilitySystemComponent.h"
-#include "Actor/Weapon/WeaponBase.h"
+#include "Actor/Weapon.h"
 
 UCombatSystem::UCombatSystem()
 	: bReadyToNextAttack(true)	// 처음에는 공격 가능 상태로 시작
@@ -27,10 +27,10 @@ void UCombatSystem::InitializeCombatSystem(USkeletalMeshComponent* InAvatarMeshC
 		if (WeaponClasses.IsEmpty())
 			return;
 
-		if (AWeaponBase* NewWeapon = GetWorld()->SpawnActorDeferred<AWeaponBase>(
-																				 WeaponClasses[CurrentWeaponType],
-																				 FTransform::Identity,
-																				 GetOwner()))
+		if (AWeapon* NewWeapon = GetWorld()->SpawnActorDeferred<AWeapon>(
+																		 WeaponClasses[CurrentWeaponType],
+																		 FTransform::Identity,
+																		 GetOwner()))
 		{
 			NewWeapon->FinishSpawning(FTransform::Identity);
 			NewWeapon->InitializeWeapon(InAvatarMeshComponent);
@@ -41,9 +41,9 @@ void UCombatSystem::InitializeCombatSystem(USkeletalMeshComponent* InAvatarMeshC
 		check(CurrentWeapon);
 	}
 	else
-	{}
-
-
+	{
+		
+	}
 }
 
 void UCombatSystem::TryComboAttack_Implementation()
@@ -182,10 +182,10 @@ void UCombatSystem::SwapWeapon(EWeaponType Type, USkeletalMeshComponent* InMeshC
 	}
 	else if (WeaponClasses.Contains(Type))
 	{
-		if (AWeaponBase* NewWeapon = GetWorld()->SpawnActorDeferred<AWeaponBase>(
-																				 WeaponClasses[Type],
-																				 FTransform::Identity,
-																				 GetOwner()))
+		if (AWeapon* NewWeapon = GetWorld()->SpawnActorDeferred<AWeapon>(
+																		 WeaponClasses[Type],
+																		 FTransform::Identity,
+																		 GetOwner()))
 		{
 			if (CurrentWeapon)
 			{

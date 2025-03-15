@@ -30,11 +30,14 @@ public:
 	void ConsumeGourd();
 
 public:
-	UPROPERTY(BlueprintReadOnly, Category="Item")
+	UPROPERTY(BlueprintReadOnly, Category="Item|Gourd")
 	FMKGourdItemSpec GourdData;
 
-	UPROPERTY(BlueprintReadOnly, Category="Item")
+	UPROPERTY(BlueprintReadOnly, Category="Item|Gourd")
 	float GourdLevel;	// 호리병 업그레이드 레벨
+
+	UPROPERTY(BlueprintReadOnly, Category="Item|Gourd")
+	int32 Remain;	// 잔량
 
 private:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Meta = (AllowPrivateAccess = true))

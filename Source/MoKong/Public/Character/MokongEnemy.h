@@ -35,6 +35,11 @@ public:
 	virtual void  OnHeardSomething_Implementation(const FVector& Location) override;
 	//~~ IEnemyAIInterface End ~~//
 
+	//~~ ICombatInterface ~~//
+	virtual void PreAttack_Implementation(TSubclassOf<class UGameplayEffect> Effect, float Level = 1) override;
+	virtual void PostAttack_Implementation() override;
+	//~~ ICombatInterface End ~~//
+
 	//~~ IGenericTeamAgentInterface Begin ~~//
 	virtual FGenericTeamId GetGenericTeamId() const override { return FGenericTeamId(static_cast<uint8>(TeamID)); }
 	//~~ IGenericTeamAgentInterface End ~~//
@@ -45,6 +50,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	UBehaviorTree* GetBehaviorTree() const { return BehaviorTree.Get(); }
+
+protected:
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Enemy|AI")
+	void OnHitPlayer(FHitResult LastItem);
 
 protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "Enemy|LockOn")
@@ -65,7 +74,18 @@ protected:
 	UPROPERTY(BlueprintReadWrite, Category = "Enemy|AI")
 	EAIEnemyState CurrentState;
 
-	/*/** 스켈레톤에 부착된 메시 오브젝트에 한정 #1#
+	/** 스켈레톤에 부착된 메시 오브젝트에 한정 */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Enemy|Trace")
-	TObjectPtr<UDidItHitActorComponent> WeaponTraceComponent;*/
+	TObjectPtr<UDidItHitActorComponent> PrimaryAttackTrace;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Enemy|Damage")
+	FGameplayEffectSpecHandle DamageSpec;
+	UPROPERTY(BlueprintReadWrite, Category = "Enemy|Damage")
+	TSoftObjectPtr<UAnimMontage> HitReactMontages_Front;
+	UPROPERTY(BlueprintReadWrite, Category = "Enemy|Damage")
+	TSoftObjectPtr<UAnimMontage> HitReactMontages_Back;
+	UPROPERTY(BlueprintReadWrite, Category = "Enemy|Damage")
+	TSoftObjectPtr<UAnimMontage> HitReactMontages_Left;
+	UPROPERTY(BlueprintReadWrite, Category = "Enemy|Damage")
+	TSoftObjectPtr<UAnimMontage> HitReactMontages_Right;
 };

@@ -16,7 +16,8 @@ public class AbilitySystem : ModuleRules
 				"UMG",
 				"Slate",
 				"SlateCore",
-				"GameplayAbilities"
+				"GameplayAbilities",
+				"DidItHit"
 			}
 		);
 
@@ -28,7 +29,6 @@ public class AbilitySystem : ModuleRules
 				"EnhancedInput",
 				"CommonUI",
 				"ModelViewViewModel",
-				"DidItHit",
 				"MotionWarping",
 				"Niagara",
 				"InventorySystem"

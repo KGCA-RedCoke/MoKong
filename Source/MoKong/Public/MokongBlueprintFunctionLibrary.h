@@ -14,7 +14,7 @@ class MOKONG_API UMokongBlueprintFunctionLibrary : public UBlueprintFunctionLibr
 {
 	GENERATED_BODY()
 
-
+public:
 	UFUNCTION(BlueprintCallable)
 	static EHitReactDirection GetHitDirection(AActor* Target , const FVector& ImpactPoint);
 };
