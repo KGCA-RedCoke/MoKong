@@ -11,7 +11,7 @@ AMKPlayerController::AMKPlayerController(const FObjectInitializer& ObjectInitial
 	PlayerInventory = CreateDefaultSubobject<UInventorySystemComponent>(TEXT("PlayerInventory"));
 }
 
-void AMKPlayerController::ResetState()
+void AMKPlayerController::ResetState_Implementation()
 {
 	PlayerCameraManager->StartCameraFade(0, 1.f, 5.f, FLinearColor::Black, false, true);
 	PlayerAttributeWidget->SetVisibility(ESlateVisibility::Hidden);

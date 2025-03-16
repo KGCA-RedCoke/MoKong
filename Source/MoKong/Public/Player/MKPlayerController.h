@@ -19,7 +19,7 @@ class MOKONG_API AMKPlayerController : public AMKAbilityPlayerController
 public:
 	AMKPlayerController(const FObjectInitializer& ObjectInitializer);
 
-	UFUNCTION()
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category= "Mokong|Player|Controller")
 	void ResetState();
 
 protected:

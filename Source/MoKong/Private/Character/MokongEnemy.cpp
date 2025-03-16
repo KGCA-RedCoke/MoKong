@@ -8,6 +8,7 @@
 #include "Ability/MKAbilitySystemComponent.h"
 #include "Character/MKPlayer.h"
 #include "Components/WidgetComponent.h"
+#include "UI/EnemyHealthBar.h"
 #include "UI/LockOnWidget.h"
 
 
@@ -21,8 +22,16 @@ AMokongEnemy::AMokongEnemy()
 	LockOnWidgetComponent->SetWidgetClass(ULockOnWidget::StaticClass());
 	LockOnWidgetComponent->SetVisibility(false);
 
+	EnemyHPWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("EnemyHPWidgetComponent"));
+	EnemyHPWidgetComponent->SetupAttachment(GetMesh(), TEXT("FX_head"));
+	EnemyHPWidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
+	EnemyHPWidgetComponent->SetDrawSize(FVector2D{100, 8});
+	EnemyHPWidgetComponent->SetVisibility(false);
+
 	PrimaryAttackTrace = CreateDefaultSubobject<UDidItHitActorComponent>(TEXT("PrimaryAttackTrace"));
-	PrimaryAttackTrace->OnItemAdded.AddDynamic(this, &AMokongEnemy::OnHitPlayer);
+	PrimaryAttackTrace->OnItemAdded.AddUniqueDynamic(this, &AMokongEnemy::OnHitPlayer);
+
+	OnAbilityCharacterDie.AddUniqueDynamic(this, &AMokongEnemy::OnDeath);
 }
 
 // Called when the game starts or when spawned
@@ -70,6 +79,18 @@ void AMokongEnemy::PostAttack_Implementation()
 	PrimaryAttackTrace->ToggleTraceCheck(false);
 }
 
+void AMokongEnemy::PlayHitReact_Implementation(const FVector&               ImpactLocation, float Damage,
+											   const FGameplayTagContainer& AdditionalTags)
+{
+	Super::PlayHitReact_Implementation(ImpactLocation, Damage, AdditionalTags);
+
+	if (!EnemyHPWidgetComponent->IsWidgetVisible())
+	{
+		ShowEnemyHPWidget(true);
+	}
+
+}
+
 
 void AMokongEnemy::ShowLockOnWidget(bool bShow)
 {
@@ -78,6 +99,23 @@ void AMokongEnemy::ShowLockOnWidget(bool bShow)
 	{
 		LockOnWidgetComponent->SetVisibility(bShow);
 		lockOnWidgetClassWidget->ShowWidget(bShow);
+	}
+}
+
+void AMokongEnemy::ShowEnemyHPWidget(bool bShow)
+{
+	auto* EnemyHPBar = Cast<UEnemyHealthBar>(EnemyHPWidgetComponent->GetWidget());
+	if (EnemyHPBar)
+	{
+		EnemyHPWidgetComponent->SetVisibility(bShow);
+	}
+}
+
+void AMokongEnemy::OnDeath_Implementation()
+{
+	if (EnemyHPWidgetComponent->IsWidgetVisible())
+	{
+		ShowEnemyHPWidget(false);
 	}
 }
 

@@ -38,6 +38,8 @@ public:
 	//~~ ICombatInterface ~~//
 	virtual void PreAttack_Implementation(TSubclassOf<class UGameplayEffect> Effect, float Level = 1) override;
 	virtual void PostAttack_Implementation() override;
+	virtual void PlayHitReact_Implementation(const FVector&               ImpactLocation, float Damage,
+											 const FGameplayTagContainer& AdditionalTags) override;
 	//~~ ICombatInterface End ~~//
 
 	//~~ IGenericTeamAgentInterface Begin ~~//
@@ -49,15 +51,22 @@ public:
 	void ShowLockOnWidget(bool bShow);
 
 	UFUNCTION(BlueprintCallable)
+	void ShowEnemyHPWidget(bool bShow);
+
+	UFUNCTION(BlueprintCallable)
 	UBehaviorTree* GetBehaviorTree() const { return BehaviorTree.Get(); }
 
 protected:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Enemy|AI")
 	void OnHitPlayer(FHitResult LastItem);
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Enemy|AI")
+	void OnDeath();
 
 protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "Enemy|LockOn")
 	TObjectPtr<UWidgetComponent> LockOnWidgetComponent;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "Enemy|Damage")
+	TObjectPtr<UWidgetComponent> EnemyHPWidgetComponent;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Enemy|Setup")
 	TObjectPtr<UBehaviorTree> BehaviorTree;
@@ -81,11 +90,11 @@ protected:
 	UPROPERTY(BlueprintReadWrite, Category = "Enemy|Damage")
 	FGameplayEffectSpecHandle DamageSpec;
 	UPROPERTY(BlueprintReadWrite, Category = "Enemy|Damage")
-	TSoftObjectPtr<UAnimMontage> HitReactMontages_Front;
+	TObjectPtr<UAnimMontage> HitReactMontages_Front;
 	UPROPERTY(BlueprintReadWrite, Category = "Enemy|Damage")
-	TSoftObjectPtr<UAnimMontage> HitReactMontages_Back;
+	TObjectPtr<UAnimMontage> HitReactMontages_Back;
 	UPROPERTY(BlueprintReadWrite, Category = "Enemy|Damage")
-	TSoftObjectPtr<UAnimMontage> HitReactMontages_Left;
+	TObjectPtr<UAnimMontage> HitReactMontages_Left;
 	UPROPERTY(BlueprintReadWrite, Category = "Enemy|Damage")
-	TSoftObjectPtr<UAnimMontage> HitReactMontages_Right;
+	TObjectPtr<UAnimMontage> HitReactMontages_Right;
 };

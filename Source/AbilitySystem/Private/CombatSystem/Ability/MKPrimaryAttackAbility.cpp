@@ -36,7 +36,7 @@ bool UMKPrimaryAttackAbility::CommitCheck(const FGameplayAbilitySpecHandle     H
 		return false;
 	}
 
-	return CombatSystem->CheckCommit();
+	return CombatSystem && CombatSystem->CheckCommit();
 }
 
 void UMKPrimaryAttackAbility::OnCompleted(FGameplayTag EventTag, FGameplayEventData EventData)
