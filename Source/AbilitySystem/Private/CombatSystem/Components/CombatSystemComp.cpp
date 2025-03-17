@@ -41,9 +41,7 @@ void UCombatSystem::InitializeCombatSystem(USkeletalMeshComponent* InAvatarMeshC
 		check(CurrentWeapon);
 	}
 	else
-	{
-		
-	}
+	{}
 }
 
 void UCombatSystem::TryComboAttack_Implementation()
@@ -127,11 +125,6 @@ void UCombatSystem::PlayHitReact_Implementation(const FVector&               Imp
 
 bool UCombatSystem::CheckCommit()
 {
-	if (bComboWindowOpened)
-	{
-		bReadyToNextAttack = true;
-	}
-
 	const FName PlayingSection = AvatarMeshComponent->GetAnimInstance()->Montage_GetCurrentSection();
 
 	if (PlayingSection.IsEqual(CurrentSectionName))
@@ -140,6 +133,14 @@ bool UCombatSystem::CheckCommit()
 	}
 
 	return bReadyToNextAttack;
+}
+
+void UCombatSystem::HandleInputPressed()
+{
+	if (bComboWindowOpened)
+	{
+		bReadyToNextAttack = true;
+	}
 }
 
 void UCombatSystem::SetTargetActor(AActor* InTargetActor) { TargetActor = InTargetActor; }

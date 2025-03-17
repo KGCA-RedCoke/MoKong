@@ -33,6 +33,8 @@ public:
 	virtual void  GetIdealRange_Implementation(float& OutAttackRange, float& OutDetectRange) override;
 	virtual void  OnPlayerSeen_Implementation(AActor* Target) override;
 	virtual void  OnHeardSomething_Implementation(const FVector& Location) override;
+	virtual void  OnPlayerJXSQ_Implementation(AActor* NewTarget) override;
+	virtual void OnPlayerJXSQExpired_Implementation() override;
 	//~~ IEnemyAIInterface End ~~//
 
 	//~~ ICombatInterface ~~//

@@ -789,11 +789,7 @@ void ULocomotionComponent::SetFootOffset(const FName& EnableFootIKCurve, const F
 												TraceTypeQuery1,
 												false,
 												ActorsToIgnore,
-#ifdef UE_BUILD_DEBUG
-												EDrawDebugTrace::ForOneFrame,
-#elif
-			EDrawDebugTrace::None,
-#endif
+												bEnableDebug ? EDrawDebugTrace::ForOneFrame : EDrawDebugTrace::None,
 												HitResult,
 												true);
 
@@ -1479,7 +1475,7 @@ void ULocomotionComponent::OnCharacterMovementUpdated(float DeltaSeconds, FVecto
 				  GetCharacter()->GetActorLocation() + CurrentInputDirection * 100.f,
 				  FColor::Orange,
 				  false,
-				  0.01f,
+				  bEnableDebug ? 0.1f : 0.01f,
 				  0,
 				  1.5f);
 
@@ -1490,7 +1486,7 @@ void ULocomotionComponent::OnCharacterMovementUpdated(float DeltaSeconds, FVecto
 				  GetCharacter()->GetActorLocation() + GetCharacter()->GetActorForwardVector() * 80.f,
 				  FColor::Black,
 				  false,
-				  0.01f,
+				  bEnableDebug ? 0.1f : 0.01f,
 				  0,
 				  1.5f);
 }

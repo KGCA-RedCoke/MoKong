@@ -50,6 +50,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	bool CheckCommit();
 
+	UFUNCTION(BlueprintCallable)
+	void HandleInputPressed();
+
 	void SetTargetActor(AActor* InTargetActor);
 
 	void ResetComboData();

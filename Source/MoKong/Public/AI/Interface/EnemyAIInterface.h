@@ -77,4 +77,12 @@ public:
 	/** 사운드 감지시 재정의 */
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Mokong|AI")
 	void OnHeardSomething(const FVector& Location);
+
+	/** 플레이어가 JXSQ시전 시 발동 */
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Mokong|AI")
+	void OnPlayerJXSQ(AActor* NewTarget);
+
+	/** 플레이어 JXSQ시전 만료 시 발동 */
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Mokong|AI")
+	void OnPlayerJXSQExpired();
 };

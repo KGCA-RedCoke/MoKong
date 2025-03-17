@@ -104,18 +104,18 @@ void UMKGameplayAbility::ActivateAbility(const FGameplayAbilitySpecHandle     Ha
 										 const FGameplayEventData*            TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
-
-	if (CurrentActorInfo)
-	{
-		const UAnimInstance* AnimInstance = CurrentActorInfo->SkeletalMeshComponent->GetAnimInstance();
-		if (AnimInstance && AnimInstance->GetCurveValue("DisableInput") > 0.f)
-		{
-			bInputLocked = true;
-			CancelAbility(Handle, ActorInfo, ActivationInfo, false);
-		}
-		else
-		{
-			bInputLocked = false;
-		}
-	}
+	//
+	// if (CurrentActorInfo)
+	// {
+	// 	const UAnimInstance* AnimInstance = CurrentActorInfo->SkeletalMeshComponent->GetAnimInstance();
+	// 	if (AnimInstance && AnimInstance->GetCurveValue("DisableInput") > 0.f)
+	// 	{
+	// 		bInputLocked = true;
+	// 		CancelAbility(Handle, ActorInfo, ActivationInfo, false);
+	// 	}
+	// 	else
+	// 	{
+	// 		bInputLocked = false;
+	// 	}
+	// }
 }

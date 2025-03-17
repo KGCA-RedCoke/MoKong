@@ -157,15 +157,22 @@ void UMKPrimaryAttackAbility::ActivateAbility(const FGameplayAbilitySpecHandle  
 											  const FGameplayAbilityActivationInfo ActivationInfo,
 											  const FGameplayEventData*            TriggerEventData)
 {
-	if (!CommitAbility(Handle, ActorInfo, ActivationInfo) || bInputLocked)
+	if (HasAuthorityOrPredictionKey(ActorInfo, &ActivationInfo))
 	{
-		EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
+		if (!Handle.IsValid())
+		{
+			UE_LOG(LogTemp, Error, TEXT("MKPrimaryAttackAbility::ActivateAbility - Handle is not valid"));
+			return;
+		}
 
-		return;
+		if (!CommitAbility(Handle, ActorInfo, ActivationInfo))
+		{
+			EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
+		}
+
+		Do_AttackTask();
 	}
-	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
-	Do_AttackTask();
 }
 
 void UMKPrimaryAttackAbility::EndAbility(const FGameplayAbilitySpecHandle     Handle,

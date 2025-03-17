@@ -133,6 +133,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory|Setting")
 	bool bRefreshOnClose = true;
 
+	/** 인벤토리에 사용될 패널 목록 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory|Setting")
 	TSet<EInventoryPanel> PanelsToUse;
 

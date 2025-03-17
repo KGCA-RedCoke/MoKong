@@ -4,7 +4,7 @@
 #include "UI/InventoryWidget.h"
 
 #include "CommonTextBlock.h"
-#include "Component/MKInventory.h"
+#include "Component/MKEquipmentInventory.h"
 #include "Components/HorizontalBox.h"
 #include "Components/ScrollBox.h"
 #include "Components/UniformGridPanel.h"

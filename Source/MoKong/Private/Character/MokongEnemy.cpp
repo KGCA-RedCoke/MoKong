@@ -4,10 +4,13 @@
 #include "Character/MokongEnemy.h"
 
 #include "AbilitySystemGlobals.h"
+#include "AIController.h"
 #include "DidItHitActorComponent.h"
 #include "Ability/MKAbilitySystemComponent.h"
+#include "BehaviorTree/BlackboardComponent.h"
 #include "Character/MKPlayer.h"
 #include "Components/WidgetComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "UI/EnemyHealthBar.h"
 #include "UI/LockOnWidget.h"
 
@@ -61,6 +64,34 @@ void AMokongEnemy::OnPlayerSeen_Implementation(AActor* Target)
 void AMokongEnemy::OnHeardSomething_Implementation(const FVector& Location)
 {
 	IEnemyAIInterface::OnHeardSomething_Implementation(Location);
+}
+
+void AMokongEnemy::OnPlayerJXSQ_Implementation(AActor* NewTarget)
+{
+	// Set Target new (replicated player)
+	TargetActor = NewTarget;
+
+	if (AAIController* AIC = Cast<AAIController>(GetController()))
+	{
+		if (UBlackboardComponent* BBComp = AIC->GetBlackboardComponent())
+		{
+			BBComp->SetValueAsObject(FName("Target"), TargetActor);
+		}
+	}
+}
+
+void AMokongEnemy::OnPlayerJXSQExpired_Implementation()
+{
+	TargetActor = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+	ensure(TargetActor);
+
+	if (AAIController* AIC = Cast<AAIController>(GetController()))
+	{
+		if (UBlackboardComponent* BBComp = AIC->GetBlackboardComponent())
+		{
+			BBComp->SetValueAsObject(FName("Target"), TargetActor);
+		}
+	}
 }
 
 void AMokongEnemy::PreAttack_Implementation(TSubclassOf<class UGameplayEffect> Effect, float Level)
