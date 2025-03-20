@@ -98,7 +98,10 @@ void AMokongEnemy::PreAttack_Implementation(TSubclassOf<class UGameplayEffect> E
 {
 	Super::PreAttack_Implementation(Effect, Level);
 
-	PrimaryAttackTrace->ToggleTraceCheck(true);
+	if (PrimaryAttackTrace)
+	{
+		PrimaryAttackTrace->ToggleTraceCheck(true);
+	}
 
 	DamageSpec = AbilitySystemComponent->MakeOutgoingSpec(Effect, Level, AbilitySystemComponent->MakeEffectContext());
 }
@@ -107,7 +110,10 @@ void AMokongEnemy::PostAttack_Implementation()
 {
 	Super::PostAttack_Implementation();
 
-	PrimaryAttackTrace->ToggleTraceCheck(false);
+	if (PrimaryAttackTrace)
+	{
+		PrimaryAttackTrace->ToggleTraceCheck(false);
+	}
 }
 
 void AMokongEnemy::PlayHitReact_Implementation(const FVector&               ImpactLocation, float Damage,
