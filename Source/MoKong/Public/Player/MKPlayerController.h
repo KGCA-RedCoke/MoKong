@@ -6,6 +6,7 @@
 #include "Actor/MKAbilityPlayerController.h"
 #include "MKPlayerController.generated.h"
 
+class UMKEquipmentInventory;
 class AMokongEnemy;
 class UInventorySystemComponent;
 class UPlayerHUDWidget;
@@ -45,8 +46,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category= "Mokong|Player|Widget", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UPlayerHUDWidget> PlayerAttributeWidget;
 
-	UPROPERTY(BlueprintReadWrite, Category= "Mokong|Player|Widget", meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UInventorySystemComponent> PlayerInventory;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category= "Mokong|Player|Widget", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInventorySystemComponent> Inventory_Items;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category= "Mokong|Player|Widget", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UMKEquipmentInventory> Inventory_Equipment;
 
 private:
 	/** 현재 전투중인 적 리스트 */

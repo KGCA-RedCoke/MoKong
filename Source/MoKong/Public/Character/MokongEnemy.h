@@ -34,7 +34,7 @@ public:
 	virtual void  OnPlayerSeen_Implementation(AActor* Target) override;
 	virtual void  OnHeardSomething_Implementation(const FVector& Location) override;
 	virtual void  OnPlayerJXSQ_Implementation(AActor* NewTarget) override;
-	virtual void OnPlayerJXSQExpired_Implementation() override;
+	virtual void  OnPlayerJXSQExpired_Implementation() override;
 	//~~ IEnemyAIInterface End ~~//
 
 	//~~ ICombatInterface ~~//
@@ -63,6 +63,9 @@ protected:
 	void OnHitPlayer(FHitResult LastItem);
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Enemy|AI")
 	void OnDeath();
+	// 죽었을 때 아이템을 플레이어에게 주기 위한 함수
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category= "Enemy|Rewards")
+	void GenDeathItems();
 
 protected:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category= "Enemy|LockOn")
@@ -99,4 +102,10 @@ protected:
 	TObjectPtr<UAnimMontage> HitReactMontages_Left;
 	UPROPERTY(BlueprintReadWrite, Category = "Enemy|Damage")
 	TObjectPtr<UAnimMontage> HitReactMontages_Right;
+
+	/** 죽었을 때 플레이어에게 줄 경험치, 돈 */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Enemy|Rewards")
+	TSubclassOf<UGameplayEffect> RewardAttributes;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category= "Enemy|Rewards")
+	TArray<FDataTableRowHandle> RewardItems;
 };

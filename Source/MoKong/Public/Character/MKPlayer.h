@@ -8,6 +8,7 @@
 #include "MoKongTypes.h"
 #include "AbilitySystem/Public/Actor/MKAbilityPlayer.h"
 #include "AI/Interface/EnemyAIInterface.h"
+#include "Interface/ModularCharacter.h"
 #include "MKPlayer.generated.h"
 
 class UInventorySystemComponent;
@@ -25,7 +26,7 @@ class UFootStepSFXComponent;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerStateChanged, EPlayerState, NewState);
 
 UCLASS(Blueprintable)
-class MOKONG_API AMKPlayer : public AMKAbilityPlayer, public IGenericTeamAgentInterface
+class MOKONG_API AMKPlayer : public AMKAbilityPlayer, public IGenericTeamAgentInterface, public IModularCharacter
 {
 	GENERATED_BODY()
 
@@ -57,6 +58,10 @@ public:
 	virtual void    PreAttack_Implementation(TSubclassOf<UGameplayEffect> Effect, float Level) override;
 	virtual AActor* GetTargetActor_Implementation() const override;
 	//~~ CombatInterface End ~~//
+
+	//~~ ModularCharacter Begin ~~//
+	virtual void EquipItem_Implementation(const FMKInventoryItemSpec& ItemData) override;
+	//~~ ModularCharacter End ~~//
 
 	UFUNCTION(BlueprintCallable)
 	bool IsLockingOn() const;

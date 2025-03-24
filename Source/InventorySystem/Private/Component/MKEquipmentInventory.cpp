@@ -5,7 +5,32 @@
 
 
 UMKEquipmentInventory::UMKEquipmentInventory()
-{}
+{
+	InitialInventoryPanelCount = 12;
+
+	PanelsToUse.Append({
+						   EInventoryPanel::Weapon,
+						   EInventoryPanel::Accessory,
+						   EInventoryPanel::HonBaek,
+						   EInventoryPanel::Helmet,
+						   EInventoryPanel::Gloves,
+						   EInventoryPanel::Suit,
+						   EInventoryPanel::Shoes
+					   });
+}
+
+void UMKEquipmentInventory::InitializeInventory(APlayerController* PlayerController)
+{
+	Super::InitializeInventory(PlayerController);
+}
+
+bool UMKEquipmentInventory::HandleItemUse(const EInventoryPanel Panel, const int SlotIndex)
+{
+	
+
+
+	return true;
+}
 
 bool UMKEquipmentInventory::EquipItem(const FMKInventoryItemSpec& ItemData, int32 SlotIndex)
 {

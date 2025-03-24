@@ -169,6 +169,14 @@ void UCombatSystem::UpdateComboData(TObjectPtr<UAnimMontage>& MontageToPlay, FNa
 	}
 }
 
+void UCombatSystem::SwapWeapon(FName InName) const
+{
+	if (!CurrentWeapon.Get())
+		return;
+
+	CurrentWeapon->SwapWeapon(InName);
+}
+
 void UCombatSystem::SwapWeapon(EWeaponType Type, USkeletalMeshComponent* InMeshComponent)
 {
 	if (SpawnedWeapons.Contains(Type))

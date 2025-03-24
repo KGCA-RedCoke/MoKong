@@ -11,12 +11,14 @@
 UENUM(BlueprintType)
 enum class EInventoryPanel : uint8
 {
-	Weapon,
-	Helmet,
-	Gloves,
-	Suit,
-	Shoes,
-	Accessory,
+	Weapon UMETA(DisplayName = "무기"),
+	Gourd UMETA(DisplayName = "담금주"),
+	HonBaek UMETA(DisplayName = "혼백"),
+	Helmet UMETA(DisplayName = "투구"),
+	Gloves UMETA(DisplayName = "장갑"),
+	Suit UMETA(DisplayName = "갑옷"),
+	Shoes UMETA(DisplayName = "신발"),
+	Accessory UMETA(DisplayName = "장신구"),
 	Consumable,
 	Items
 };
@@ -231,6 +233,18 @@ struct FMKInventoryItemSpec
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FMKItemSpec ItemData;
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TSoftObjectPtr<class USkeletalMesh> SK_Mesh;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TSoftObjectPtr<class UStaticMesh> SM_Mesh;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	int32 Remain;	// 잔량
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	float HealAmount;	// 회복량
+
 	/** 슬롯 스택 */
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	int32 Quantity = 0;
@@ -267,29 +281,4 @@ struct FMKGourdItemSpec : public FMKEquipmentItemSpec
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float HealAmount;	// 회복량
-};
-
-USTRUCT(BlueprintType)
-struct FSingleDTItem
-{
-	GENERATED_BODY()
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FDataTableRowHandle DT_Row;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int32 Quantity = 1;
-};
-
-USTRUCT(BlueprintType)
-struct FRandomizedLootTable
-{
-	GENERATED_BODY()
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UDataTable* DataTable;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int32 MinLootItems = 0;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int32 MaxLootItems = 0;
 };

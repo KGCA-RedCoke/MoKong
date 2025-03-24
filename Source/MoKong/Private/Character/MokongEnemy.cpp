@@ -6,9 +6,12 @@
 #include "AbilitySystemGlobals.h"
 #include "AIController.h"
 #include "DidItHitActorComponent.h"
+#include "ItemTypes.h"
 #include "Ability/MKAbilitySystemComponent.h"
+#include "AttributeSets/AttributeSet_Health.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Character/MKPlayer.h"
+#include "Component/InventorySystemComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "UI/EnemyHealthBar.h"
@@ -145,6 +148,48 @@ void AMokongEnemy::ShowEnemyHPWidget(bool bShow)
 	if (EnemyHPBar)
 	{
 		EnemyHPWidgetComponent->SetVisibility(bShow);
+	}
+}
+
+void AMokongEnemy::GenDeathItems_Implementation()
+{
+	AMKPlayer* PlayerRef = Cast<AMKPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+
+	// 경험치, 골드 부여
+	// 임시방편으로 몬스터 체력에 따라서 
+	if (auto* ASC = PlayerRef->GetMKAbilitySystemComponent())
+	{
+		if (RewardAttributes)
+		{
+			float MaxHealth = AbilitySystemComponent->
+					GetNumericAttribute(UAttributeSet_Health::GetCurrentHealthAttribute());
+
+
+			float Gold = FMath::RandRange(MaxHealth * 0.25f, MaxHealth * 0.35f);
+			float Exp  = FMath::RandRange(MaxHealth * 0.3f, MaxHealth * 0.4f);
+
+			FGameplayEffectContextHandle ContextHandle = AbilitySystemComponent->MakeEffectContext();
+			FGameplayEffectSpecHandle    SpecHandle    = AbilitySystemComponent->
+					MakeOutgoingSpec(RewardAttributes, 1, ContextHandle);
+
+			SpecHandle.Data->SetSetByCallerMagnitude(FGameplayTag::RequestGameplayTag(FName("Rewards.Gold")),
+													 Gold);
+			SpecHandle.Data->SetSetByCallerMagnitude(FGameplayTag::RequestGameplayTag(FName("Rewards.EXP")),
+													 Exp);
+
+			ASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+		}
+
+
+		for (const auto& Item : RewardItems)
+		{
+			if (FMKItemSpec* ItemSpec = Item.GetRow<FMKItemSpec>("Could not find row"))
+			{
+				PlayerRef->GetInventorySystemComponent()->AddToStackInInventory(
+																				*ItemSpec,
+																				0);
+			}
+		}
 	}
 }
 

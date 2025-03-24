@@ -43,7 +43,7 @@ public:
 	virtual void           SetSectionName_Implementation(const FName& Name) override;
 	virtual AActor*        GetTargetActor_Implementation() const override;
 
-	virtual void PlayHitReact_Implementation(const FVector& ImpactLocation, float Damage,
+	virtual void PlayHitReact_Implementation(const FVector&               ImpactLocation, float Damage,
 											 const FGameplayTagContainer& AdditionalTags) override;
 	// ~ICombatInterface
 
@@ -58,6 +58,8 @@ public:
 	void ResetComboData();
 
 	void UpdateComboData(TObjectPtr<UAnimMontage>& MontageToPlay, FName& SectionToPlay, bool bInAir = false);
+	
+	void SwapWeapon(FName InName) const;
 
 	UFUNCTION(BlueprintCallable)
 	void SwapWeapon(EWeaponType Type, USkeletalMeshComponent* InMeshComponent = nullptr);

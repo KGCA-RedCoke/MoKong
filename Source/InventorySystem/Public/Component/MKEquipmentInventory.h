@@ -9,11 +9,15 @@
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class INVENTORYSYSTEM_API UMKEquipmentInventory : public UInventorySystemComponent
-{			
+{
 	GENERATED_BODY()
 
 public:
 	UMKEquipmentInventory();
+
+public:
+	virtual void InitializeInventory(APlayerController* PlayerController) override;
+	virtual bool HandleItemUse(const EInventoryPanel Panel, const int SlotIndex) override;
 
 public:
 	UFUNCTION(BlueprintCallable)
@@ -21,10 +25,5 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-
-public:
-	void OpenInventoryWidget();
-	void CloseInventoryWidget();
-	void ToggleInventoryMenu();
 
 };
