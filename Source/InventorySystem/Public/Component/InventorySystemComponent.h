@@ -89,6 +89,9 @@ public:
 	 */
 	FMKInventoryItemSpec* GetItemBySlot(const EInventoryPanel Panel, const int SlotIndex);
 
+	UFUNCTION(BlueprintCallable, Category = "Inventory")
+	virtual bool HandleItemUse(const EInventoryPanel Panel, const int SlotIndex);
+
 	TArray<FMKInventoryItemSpec>* GetInventoryArray(const EInventoryPanel Panel);
 
 	EInventoryPanel GetActivePanel() const;
@@ -139,7 +142,7 @@ protected:
 
 	// 초기 인벤토리 패널 수
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Inventory|Setting")
-	int32 InitialInventoryPanelCount = 1;
+	int32 InitialInventoryPanelCount = 20;
 
 	/** */
 	TMap<EInventoryPanel, TArray<FMKInventoryItemSpec>> InventoryPanels;

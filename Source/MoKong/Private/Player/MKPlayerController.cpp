@@ -5,11 +5,13 @@
 
 #include "Character/MokongEnemy.h"
 #include "Component/InventorySystemComponent.h"
+#include "Component/MKEquipmentInventory.h"
 #include "UI/PlayerHUDWidget.h"
 
 AMKPlayerController::AMKPlayerController(const FObjectInitializer& ObjectInitializer)
 {
-	PlayerInventory = CreateDefaultSubobject<UInventorySystemComponent>(TEXT("PlayerInventory"));
+	Inventory_Items     = CreateDefaultSubobject<UInventorySystemComponent>(TEXT("Inventory_Items"));
+	Inventory_Equipment = CreateDefaultSubobject<UMKEquipmentInventory>(TEXT("Inventory_Equipment"));
 }
 
 void AMKPlayerController::ResetState_Implementation()

@@ -3,6 +3,8 @@
 
 #include "Component/InventorySystemComponent.h"
 #include "InventorySystemBlueprintFunctionLibrary.h"
+#include "GameFramework/Character.h"
+#include "Interface/ModularCharacter.h"
 
 
 UInventorySystemComponent::UInventorySystemComponent()
@@ -32,7 +34,7 @@ void UInventorySystemComponent::InitializeInventory(APlayerController* PlayerCon
 
 void UInventorySystemComponent::InitializePanel(EInventoryPanel Panel)
 {
-	InventoryPanels[Panel].SetNum(16);
+	InventoryPanels[Panel].SetNum(InitialInventoryPanelCount);
 
 	for (int i = 0; i < InventoryPanels[Panel].Num(); ++i)
 	{
@@ -240,12 +242,41 @@ void UInventorySystemComponent::SortByRarity(TArray<FMKInventoryItemSpec>& Inven
 
 FMKInventoryItemSpec* UInventorySystemComponent::GetItemBySlot(const EInventoryPanel Panel, const int SlotIndex)
 {
-
 	if (auto* Array = GetInventoryArray(Panel))
 	{
 		return Array->IsValidIndex(SlotIndex) ? &(*Array)[SlotIndex] : nullptr;
 	}
 	return nullptr;
+}
+
+bool UInventorySystemComponent::HandleItemUse(const EInventoryPanel Panel, const int SlotIndex)
+{
+	if (!InventoryPanels.Contains(Panel))
+	{
+		return false;
+	}
+
+	const FMKInventoryItemSpec& ItemSpec = InventoryPanels[Panel][SlotIndex];
+
+	switch (ItemSpec.ItemData.Category)
+	{
+	case EItemCategory::None:
+		break;
+	case EItemCategory::Inventory:
+		break;
+	case EItemCategory::Equipment:
+		IModularCharacter::Execute_EquipItem(PlayerControllerRef->GetCharacter(), ItemSpec);
+		break;
+	case EItemCategory::Crafting:
+		break;
+	case EItemCategory::Vendor:
+		break;
+	case EItemCategory::Storage:
+		break;
+	}
+
+
+	return false;
 }
 
 TArray<FMKInventoryItemSpec>* UInventorySystemComponent::GetInventoryArray(const EInventoryPanel Panel)

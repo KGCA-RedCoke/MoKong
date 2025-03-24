@@ -68,7 +68,7 @@ void AMKPlayer::PossessedBy(AController* NewController)
 
 	if (auto* ControllerRef = Cast<AMKPlayerController>(NewController))
 	{
-		InventorySystemComponent = ControllerRef->PlayerInventory;
+		InventorySystemComponent = ControllerRef->Inventory_Items;
 		ensure(InventorySystemComponent);
 
 		OnAbilityCharacterDie.AddUniqueDynamic(ControllerRef, &AMKPlayerController::ResetState);
@@ -171,6 +171,51 @@ void AMKPlayer::PreAttack_Implementation(TSubclassOf<UGameplayEffect> Effect, fl
 AActor* AMKPlayer::GetTargetActor_Implementation() const
 {
 	return TargetEnemy.Get();
+}
+
+void AMKPlayer::EquipItem_Implementation(const FMKInventoryItemSpec& ItemData)
+{
+
+	switch (ItemData.ItemData.Panel)
+	{
+	case EInventoryPanel::Weapon:
+		CombatComponent->SwapWeapon(FName(*(ItemData.ItemData.ItemName.ToString())));
+		break;
+	case EInventoryPanel::Helmet:
+		if (ItemData.SK_Mesh)
+		{
+			Helmet->SetSkeletalMeshAsset(ItemData.SK_Mesh.Get());
+		}
+		break;
+	case EInventoryPanel::Gloves:
+		if (ItemData.SK_Mesh)
+		{
+			Gloves->SetSkeletalMeshAsset(ItemData.SK_Mesh.Get());
+		}
+		break;
+	case EInventoryPanel::Suit:
+		if (ItemData.SK_Mesh)
+		{
+			Suit->SetSkeletalMeshAsset(ItemData.SK_Mesh.Get());
+		}
+		break;
+	case EInventoryPanel::Shoes:
+		if (ItemData.SK_Mesh)
+		{
+			Shoes->SetSkeletalMeshAsset(ItemData.SK_Mesh.Get());
+		}
+		break;
+	case EInventoryPanel::Gourd:
+		break;
+	case EInventoryPanel::HonBaek:
+		break;
+	case EInventoryPanel::Accessory:
+		break;
+	case EInventoryPanel::Consumable:
+		break;
+	case EInventoryPanel::Items:
+		break;
+	}
 }
 
 bool AMKPlayer::IsLockingOn() const

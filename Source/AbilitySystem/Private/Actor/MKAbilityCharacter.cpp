@@ -16,8 +16,6 @@ AMKAbilityCharacter::AMKAbilityCharacter()
 	MotionWarpingComponent = CreateDefaultSubobject<UMotionWarpingComponent>(TEXT("MotionWarpingComponent"));
 	CombatComponent        = CreateDefaultSubobject<UCombatSystem>(TEXT("CombatComponent"));
 
-	DeathVfx = CreateDefaultSubobject<UNiagaraComponent>(TEXT("VFX_Death"));
-
 	//~~ Modular Parts
 	Head   = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Head"));
 	Helmet = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Helmet"));
@@ -124,7 +122,7 @@ void AMKAbilityCharacter::PostAttack_Implementation()
 	CombatComponent->PostAttack_Implementation();
 }
 
-void AMKAbilityCharacter::PlayHitReact_Implementation(const FVector& ImpactLocation, float Damage,
+void AMKAbilityCharacter::PlayHitReact_Implementation(const FVector&               ImpactLocation, float Damage,
 													  const FGameplayTagContainer& AdditionalTags)
 {
 	CombatComponent->PlayHitReact_Implementation(ImpactLocation, Damage, AdditionalTags);

@@ -3,26 +3,36 @@
 
 #include "Character/MKPlayerSummoned.h"
 
+#include "AI/Interface/EnemyAIInterface.h"
+#include "CombatSystem/Components/CombatSystemComp.h"
 #include "Components/PoseableMeshComponent.h"
 
 
-// Sets default values
 AMKPlayerSummoned::AMKPlayerSummoned()
 {
-	PoseableMesh = CreateDefaultSubobject<UPoseableMeshComponent>(TEXT("PoseableMesh"));
-	PoseableMesh->SetupAttachment(GetRootComponent());
-
-	Head->SetupAttachment(PoseableMesh);
-	Helmet->SetupAttachment(PoseableMesh);
-	Suit->SetupAttachment(PoseableMesh);
-	Shoes->SetupAttachment(PoseableMesh);
-	Gloves->SetupAttachment(PoseableMesh);
+	Helmet->SetSkeletalMeshAsset(HelmetMesh.Get());
+	Suit->SetSkeletalMeshAsset(SuitMesh.Get());
+	Gloves->SetSkeletalMeshAsset(GlovesMesh.Get());
+	Shoes->SetSkeletalMeshAsset(ShoesMesh.Get());
 }
 
-// Called when the game starts or when spawned
 void AMKPlayerSummoned::BeginPlay()
 {
 	Super::BeginPlay();
+
+	SetLifeSpan(LifeTimeLevel);
+
+	CombatComponent->InitializeCombatSystem(GetMesh());
+
+	PlayAnimMontage(SummonedMontage.LoadSynchronous(), 1.f);
+
+	FTimerHandle DeadTimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(DeadTimerHandle,
+										   [&](){
+											   PlayAnimMontage(DisappearMontage.LoadSynchronous(), 1.f);
+										   },
+										   LifeTimeLevel * 0.8f,
+										   false);
 }
 
 void AMKPlayerSummoned::ReplicateMeshFromPlayer()
