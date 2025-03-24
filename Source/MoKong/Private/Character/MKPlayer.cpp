@@ -22,14 +22,6 @@ AMKPlayer::AMKPlayer()
 	PlayerCameraComponent = CreateDefaultSubobject<UATPCCameraComponent>(TEXT("플레이어캠"));
 	PlayerCameraComponent->SetupAttachment(GetRootComponent());
 
-	SceneCaptureComponent = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("SceneCapture"));
-	SceneCaptureComponent->SetupAttachment(GetRootComponent());
-	SceneCaptureComponent->ShowOnlyActorComponents(this, true);
-
-	HonBaekMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("혼백"));
-	HonBaekMeshComponent->SetupAttachment(GetMesh());
-	HonBaekMeshComponent->SetVisibility(false);
-
 	FootstepComponent = CreateDefaultSubobject<UFootStepSFXComponent>(TEXT("FootstepComponent"));
 
 	OnPlayerStateChanged.AddUniqueDynamic(this, &AMKPlayer::PlayerStateChaneDelegate);
@@ -225,6 +217,24 @@ bool AMKPlayer::IsLockingOn() const
 
 void AMKPlayer::Transform()
 {}
+
+void AMKPlayer::ToggleHidden(bool bShow)
+{
+	SetActorHiddenInGame(bShow);
+	SetActorEnableCollision(!bShow);
+
+	TArray<AActor*> ChildActors;
+
+	GetAttachedActors(ChildActors);
+	for (AActor* ChildActor : ChildActors)
+	{
+		if (ChildActor)
+		{
+			ChildActor->SetActorHiddenInGame(bShow);
+			ChildActor->SetActorEnableCollision(!bShow);
+		}
+	}
+}
 
 void AMKPlayer::SetMeshParts(const EMeshParts MeshPart, USkeletalMesh* NewMesh)
 {

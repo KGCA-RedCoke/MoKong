@@ -162,7 +162,7 @@ void AMokongEnemy::GenDeathItems_Implementation()
 		if (RewardAttributes)
 		{
 			float MaxHealth = AbilitySystemComponent->
-					GetNumericAttribute(UAttributeSet_Health::GetCurrentHealthAttribute());
+					GetNumericAttribute(UAttributeSet_Health::GetMaximumHealthAttribute());
 
 
 			float Gold = FMath::RandRange(MaxHealth * 0.25f, MaxHealth * 0.35f);

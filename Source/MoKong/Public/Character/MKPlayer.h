@@ -70,6 +70,9 @@ public:
 	void Transform();
 
 	UFUNCTION(BlueprintCallable)
+	void ToggleHidden(bool bShow);
+
+	UFUNCTION(BlueprintCallable)
 	void SetMeshParts(EMeshParts MeshPart, USkeletalMesh* NewMesh);
 
 public:
@@ -91,17 +94,11 @@ private:
 	UPROPERTY(BlueprintReadOnly, Transient, Category = "Player|State", meta=(AllowprivateAccess = "true"))
 	EPlayerState CurrentPlayerState;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta=(AllowprivateAccess = "true"), DisplayName= "혼백")
-	TObjectPtr<USkeletalMeshComponent> HonBaekMeshComponent;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(AllowprivateAccess = "true"), DisplayName= "호리병")
 	TObjectPtr<AGourd> GourdActor;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowprivateAccess = "true"), DisplayName = "카메라")
 	TObjectPtr<UATPCCameraComponent> PlayerCameraComponent;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta=(AllowprivateAccess = "true"))
-	TObjectPtr<USceneCaptureComponent2D> SceneCaptureComponent;
 
 	UPROPERTY(EditDefaultsOnly,
 		BlueprintReadOnly,
