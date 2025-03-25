@@ -87,19 +87,13 @@ protected:
 #pragma endregion
 
 #pragma region Widget
-	UPROPERTY(meta = (BindWidget))
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<UButton> Item_Button;
 
-	UPROPERTY(meta = (BindWidget))
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<UImage> Item_Image;
 
-	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UBorder> Image_Border;
-
-	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UBorder> Image_BorderStyle2;
-
-	UPROPERTY(meta = (BindWidget))
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<UTextBlock> Quantity_Text;
 #pragma endregion
 

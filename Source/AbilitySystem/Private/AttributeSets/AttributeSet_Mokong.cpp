@@ -19,6 +19,23 @@ void UAttributeSet_Mokong::PostGameplayEffectExecute(const struct FGameplayEffec
 void UAttributeSet_Mokong::PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
 {
 	Super::PostAttributeChange(Attribute, OldValue, NewValue);
+
+	// CurrentExp가 TargetExp이상이 될 경우 Level증가 및 CurrentExp 0으로 초기화 후 초과치만큼 증가, 다음 TargetExp만큼 TargetExp초기화(Level에 따라)
+	if (Attribute == GetCurrentExpAttribute())
+	{
+		if (GetCurrentExp() >= GetTargetExp())
+		{
+			const float                    ExcessExp   = GetCurrentExp() - GetTargetExp();
+			UAbilitySystemComponent* const AbilityComp = GetOwningAbilitySystemComponent();
+			AbilityComp->SetNumericAttributeBase(GetCurrentExpAttribute(), ExcessExp);
+			AbilityComp->SetNumericAttributeBase(GetLevelAttribute(), GetLevel() + 1);
+			AbilityComp->
+					SetNumericAttributeBase(GetTargetExpAttribute(),
+											GetTargetExp() + 100.f); // TODO: 레벨업시 TargetExp 증가량 조정 필요
+			AbilityComp->SetNumericAttributeBase(GetSkillPointAttribute(), GetSkillPoint() + 1);
+		}
+	}
+
 }
 
 void UAttributeSet_Mokong::PostAttributeBaseChange(const FGameplayAttribute& Attribute, float OldValue,

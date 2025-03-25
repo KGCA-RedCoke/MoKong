@@ -5,15 +5,12 @@
 
 #include "CommonTextBlock.h"
 #include "Component/MKEquipmentInventory.h"
-#include "Components/HorizontalBox.h"
-#include "Components/ScrollBox.h"
 #include "Components/UniformGridPanel.h"
 #include "Components/UniformGridSlot.h"
 #include "Components/WidgetSwitcher.h"
 #include "Sound/SoundCue.h"
 #include "UI/Panel/InventoryPanelButton.h"
 #include "UI/Slot/InventorySlot.h"
-#include "UI/Sorting/SortWindow.h"
 
 void UInventoryWidget::NativePreConstruct()
 {
@@ -33,6 +30,7 @@ void UInventoryWidget::NativeConstruct()
 		UInventorySystemComponent>(GetOwningPlayer()->GetComponentByClass(UInventorySystemComponent::StaticClass()));
 	check(OwnerInventory)
 
+
 	// TODO: Set Receiver Inventory (상호작용 가능한 개체가 인벤토리를 가지고있을 때( Chest, Vendor)
 	// SetReceiverInventory
 
@@ -42,7 +40,7 @@ void UInventoryWidget::NativeConstruct()
 	OwnerInventory->OnSwitchedActivePanel.AddUniqueDynamic(this, &ThisClass::SwitchInventoryPanel);
 	/*SortWindow->OnEndSorting.AddUniqueDynamic(this, &ThisClass::OnSortingFinished);*/
 
-	for (auto& Panel : InventoryPanels)
+	for (auto& Panel : OwnerInventory->InventoryPanels)
 	{
 		CreateInventoryPanel(Panel.Key);
 	}

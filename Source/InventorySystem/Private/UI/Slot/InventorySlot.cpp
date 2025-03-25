@@ -70,9 +70,11 @@ void UInventorySlot::SetButtonStyle(const FMKInventoryItemSpec& InItemData) cons
 	// Quantity가 0? 빈 슬롯으로 생각하겠음
 	if (InItemData.Quantity <= 0)
 	{
-		// Item_Image->SetVisibility(ESlateVisibility::Collapsed);
-		// Image_Border->SetVisibility(ESlateVisibility::Collapsed);
-		Image_BorderStyle2->SetBrushFromTexture(EmptySlotTexture.Get());
+		Item_Image->SetVisibility(ESlateVisibility::Collapsed);
+
+		FButtonStyle ButtonStyle = Item_Button->GetStyle();
+		ButtonStyle.Normal.SetResourceObject(EmptySlotTexture.Get());
+		ButtonStyle.Hovered.SetResourceObject(EmptySlotTexture.Get());
 
 		return;
 	}
@@ -81,13 +83,14 @@ void UInventorySlot::SetButtonStyle(const FMKInventoryItemSpec& InItemData) cons
 	{
 		Item_Image->SetBrushFromTexture(Thumbnail);
 		Item_Image->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
-		Image_Border->SetVisibility(ESlateVisibility::Visible);
 	}
 
 	if (RarityTextures.Contains(InItemData.ItemData.Rarity))
 	{
-		Image_Border->SetBrushFromTexture(RarityTextures[InItemData.ItemData.Rarity]);
-		Image_BorderStyle2->SetBrushFromTexture(RarityTextures2[InItemData.ItemData.Rarity]);
+		FButtonStyle ButtonStyle = Item_Button->GetStyle();
+
+		ButtonStyle.Normal.SetResourceObject(RarityTextures[InItemData.ItemData.Rarity].Get());
+		ButtonStyle.Hovered.SetResourceObject(RarityTextures2[InItemData.ItemData.Rarity].Get());
 	}
 }
 
@@ -133,9 +136,7 @@ void UInventorySlot::OnItemButtonHovered()
 }
 
 void UInventorySlot::OnItemButtonUnHovered()
-{
-	Image_Border->SetBrushColor(BorderUnHovered_Color);
-}
+{}
 
 void UInventorySlot::OnRightClick()
 {

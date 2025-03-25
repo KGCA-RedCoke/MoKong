@@ -19,11 +19,11 @@ void ACrowdEnemyAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 
+	PerceptionComponent->ForgetAll();
+
 	if (IGenericTeamAgentInterface* TeamAgent = Cast<IGenericTeamAgentInterface>(InPawn))
 	{
 		SetGenericTeamId(TeamAgent->GetGenericTeamId());
-
-		PerceptionComponent->ForgetAll();
 	}
 
 	if (AMokongEnemy* Enemy = Cast<AMokongEnemy>(InPawn))

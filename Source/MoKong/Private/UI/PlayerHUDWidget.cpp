@@ -66,6 +66,12 @@ bool UPlayerHUDWidget::InitializeAbilitySystemWidget(UAbilitySystemComponent* Ow
 		ResetDelegateHandle(CurrentFocusChangeDelegate,
 							OldAbilitySystemComponent,
 							UAttributeSet_Mokong::GetCurrentFocusAttribute());
+		ResetDelegateHandle(CurrentEXPChangeDelegate,
+							OldAbilitySystemComponent,
+							UAttributeSet_Mokong::GetCurrentExpAttribute());
+		ResetDelegateHandle(CurrentLevelChangeDelegate,
+							OldAbilitySystemComponent,
+							UAttributeSet_Mokong::GetLevelAttribute());
 	}
 
 
@@ -166,6 +172,15 @@ bool UPlayerHUDWidget::InitializeAbilitySystemWidget(UAbilitySystemComponent* Ow
 			CurrentFocusChangeDelegate = AbilitySystemComponent->
 										 GetGameplayAttributeValueChangeDelegate(UAttributeSet_Mokong::GetCurrentFocusAttribute())
 										 .AddUObject(this, &UPlayerHUDWidget::CurrentFocusChanged);
+
+			CurrentEXPChangeDelegate = AbilitySystemComponent->
+									   GetGameplayAttributeValueChangeDelegate(UAttributeSet_Mokong::GetCurrentExpAttribute())
+									   .AddUObject(this, &UPlayerHUDWidget::CurrentEXPChanged);
+
+			CurrentLevelChangeDelegate = AbilitySystemComponent->
+										 GetGameplayAttributeValueChangeDelegate(UAttributeSet_Mokong::GetLevelAttribute())
+										 .AddUObject(this, &UPlayerHUDWidget::CurrentLevelChanged);
+
 
 			const float MaxFocus = AbilitySystemComponent->
 					GetNumericAttribute(UAttributeSet_Mokong::GetTargetFocusAttribute());
@@ -291,6 +306,27 @@ void UPlayerHUDWidget::CurrentFocusChanged(const FOnAttributeChangeData& Data)
 	{
 		On_FocusFull(FMath::DivideAndRoundUp(Data.NewValue, 100.f));
 	}
+}
+
+void UPlayerHUDWidget::CurrentEXPChanged(const FOnAttributeChangeData& Data)
+{
+	if (!AbilitySystemComponent.IsValid())
+	{
+		return;
+	}
+	const float MaxEXP = AbilitySystemComponent->GetNumericAttribute(UAttributeSet_Mokong::GetTargetExpAttribute());
+
+	On_CurrentEXPChanged(Data.NewValue, Data.OldValue, MaxEXP > 0.f ? Data.NewValue / MaxEXP : 0.f);
+}
+
+void UPlayerHUDWidget::CurrentLevelChanged(const FOnAttributeChangeData& Data)
+{
+	if (!AbilitySystemComponent.IsValid())
+	{
+		return;
+	}
+
+	On_CurrentLevelChanged(Data.NewValue, Data.OldValue);
 }
 
 void UPlayerHUDWidget::BleedingChanged(const FOnAttributeChangeData& Data)

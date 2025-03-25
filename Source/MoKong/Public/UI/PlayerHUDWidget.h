@@ -38,6 +38,10 @@ public:
 	void On_CurrentManaChanged(const float NewValue, const float OldValue, const float NewPercentage);
 	UFUNCTION(BlueprintImplementableEvent, Category = "Ability System")
 	void On_CurrentFocusChanged(const float NewValue, const float OldValue, const float NewPercentage);
+	UFUNCTION(BlueprintImplementableEvent, Category= "Ability System")
+	void On_CurrentEXPChanged(const float NewValue, const float OldValue, const float NewPercentage);
+	UFUNCTION(BlueprintImplementableEvent, Category= "Ability System")
+	void On_CurrentLevelChanged(const float NewValue, const float OldValue);
 
 	// Event called when the Health Regeneration attribute value changes.
 	UFUNCTION(BlueprintImplementableEvent, Category = "Ability System")
@@ -67,6 +71,8 @@ protected:
 	FDelegateHandle CurrentStaminaChangeDelegate;
 	FDelegateHandle CurrentManaChangeDelegate;
 	FDelegateHandle CurrentFocusChangeDelegate;
+	FDelegateHandle CurrentEXPChangeDelegate;
+	FDelegateHandle CurrentLevelChangeDelegate;
 
 	FDelegateHandle HealthRegenerationChangeDelegate;
 	FDelegateHandle StaminaRegenerationChangeDelegate;
@@ -85,6 +91,8 @@ protected:
 	void CurrentStaminaChanged(const FOnAttributeChangeData& Data);
 	void CurrentManaChanged(const FOnAttributeChangeData& Data);
 	void CurrentFocusChanged(const FOnAttributeChangeData& Data);
+	void CurrentEXPChanged(const FOnAttributeChangeData& Data);
+	void CurrentLevelChanged(const FOnAttributeChangeData& Data);
 
 	void HealthRegenerationChanged(const FOnAttributeChangeData& Data);
 	void StaminaRegenerationChanged(const FOnAttributeChangeData& Data);

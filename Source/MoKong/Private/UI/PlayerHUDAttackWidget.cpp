@@ -10,8 +10,6 @@
 
 void UPlayerHUDAttackWidget::EffectChangeCallback(const EASEffectEventType EventType, const FActiveGameplayEffect& Effect)
 {
-	UE_LOG(LogTemp, Warning, TEXT("EffectChangeCallback"));
-
 	if (!AbilitySystemComponent.IsValid())
 	{
 		return;

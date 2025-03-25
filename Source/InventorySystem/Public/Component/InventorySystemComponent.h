@@ -153,4 +153,6 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Category="Inventory")
 	TObjectPtr<APlayerController> PlayerControllerRef;
+
+	friend class UInventoryWidget;
 };

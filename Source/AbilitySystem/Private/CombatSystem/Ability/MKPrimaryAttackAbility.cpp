@@ -63,10 +63,20 @@ void UMKPrimaryAttackAbility::Do_AttackTask()
 	EventTags.AddTag(FGameplayTag::RequestGameplayTag("Event.Montage.NextSection"));
 	EventTags.AddTag(FGameplayTag::RequestGameplayTag("Event.Montage.End"));
 
-	if (SectionName == "1" && GetAbilitySystemComponentFromActorInfo()->
+	const bool bFirstCombo = SectionName == "1";
+
+	if (bFirstCombo && GetAbilitySystemComponentFromActorInfo()->
 		HasMatchingGameplayTag(MoKong::Action::TAG_Action_Sprint))
 	{
 		SectionName = "1_Sprint";
+	}
+	if (!bFirstCombo)
+	{
+		if (!CheckCost(CurrentSpecHandle, CurrentActorInfo))
+		{
+			EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, true);
+		}
+		ApplyCost(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo);
 	}
 
 	MontageTask = UAbilityTask_PlayMontageAndWaitForEvent::PlayMontageAndWaitForEvent(
@@ -85,6 +95,7 @@ void UMKPrimaryAttackAbility::Do_AttackTask()
 	MontageTask->EventReceived.AddDynamic(this, &ThisClass::EventReceived);
 
 	MontageTask->ReadyForActivation();
+
 
 	// FRotator TargetRotation;
 	// TargetRotation.Pitch = AvatarCharacter->GetActorRotation().Pitch;
@@ -127,15 +138,14 @@ void UMKPrimaryAttackAbility::EventReceived(FGameplayTag EventTag, FGameplayEven
 	{
 		AvatarCharacter->PlayAnimMontage(EndMontage.Get(), 1.f, SectionName);
 
-		OnCompleted(EventTag, EventData);
+		EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, true);
+
 		return;
 	}
 
 	if (EventTag.MatchesTag(FGameplayTag::RequestGameplayTag("Event.Montage.NextSection")))
 	{
 		Do_AttackTask();
-
-		BP_ApplyGameplayEffectToOwner(CostGameplayEffectClass);
 
 		bShouldEndAbility = false;
 	}
@@ -144,7 +154,6 @@ void UMKPrimaryAttackAbility::EventReceived(FGameplayTag EventTag, FGameplayEven
 
 void UMKPrimaryAttackAbility::OnInputPressed(float TimeWaited)
 {
-	UE_LOG(LogTemp, Warning, TEXT("MKPrimaryAttackAbility::OnInputPressed"));
 
 	if (CombatSystem->CheckCommit())
 	{
@@ -161,7 +170,6 @@ void UMKPrimaryAttackAbility::ActivateAbility(const FGameplayAbilitySpecHandle  
 	{
 		if (!Handle.IsValid())
 		{
-			UE_LOG(LogTemp, Error, TEXT("MKPrimaryAttackAbility::ActivateAbility - Handle is not valid"));
 			return;
 		}
 
@@ -169,8 +177,11 @@ void UMKPrimaryAttackAbility::ActivateAbility(const FGameplayAbilitySpecHandle  
 		{
 			EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
 		}
+		else
+		{
+			Do_AttackTask();
+		}
 
-		Do_AttackTask();
 	}
 
 }
@@ -182,6 +193,13 @@ void UMKPrimaryAttackAbility::EndAbility(const FGameplayAbilitySpecHandle     Ha
 {
 	Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 
-	CombatSystem->ResetComboData();
-	MontageTask->EndTask();
+	if (CombatSystem)
+	{
+		CombatSystem->ResetComboData();
+	}
+
+	if (MontageTask && MontageTask->IsActive())
+	{
+		MontageTask->EndTask();
+	}
 }

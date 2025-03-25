@@ -78,11 +78,6 @@ protected:
 #pragma endregion
 
 #pragma region Widget
-	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UBorder> Border_Background;
-	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UImage> Image_Background;
-
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	TObjectPtr<UHorizontalBox> Panel_ButtonsHolder;
 	UPROPERTY(BlueprintReadWrite)
@@ -95,9 +90,6 @@ protected:
 
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<class UCommonTextBlock> PanelName;
-
-	UPROPERTY(meta = (BindWidget))
-	TObjectPtr<UScrollBox> ScrollBox;
 
 	/*UPROPERTY(meta = (BindWidget))
 	TObjectPtr<USortWindow> SortWindow;*/
