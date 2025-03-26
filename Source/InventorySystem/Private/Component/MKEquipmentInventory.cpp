@@ -26,10 +26,15 @@ void UMKEquipmentInventory::InitializeInventory(APlayerController* PlayerControl
 
 bool UMKEquipmentInventory::HandleItemUse(const EInventoryPanel Panel, const int SlotIndex)
 {
-	
 
 
 	return true;
+}
+
+void UMKEquipmentInventory::InitializeEquipmentInventory_Implementation(APawn* PlayerPawn)
+{
+	for (const auto& Element : SavedEquipmentData)
+	{}
 }
 
 bool UMKEquipmentInventory::EquipItem(const FMKInventoryItemSpec& ItemData, int32 SlotIndex)

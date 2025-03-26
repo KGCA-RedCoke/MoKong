@@ -76,6 +76,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Enemy|Setup")
 	TObjectPtr<UBehaviorTree> BehaviorTree;
 
+	TSubclassOf<class UGameplayEffect> DamageEffect;
+	int32                              DamageLevel;
+
 	UPROPERTY(EditDefaultsOnly,
 		BlueprintReadOnly,
 		Category = "Enemy|Setup",

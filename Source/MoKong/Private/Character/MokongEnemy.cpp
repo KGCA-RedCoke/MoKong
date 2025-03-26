@@ -1,6 +1,5 @@
 ﻿// CopyRight KGCA - Team RedCoke
 
-
 #include "Character/MokongEnemy.h"
 
 #include "AbilitySystemGlobals.h"
@@ -16,7 +15,6 @@
 #include "Kismet/GameplayStatics.h"
 #include "UI/EnemyHealthBar.h"
 #include "UI/LockOnWidget.h"
-
 
 // Sets default values
 AMokongEnemy::AMokongEnemy()
@@ -106,7 +104,8 @@ void AMokongEnemy::PreAttack_Implementation(TSubclassOf<class UGameplayEffect> E
 		PrimaryAttackTrace->ToggleTraceCheck(true);
 	}
 
-	DamageSpec = AbilitySystemComponent->MakeOutgoingSpec(Effect, Level, AbilitySystemComponent->MakeEffectContext());
+	DamageEffect = Effect;
+	DamageLevel  = Level;
 }
 
 void AMokongEnemy::PostAttack_Implementation()
@@ -185,9 +184,7 @@ void AMokongEnemy::GenDeathItems_Implementation()
 		{
 			if (FMKItemSpec* ItemSpec = Item.GetRow<FMKItemSpec>("Could not find row"))
 			{
-				PlayerRef->GetInventorySystemComponent()->AddToStackInInventory(
-																				*ItemSpec,
-																				0);
+				PlayerRef->GetInventorySystemComponent()->AddItemToInventory(*ItemSpec);
 			}
 		}
 	}
@@ -205,6 +202,10 @@ void AMokongEnemy::OnHitPlayer_Implementation(FHitResult LastItem)
 {
 	if (UAbilitySystemComponent* ASC = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(LastItem.GetActor()))
 	{
+		DamageSpec = AbilitySystemComponent->MakeOutgoingSpec(DamageEffect,
+															  DamageLevel,
+															  AbilitySystemComponent->MakeEffectContext());
+
 		DamageSpec.Data->GetContext().AddHitResult(LastItem);
 
 		ASC->ApplyGameplayEffectSpecToSelf(*DamageSpec.Data.Get());

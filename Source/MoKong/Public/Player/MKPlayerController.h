@@ -41,6 +41,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void OnPossess(APawn* InPawn) override;
 
 public:
 	UPROPERTY(BlueprintReadWrite, Category= "Mokong|Player|Widget", meta = (AllowPrivateAccess = "true"))

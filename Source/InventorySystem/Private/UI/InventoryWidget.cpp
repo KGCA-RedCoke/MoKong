@@ -40,7 +40,7 @@ void UInventoryWidget::NativeConstruct()
 	OwnerInventory->OnSwitchedActivePanel.AddUniqueDynamic(this, &ThisClass::SwitchInventoryPanel);
 	/*SortWindow->OnEndSorting.AddUniqueDynamic(this, &ThisClass::OnSortingFinished);*/
 
-	for (auto& Panel : OwnerInventory->InventoryPanels)
+	for (auto& Panel : InventoryPanels)
 	{
 		CreateInventoryPanel(Panel.Key);
 	}

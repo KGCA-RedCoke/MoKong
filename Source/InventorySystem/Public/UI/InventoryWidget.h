@@ -102,7 +102,7 @@ protected:
 
 #pragma region Data
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	int32 RowLength;
+	int32 RowLength = 4;
 	UPROPERTY()
 	int32 FocusedSlot;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)

@@ -40,6 +40,7 @@ public:
 						  int32                      Index);
 
 	/* 슬롯의 데이터를 덮어쓰기 */
+	UFUNCTION(BlueprintCallable)
 	void OverwriteSlot(const FMKInventoryItemSpec& NewSlotData);
 
 	/* 슬롯의 초기화가 완료되었을 때 이 함수를 호출 */

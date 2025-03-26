@@ -18,6 +18,17 @@ UMKGameplayAbility::UMKGameplayAbility()
 	NetExecutionPolicy = EGameplayAbilityNetExecutionPolicy::ServerOnly; // 싱글 게임은 서버에서만 실행
 }
 
+bool UMKGameplayAbility::CheckCanbeInput() const
+{
+	if (CurrentActorInfo)
+	{
+		const UAnimInstance* AnimInstance = CurrentActorInfo->SkeletalMeshComponent->GetAnimInstance();
+		return !(AnimInstance && AnimInstance->GetCurveValue("DisableInput") > 0.f);
+	}
+
+	return true;
+}
+
 void UMKGameplayAbility::OnAvatarSet(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec)
 {
 	Super::OnAvatarSet(ActorInfo, Spec);
@@ -104,18 +115,5 @@ void UMKGameplayAbility::ActivateAbility(const FGameplayAbilitySpecHandle     Ha
 										 const FGameplayEventData*            TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
-	//
-	// if (CurrentActorInfo)
-	// {
-	// 	const UAnimInstance* AnimInstance = CurrentActorInfo->SkeletalMeshComponent->GetAnimInstance();
-	// 	if (AnimInstance && AnimInstance->GetCurveValue("DisableInput") > 0.f)
-	// 	{
-	// 		bInputLocked = true;
-	// 		CancelAbility(Handle, ActorInfo, ActivationInfo, false);
-	// 	}
-	// 	else
-	// 	{
-	// 		bInputLocked = false;
-	// 	}
-	// }
+
 }

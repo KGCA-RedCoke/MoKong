@@ -12,15 +12,11 @@
 
 // Sets default values
 AMKAbilityPlayer::AMKAbilityPlayer()
-{
-	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-
-}
+{}
 
 void AMKAbilityPlayer::InitializeAbilitySystem()
 {
-	UE_LOG( LogTemp, Warning, TEXT( "Init Ability." ) );
+	UE_LOG(LogTemp, Warning, TEXT( "Init Ability." ));
 	AbilitySystemComponent = Cast<
 		UMKAbilitySystemComponent>(UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(GetPlayerState()));
 

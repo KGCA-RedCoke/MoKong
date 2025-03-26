@@ -22,6 +22,9 @@ public:
 	FORCEINLINE EMKAbilityActivationType GetActivationType() const { return ActivationType; }
 	FORCEINLINE FName                    GetAbilityID() const { return AbilityID; }
 
+	UFUNCTION(BlueprintCallable)
+	bool CheckCanbeInput() const;
+
 	// Beginplay와 비슷한 열할 (패시브 스킬이나 시작하자마자 어빌리티를 부여하고 싶을 때 여기서 처리)
 	virtual void OnAvatarSet(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec) override;
 
@@ -67,9 +70,6 @@ public:
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "InputSystem|Ability Activation")
 	EMKAbilityActivationType ActivationType;
-
-	UPROPERTY()
-	bool bInputLocked;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Ability")
 	TObjectPtr<AMKAbilityCharacter> AvatarCharacter;

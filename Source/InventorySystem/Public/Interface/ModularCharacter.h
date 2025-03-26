@@ -26,5 +26,6 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Inventory|Modular")
 	void EquipItem(const FMKInventoryItemSpec& ItemData);
 
-
+	// UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Inventory|Modular")
+	// void EquipItems(const )
 };

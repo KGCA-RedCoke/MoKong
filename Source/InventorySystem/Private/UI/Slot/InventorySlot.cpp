@@ -76,6 +76,7 @@ void UInventorySlot::SetButtonStyle(const FMKInventoryItemSpec& InItemData) cons
 		ButtonStyle.Normal.SetResourceObject(EmptySlotTexture.Get());
 		ButtonStyle.Hovered.SetResourceObject(EmptySlotTexture.Get());
 
+		Item_Button->SetStyle(ButtonStyle);
 		return;
 	}
 
@@ -91,6 +92,8 @@ void UInventorySlot::SetButtonStyle(const FMKInventoryItemSpec& InItemData) cons
 
 		ButtonStyle.Normal.SetResourceObject(RarityTextures[InItemData.ItemData.Rarity].Get());
 		ButtonStyle.Hovered.SetResourceObject(RarityTextures2[InItemData.ItemData.Rarity].Get());
+		Item_Button->SetStyle(ButtonStyle);
+
 	}
 }
 

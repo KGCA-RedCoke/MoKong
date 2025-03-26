@@ -42,6 +42,24 @@ void UInventorySystemComponent::InitializePanel(EInventoryPanel Panel)
 	}
 }
 
+void UInventorySystemComponent::AddItemToInventory(const FMKItemSpec& ItemSpec)
+{
+	if (!PlayerControllerRef->HasAuthority())
+	{
+		return;
+	}
+
+	const EInventoryPanel PanelToInsert =
+			UInventorySystemBlueprintFunctionLibrary::GetInventoryPanelFromItem(ItemSpec);
+
+	int32 EmptySlotIndex = GetEmptySlot(PanelToInsert);
+
+	if (EmptySlotIndex >= 0)
+	{
+		AddItemToInventoryArray(ItemSpec, EmptySlotIndex);
+	}
+}
+
 void UInventorySystemComponent::AddItemToInventoryArray(const FMKItemSpec& ItemSpec, int SlotIndex)
 {
 	if (!PlayerControllerRef->HasAuthority())
@@ -277,6 +295,22 @@ bool UInventorySystemComponent::HandleItemUse(const EInventoryPanel Panel, const
 
 
 	return false;
+}
+
+int32 UInventorySystemComponent::GetEmptySlot(const EInventoryPanel Panel)
+{
+	if (auto* Array = GetInventoryArray(Panel))
+	{
+		for (int32 i = 0; i < Array->Num(); ++i)
+		{
+			if ((*Array)[i].Quantity == 0)
+			{
+				return i;
+			}
+		}
+	}
+
+	return -1;
 }
 
 TArray<FMKInventoryItemSpec>* UInventorySystemComponent::GetInventoryArray(const EInventoryPanel Panel)

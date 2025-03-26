@@ -44,6 +44,12 @@ public:
 	void InitializePanel(EInventoryPanel Panel);
 
 	/**
+	 * 인벤토리에 아이템을 추가
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Inventory")
+	void AddItemToInventory(const FMKItemSpec& ItemSpec);
+
+	/**
 	 * 인벤토리 배열에 아이템을 추가 (배열에만 추가되고 다른 처리는 되지않음)
 	 * @param ItemSpec 추가될 아이템
 	 * @param SlotIndex 배열의 특정 슬롯에 넣어야한다면 인덱스번호
@@ -91,6 +97,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
 	virtual bool HandleItemUse(const EInventoryPanel Panel, const int SlotIndex);
+
+	int32 GetEmptySlot(const EInventoryPanel Panel);
 
 	TArray<FMKInventoryItemSpec>* GetInventoryArray(const EInventoryPanel Panel);
 

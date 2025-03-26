@@ -11,7 +11,6 @@
 #include "Component/FootStepSFXComponent.h"
 #include "Component/InventorySystemComponent.h"
 #include "Component/LocomotionComponent.h"
-#include "Components/SceneCaptureComponent2D.h"
 #include "Engine/OverlapResult.h"
 #include "InventorySystem/Public/Actor/Gourd.h"
 #include "Player/MKPlayerController.h"

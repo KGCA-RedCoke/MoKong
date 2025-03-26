@@ -316,7 +316,10 @@ void UPlayerHUDWidget::CurrentEXPChanged(const FOnAttributeChangeData& Data)
 	}
 	const float MaxEXP = AbilitySystemComponent->GetNumericAttribute(UAttributeSet_Mokong::GetTargetExpAttribute());
 
-	On_CurrentEXPChanged(Data.NewValue, Data.OldValue, MaxEXP > 0.f ? Data.NewValue / MaxEXP : 0.f);
+	if (Data.NewValue <= MaxEXP)
+	{
+		On_CurrentEXPChanged(Data.NewValue, Data.OldValue, MaxEXP > 0.f ? Data.NewValue / MaxEXP : 0.f);
+	}
 }
 
 void UPlayerHUDWidget::CurrentLevelChanged(const FOnAttributeChangeData& Data)

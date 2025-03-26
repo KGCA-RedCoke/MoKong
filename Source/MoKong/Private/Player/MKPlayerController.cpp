@@ -54,3 +54,13 @@ void AMKPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 }
+
+void AMKPlayerController::OnPossess(APawn* InPawn)
+{
+	Super::OnPossess(InPawn);
+
+	if (Inventory_Equipment)
+	{
+		Inventory_Equipment->InitializeEquipmentInventory(InPawn);
+	}
+}
